@@ -36,7 +36,7 @@ componentDidMount() {
           <SiderMenu user={user} />
           <Layout style={{ marginLeft: 200, background: "#f7f7f7" }}>
             <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
-              <div style={{ padding: 24, minHeight: 1080 }}>
+              <div style={{ paddingTop: 100, minHeight: 1080, minWidth: 800 }}>
                 <Route  exact path="/dashboard" render={(props) => <Dashboard {...props} /> } />
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} token={token} /> } />

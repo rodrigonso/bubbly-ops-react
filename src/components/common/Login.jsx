@@ -25,7 +25,7 @@ handleSubmit = async() => {
     }
 
     try {
-        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/login`, user);
+        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/auth/login`, user);
         console.log(data);
         localStorage.setItem("token", data.token)
         window.location.replace("/");
