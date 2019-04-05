@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Google from '../common/Google';
 import { getEventsById } from '../../services/eventsService';
-import Collapsable from '../collapsable/Collapsable';
-import { Divider, DatePicker, Radio } from 'antd';
+import Weekday from '../weekday/Weekday';
+import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card } from 'antd';
 import moment from 'moment'
 
 const { WeekPicker } = DatePicker
+const { Panel } = Collapse
 
 export class Dashboard extends Component {
 state = {
@@ -17,7 +18,8 @@ state = {
     events: [],
     days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     selectedDetailer: { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
-    selectedRange: []
+    selectedRange: [],
+    weekRevenue: 0
 }
 
 responseGoogle = (response) => {
@@ -45,10 +47,14 @@ handleChange = async(date) => {
   this.setState({ events, selectedRange: range })
 }
 
-test = (date) => {
-  console.log(date)
-  const dt = moment(date._d).subtract(6, 'days')
-  console.log(dt);
+getWeekRevenue = (days) => {
+  const sum = days.map((item, i) => {
+    if (!item.revenue) return 0;
+    if (!days[i + 1].revenue) return item.revenue + 0
+    return item.revenue + days[i + 1].revenue
+  })
+  const total = sum.reduce((a, b) => a + b)
+  console.log(total)
 }
 
 render() { 
@@ -71,8 +77,17 @@ render() {
                 })}
               </Radio.Group>
           </div>
-          <div className="dashboard-days-card" style={{ marginTop: 40, maxWidth: 1200 }}>
-            {this.state.events.length > 0 ? <Collapsable days={this.state.events} /> : <p style={{ marginLeft: 300, marginTop: 300, fontSize: 16 }}>Nothing to see here :P</p>}
+          <div className="dashboard-week-totals" style={{ backgroundColor: "#fff", marginTop: 20, padding: 24, borderRadius: 4 }} >
+            <Row>
+              <Col span={6}>
+                <Statistic count={this.state.weekRevenue} title="Total Revenue" /> 
+              </Col>
+            </Row>
+          </div>
+          <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
+            <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
+                {this.state.events.map((props, day) => <Weekday {...props} getWeekRevenue={this.getWeekRevenue} day={day} days={this.state.events}/>)}
+            </Collapse>
           </div>
         </div>
     )
@@ -88,5 +103,5 @@ const toolbarStyle = {
 }
 
 
-//<RangePicker onChange={this.handleChange} separator="|" size="default" />
+
 export default Dashboard

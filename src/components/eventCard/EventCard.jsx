@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Typography, Badge, Button, Popover, Input, message, Divider, List, Drawer, Select } from 'antd';
+import { Card, Row, Col, Typography, Badge, Button, Popover, Input, message, Divider, List, Drawer, Select, Tag } from 'antd';
 import { getDistances } from '../../services/eventsService';
 import dateFormat from 'dateformat';
 import Axios from 'axios';
 
 const { Text } = Typography;
 const { Option } = Select;
+const { CheckableTag } = Tag
 
 export class EventCard extends Component {
   state = {
     visible: false,
     input: '',
-    vehicleType: '',
+    vehicleType: {},
     serviceType: {},
     services: [
       { name: "AmazingDetail", types: [ { name: "Sedan", price: 59 }, { name: "Non-Sedan", price: 79 } ] },
@@ -103,9 +104,8 @@ handleVehicleType = (value) => {
     const price = item.types.filter(type => type.name === value)
     return { name: item.name, price: price[0]}
   })
-  this.setState({ serviceType: final[0] })
-  console.log(final)
-  this.props.sendData2(final)
+
+  this.props.sendData(final[0])
 }
 
 
@@ -141,10 +141,8 @@ handleVehicleType = (value) => {
                     <p style={{ fontSize: 12 }}>More Info</p>
                     <Text code>{this.formatVehicleInfo()}</Text>
                     <br/>
-                    <Select onChange={this.handleVehicleType} style={{ width: 120, marginTop: 5 }} size="small" placeholder="Type">
-                      <Option value="Sedan">Sedan</Option>
-                      <Option value="Non-Sedan">Non-Sedan</Option>
-                    </Select>
+                    <CheckableTag style={{ marginTop: 10 }} onChange={() => this.handleVehicleType("Sedan")} checked={this.state.vehicleType === "Sedan" ? true : false} >Sedan</CheckableTag>
+                    <CheckableTag onChange={() => this.handleVehicleType("Non-Sedan")} checked={this.state.vehicleType === "Non-Sedan" ? true : false} >Non-Sedan</CheckableTag>                   
                     <br/>
                     <Badge style={badgeStyle} count={event.distances ? event.distances.rows[0].elements[0].duration.text : "No elements"} />
                 </Col>
