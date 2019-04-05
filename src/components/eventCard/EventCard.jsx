@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Row, Col, Typography, Badge, Button, Popover, Input, message, Divider, List, Drawer, Select, Tag } from 'antd';
 import { getDistances } from '../../services/eventsService';
 import dateFormat from 'dateformat';
-import Axios from 'axios';
+import axios from 'axios';
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -75,7 +75,8 @@ handleTextSend = async() => {
   }
 
   try {
-    const { data } = await Axios.post(process.env.REACT_APP_BACKEND_API, obj)
+    console.log(process.env.REACT_APP_BACKEND_API)
+    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
     console.log(data);
     message.success("Your message was sent!")
   } catch(ex) {
