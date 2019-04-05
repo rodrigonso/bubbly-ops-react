@@ -59,6 +59,7 @@ getWeekRevenue = (days) => {
 
 render() { 
     return (
+      <div style={{ padding: 24, minHeight: 1080 }}>
         <div style={{ height: "auto" }}>
           <h1 style={{ fontSize: 32 }}>Appointments</h1>
           <p>View and manage all detailers and respective appointments here.</p>
@@ -90,6 +91,7 @@ render() {
             </Collapse>
           </div>
         </div>
+      </div>
     )
   }
 };

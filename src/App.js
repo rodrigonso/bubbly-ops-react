@@ -45,10 +45,8 @@ protectedRoute = () => {
             <SiderMenu user={user} />
             <Layout style={{ marginLeft: 200, background: "#f7f7f7" }}>
               <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
-                <div style={{ padding: 24, minHeight: 1080 }}>
                   <Route exact path="/" render={props => <Home {...props} user={user} token={token} /> } />
                   <Route exact path="/dashboard" render={props => <Dashboard {...props} /> } />
-                </div>
               </Content>
             </Layout>
           </Layout>
