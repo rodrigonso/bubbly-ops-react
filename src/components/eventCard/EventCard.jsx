@@ -123,8 +123,8 @@ handleVehicleType = (value) => {
                 <List.Item>
                   <div style={{ marginTop: 20 }}>
                     <h4>Send SMS to customer</h4>
-                    <Input disabled={true} value="+1 (832)929-8338" style={{ marginBottom: 10 }} />
-                    <TextArea placeholder="Message Here" value={input} onChange={(e) => this.handleChange(e)} />
+                    To: <Input disabled={true} value="+1 (832)929-8338" style={{ marginBottom: 10 }} />
+                    Message: <TextArea placeholder="Message Here" value={input} onChange={(e) => this.handleChange(e)} />
                     <Button onClick={this.handleTextSend} style={{ marginTop: 10, width: "100%" }} >Send</Button>
                   </div>
                 </List.Item>
