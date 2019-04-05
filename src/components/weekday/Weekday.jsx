@@ -64,7 +64,6 @@ getTotalRevenue = () => {
     const sum = numbers.reduce((a, b) => a + b)
 
     this.props.days[this.props.day].revenue = sum
-    console.log(this.props.days)
 
     this.props.getWeekRevenue(this.props.days)
     return sum
@@ -74,9 +73,8 @@ getTotalRevenue = () => {
 }
 
   render() {
-    console.log(this.props.day)
     return (
-      <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} >
+      <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} extra={<Badge style={customBadgeStyle} count={this.props.events.length} />} >
         {this.props.events.map(event => <EventCard sendData={this.recieveData} key={event.id} event={event} />)}
         <Card size="small" style={cardStyle} >
           <Row>

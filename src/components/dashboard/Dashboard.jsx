@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import GoogleLogin from 'react-google-login';
-import { getEventsById } from '../../services/eventsService';
+import { getEventsById, handleGoogleUser } from '../../services/eventsService';
 import Weekday from '../weekday/Weekday';
 import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card } from 'antd';
 import moment from 'moment'
@@ -20,6 +19,10 @@ state = {
     selectedDetailer: { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
     selectedRange: [],
     weekRevenue: 0
+}
+
+componentDidMount() {
+  handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
 }
 
 responseGoogle = (response) => {
@@ -69,13 +72,6 @@ render() {
         <p>View and manage all detailers and respective appointments here.</p>
         <Divider />
         <div style={{ marginTop: 20, marginBottom: 20 }}>
-          <GoogleLogin
-          clientId="111663759471-906452b0rdqva4fn9jrahjf7j0e30qf7.apps.googleusercontent.com"
-          buttonText="Authorize with Google"
-          scope="https://www.googleapis.com/auth/calendar.readonly"
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
-        />
         </div>
         <div className="dashboard-tool-bar" style={toolbarStyle}>
           <p style={{ display: "inline", marginRight: 20 }} >Select week</p>
