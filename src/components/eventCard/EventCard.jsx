@@ -75,7 +75,7 @@ handleTextSend = async() => {
   }
 
   try {
-    const { data } = await Axios.post(`http://localhost:3900/api/sms/`, obj)
+    const { data } = await Axios.post(process.env.REACT_APP_BACKEND_API, obj)
     console.log(data);
     message.success("Your message was sent!")
   } catch(ex) {
