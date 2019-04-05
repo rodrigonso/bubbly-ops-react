@@ -45,10 +45,10 @@ handleLogout = () => {
             {this.renderUserBadge()}
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
             <Menu.Item key="1">
-              <NavLink to='/' ><span>Home</span></NavLink>
+              <NavLink to='/' >Home</NavLink>
             </Menu.Item>
             <Menu.Item key="2" disabled={user && user.isAdmin ? false : true} >
-              <NavLink to='/dashboard' ><span>Dashboard</span></NavLink>
+              <NavLink to='/dashboard' >Dashboard</NavLink>
             </Menu.Item>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
           </Menu>

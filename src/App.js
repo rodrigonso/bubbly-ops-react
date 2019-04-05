@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import SiderMenu from './components/siderMenu/SiderMenu';
 import Home from './components/home/Home';
 import Dashboard from './components/dashboard/Dashboard';
+import Settings from './components/settings/Settings'
 import { Layout, message } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
@@ -27,31 +28,22 @@ componentDidMount() {
   }
 }
 
-protectedRoute = () => {
-  const { user } = this.state
-  if (user && user.isAdmin) {
-    return <Route exact path="/dashboard" component={Dashboard} />
-  } else {
-    return <Route exact path="/" component={Home} />
-  }
-}
 
   render() {
     const { token, user } = this.state
     return (
-      <Router>
-        <Layout className="body" >
-          <Layout>
-            <SiderMenu user={user} />
-            <Layout style={{ marginLeft: 200, background: "#f7f7f7" }}>
-              <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
-                  <Route exact path="/" render={props => <Home {...props} user={user} token={token} /> } />
-                  <Route exact path="/dashboard" render={props => <Dashboard {...props} /> } />
-              </Content>
-            </Layout>
+        <Layout>
+          <SiderMenu user={user} />
+          <Layout style={{ marginLeft: 200, background: "#f7f7f7" }}>
+            <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
+              <div style={{ padding: 24, minHeight: 1080 }}>
+                <Route  exact path="/dashboard" render={(props) => <Dashboard {...props} /> } />
+                <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
+                <Route  exact path="/" render={(props) => <Home {...props} user={user} token={token} /> } />
+              </div>
+            </Content>
           </Layout>
-      </Layout>
-    </Router>
+        </Layout>
     )
   }
 }

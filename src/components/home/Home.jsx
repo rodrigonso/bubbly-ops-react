@@ -34,7 +34,6 @@ export class Home extends Component {
       )
     }
     return (
-      <div style={{ padding: 24, minHeight: 1080 }}>
         <div style={{ height: "auto" }}>
           <h1 style={{ fontSize: 32 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
@@ -44,7 +43,6 @@ export class Home extends Component {
             <p></p>
           </div>
         </div>
-      </div>
     )
   }
 }
