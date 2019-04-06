@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Layout, Button, Col, Row, Form, Input, message} from 'antd'
 import jwt from 'jsonwebtoken'
 import axios from 'axios'
@@ -8,7 +9,8 @@ state = {
     fields: [
         { name: "Username", value: '' },
         { name: "Password", value: '' }
-    ]
+    ],
+    loadgin: false
 }
 
 handleChange = (e, item) => {
@@ -25,19 +27,21 @@ handleSubmit = async() => {
     }
 
     try {
+        this.setState({ loading: true })
         const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/auth/login`, user);
         console.log(data);
         localStorage.setItem("token", data.token)
-        window.location.replace("/");
+        window.location.reload()
     } catch (ex) {
         console.log(ex)
         message.error("Something went wrong")
+    } finally {
+        this.setState({ loading: false })
     }
 
 }
 
   render() {
-      console.log(process.env.REACT_APP_BACKEND_API_URL)
     const { fields } = this.state;
     return (
         <Form>
@@ -49,7 +53,7 @@ handleSubmit = async() => {
                 )
             })}
             <Form.Item>
-                <Button onClick={this.handleSubmit} type="primary" style={{ width: "100%", textAlign: "center" }}>Login</Button>
+                <Button loading={this.state.loading} onClick={this.handleSubmit} type="primary" style={{ width: "100%", textAlign: "center" }}>Login</Button>
             </Form.Item>
         </Form>
     )

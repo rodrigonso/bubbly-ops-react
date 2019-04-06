@@ -40,7 +40,7 @@ handleLogout = () => {
     return (
         <Sider trigger={null} style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0 }}>
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]} style={{ marginTop: 20 }}>
+          <Menu theme="dark" mode="inline" style={{ marginTop: 20 }}>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
             {this.renderUserBadge()}
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>

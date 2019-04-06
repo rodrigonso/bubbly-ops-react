@@ -34,7 +34,7 @@ export async function handleGoogleUser(calendarId, range) {
 export async function getEventsById(calendarId, range) {
     console.log(calendarId);
 
-    if (range.length === 0) return null
+    if (!range || range.length === 0) return null
     const start = range[0];
     const end = range[1];
 

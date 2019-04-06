@@ -9,6 +9,7 @@ export class Weekday extends Component {
     events: [],
   }
 
+
 getFinalDistance = () => {
   const lastEvent = this.props.events[this.props.events.length -1];
 
