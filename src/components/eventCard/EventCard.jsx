@@ -16,10 +16,10 @@ export class EventCard extends Component {
     vehicleType: {},
     serviceType: {},
     services: [
-      { name: "AmazingDetail", types: [ { name: "Sedan", price: 59 }, { name: "Non-Sedan", price: 79 } ] },
-      { name: "SuperiorDetail", types: [ { name: "Sedan", price: 99 }, { name: "Non-Sedan", price: 119 } ] },
-      { name: "BubblyPro", types: [ { name: "Sedan", price: 159 }, { name: "Non-Sedan", price: 189 } ] },
-      { name: "BubblyShowroom", types: [ { name: "Sedan", price: 249 }, { name: "Non-Sedan", price: 289 } ] },
+      { name: "AmazingDetail", duration: 1.5,  types: [ { name: "Sedan", price: 59 }, { name: "Non-Sedan", price: 79 } ] },
+      { name: "SuperiorDetail", duration: 1.75, types: [ { name: "Sedan", price: 99 }, { name: "Non-Sedan", price: 119 } ] },
+      { name: "BubblyPro", duration: 2.5, types: [ { name: "Sedan", price: 159 }, { name: "Non-Sedan", price: 189 } ] },
+      { name: "BubblyShowroom", duration: 3.5, types: [ { name: "Sedan", price: 249 }, { name: "Non-Sedan", price: 289 } ] },
     ]
   }
 
@@ -104,9 +104,9 @@ handleVehicleType = (value) => {
   const service = this.state.services.filter(service => service.name === test3 )
   const final = service.map(item => {
     const price = item.types.filter(type => type.name === value)
-    return { name: item.name, price: price[0]}
+    return { name: item.name, price: price[0], duration: item.duration}
   })
-  console.log(final)
+  
 
   this.props.sendData(final[0])
 }
@@ -124,7 +124,7 @@ handleVehicleType = (value) => {
                 <List.Item>
                   <div style={{ marginTop: 20 }}>
                     <h4>Send SMS to customer</h4>
-                    To: <Input disabled={true} value="+1 (832)929-8338" style={{ marginBottom: 10 }} />
+                    To: <Input disabled={true} value="+1 (832) 929-8338" style={{ marginBottom: 10 }} />
                     Message: <TextArea placeholder="Message Here" value={input} onChange={(e) => this.handleChange(e)} />
                     <Button onClick={this.handleTextSend} style={{ marginTop: 10, width: "100%" }} >Send</Button>
                   </div>

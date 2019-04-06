@@ -28,7 +28,7 @@ getTotalDriving = () => {
     if (length === 1) {
       return event.distances.rows[0].elements[0].duration.text
     } else if (length === 2) {
-      return event.distances.rows[0].elements[0].duration.text
+      return (event.distances.rows[0].elements[0].duration.text)
     } else {
       return "No distances found"
     }
@@ -73,6 +73,17 @@ getTotalRevenue = () => {
   }
 }
 
+getTotalHours = () => {
+  const numbers = this.state.events.map(event => event.duration)
+
+  if (numbers.length > 0) {
+    const sum = numbers.reduce((a, b) => a + b)
+    return sum
+  } else {
+    return 0
+  }
+}
+
   render() {
     return (
       <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} extra={<Badge style={customBadgeStyle} count={this.props.events.length} />} >
@@ -87,6 +98,9 @@ getTotalRevenue = () => {
             </Col>
             <Col span={6}>
               <Statistic title="Total Revenue" value={this.getTotalRevenue()} prefix="$" />
+            </Col>
+            <Col span={6}>
+              <Statistic title="Total Hours" value={this.getTotalHours()} suffix="hours" />
             </Col>
           </Row>
         </Card>
