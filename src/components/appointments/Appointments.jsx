@@ -46,6 +46,8 @@ responseGoogle = (response) => {
 toggleDetailer = async(e) => {
   const selectedDetailer = e.target.value;
 
+  this.handleReset()
+
   try {
     this.setState({ skeleton: true })
     const events = await getEventsById(selectedDetailer.email, this.state.selectedRange);
@@ -68,10 +70,17 @@ getTotalServices = () => {
   }
 }
 
+handleReset = () => {
+  this.setState({ hours: 0, driving: 0, revenue: 0, services: 0 })
+  return false
+}
 
 // gets appointments for selected detailer
 handleChange = async(date) => {
   const { selectedDetailer } = this.state;
+
+  this.handleReset()
+
   console.log(date)
   const dt = moment(date._d).subtract(6, 'days')
   const start = dt._d
@@ -188,7 +197,7 @@ render() {
             </Col>
             <Col span={2}>
               <Tooltip title="Restart" arrowPointAtCenter>
-                <Button onClick={this.handleValidate} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
+                <Button onClick={this.handleReset} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
                 Reset
                 </Button>
               </Tooltip>
@@ -210,10 +219,6 @@ render() {
     )
   }
 };
-
-//<Google onSuccess={this.responseGoogle} onFailure={this.responseGoogle} />
-
-
 
 const toolbarStyle = {
   marginTop: 10, 

@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import EventCard from '../eventCard/EventCard'
-import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider, Tooltip } from 'antd';
+import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider, Tooltip, Icon } from 'antd';
 
 const { Panel } = Collapse;
 
 export class Weekday extends Component {
   state = { 
-    events: [],
+    validatedAppointments: [],
     isValidated: false
   }
-
 
 getFinalDistance = () => {
   const lastEvent = this.props.events[this.props.events.length -1];
@@ -26,12 +25,11 @@ getFinalDistance = () => {
 getTotalDriving = () => {
   const distances = this.props.events.map(event => {
     const length = event.distances.rows.length
-    const time = event.distances.rows[0].elements[0].duration.text
     
     if (length === 1) {
-      return time
+      return event.distances.rows[0].elements[0].duration.text
     } else if (length === 2) {
-      return time
+      return event.distances.rows[0].elements[0].duration.text
     } else {
       return "No distances found"
     }
@@ -48,9 +46,9 @@ getTotalDriving = () => {
 }
 
 recieveData = (event) => {
-  const arr = [...this.state.events]
+  const arr = [...this.state.validatedAppointments]
   arr.push(event)
-  this.setState({ events: arr })
+  this.setState({ validatedAppointments: arr })
 }
 
 formatVehicleType = (type) => {
@@ -63,7 +61,7 @@ formatVehicleType = (type) => {
 }
 
 getTotalRevenue = () => {
-  const numbers = this.state.events.map(event => event.price.price)
+  const numbers = this.state.validatedAppointments.map(event => event.price.price)
 
   if (numbers.length > 0) {
     const sum = numbers.reduce((a, b) => a + b)
@@ -77,7 +75,7 @@ getTotalRevenue = () => {
 }
 
 getTotalHours = () => {
-  const numbers = this.state.events.map(event => event.duration)
+  const numbers = this.state.validatedAppointments.map(event => event.duration)
 
   if (numbers.length > 0) {
     const sum = numbers.reduce((a, b) => a + b)
@@ -138,9 +136,7 @@ renderValidateBadge = () => {
             </Col>
             <Col offset={2} span={4}>
               <Tooltip title="Confirm changes">
-                 <Button onClick={this.handleValidate} style={{ marginTop: 15 }} type="secondary" icon="check" >
-                  Validate 
-                </Button>
+                <Button onClick={this.handleValidate} style={{ marginTop: 15 }} disabled={this.state.isValidated ? true : false} type="secondary" icon="check">Validate</Button>
               </Tooltip>
             </Col>
           </Row>
@@ -179,33 +175,3 @@ const customBadgeStyle = {
   }
 
 export default Weekday;
-
-
-/*
-        <React.Fragment>
-
-            <Collapse style={{ backgroundColor: "#f7f7f7" }} >
-            {this.props.days.map(day => {
-              this.getTotal(day)
-                return (
-                    <Panel key={day.name} style={customPanelStyle} header={day.name} extra={<Badge count={day.events.length} style={customBadgeStyle} />} >
-                        {day.events.map(event => <EventCard sendData2={this.recieveData2} sendData={this.recieveData} key={event.id} day={day} event={event} />)}
-                        <Card size="small" style={cardStyle} >
-                          <Row>
-                            <Col span={6}>
-                              <Statistic title="Total Driving" value={this.getTotal(day)} suffix="mins" />
-                           </Col>
-                           <Col span={6}>
-                              <Statistic title="Total Services" value={day.events.length} suffix="/5" />
-                           </Col>
-                           <Col span={6}>
-                              <Statistic title="Total Revenue" value={0} prefix="$" />
-                           </Col>
-                          </Row>
-                        </Card>
-                    </Panel>
-                ) 
-            })}
-            </Collapse>
-        </React.Fragment>
-*/
