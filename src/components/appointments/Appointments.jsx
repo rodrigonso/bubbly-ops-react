@@ -180,14 +180,14 @@ render() {
             </Col>
             <Col span={3}>
               <Tooltip title="Save week" arrowPointAtCenter>
-                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="secondary" icon="save" style={{ marginTop: 8, marginLeft: 15 }} >
+                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="primary" icon="save" style={{ marginTop: 8, marginLeft: 15 }} >
                 Save
                 </Button>
               </Tooltip>
             </Col>
             <Col span={2}>
               <Tooltip title="Restart" arrowPointAtCenter>
-                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
+                <Button onClick={this.handleValidate} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
                 Reset
                 </Button>
               </Tooltip>
