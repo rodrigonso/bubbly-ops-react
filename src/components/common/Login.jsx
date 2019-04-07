@@ -6,8 +6,8 @@ import axios from 'axios'
 export class Login extends Component {
 state = {
     fields: [
-        { name: "Username", value: '' },
-        { name: "Password", value: '' }
+        { name: "Username", value: '', validateStatus: "" },
+        { name: "Password", value: '', validateStatus: "" }
     ],
     loading: false
 }
@@ -16,6 +16,13 @@ handleChange = (e, item) => {
     const fields = [...this.state.fields];
     const index = fields.indexOf(item);
     fields[index].value = e.target.value;
+
+    const obj = { field: e.target.value }
+
+    const { error } = Joi.validate(obj, schema)
+    if (error) fields[index].validateStatus = "error"
+    else fields[index].validateStatus = "success"
+
     this.setState({ fields });
 }
 
@@ -24,11 +31,6 @@ handleSubmit = async() => {
         username: this.state.fields[0].value,
         password: this.state.fields[1].value
     }
-
-    const { error } = Joi.validate(user, schema)
-    if (error) return this.setState({ validateStatus: "error" })
-
-    this.setState({ validateStatus: "success" })
 
     try {
         this.setState({ loading: true })
@@ -50,7 +52,7 @@ handleSubmit = async() => {
         <Form>
             {fields.map(item => {
                 return (
-                    <Form.Item key={item.name} hasFeedback validateStatus={validateStatus}>
+                    <Form.Item key={item.name} hasFeedback validateStatus={item.validateStatus}>
                         <Input key={item.name} type={item.name === "Password" ? "password" : null} value={item.value} placeholder={item.name} onChange={(e) => this.handleChange(e, item)} />
                     </Form.Item>
                 )
@@ -64,8 +66,7 @@ handleSubmit = async() => {
 }
 
 const schema = {
-    username: Joi.string().min(3).max(55).required(),
-    password: Joi.string().min(3).max(55).required()
+    field: Joi.string().min(3).max(55).required(),
 }
 
 export default Login

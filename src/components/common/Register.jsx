@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { Button, Form, Input, message} from 'antd'
 import axios from 'axios'
+import Joi from 'joi'
 
 export class Register extends Component {
 state = {
     fields: [
-        { name: "Name", value: '' },
-        { name: "Username", value: '' },
-        { name: "Email", value: '' },
-        { name: "Password", value: '' }
+        { name: "Name", value: '', validateStatus: "", schema: nameSchema },
+        { name: "Username", value: '', validateStatus: "", schema: usernameSchema },
+        { name: "Email", value: '', validateStatus: "", schema: emailSchema },
+        { name: "Password", value: '', validateStatus: "", schema: passwordSchema }
     ]
 }
 
@@ -16,6 +17,13 @@ handleChange = (e, item) => {
     const fields = [...this.state.fields];
     const index = fields.indexOf(item);
     fields[index].value = e.target.value;
+
+    const obj = { field: e.target.value }
+
+    const { error } = Joi.validate(obj, fields[index].schema)
+    if (error) fields[index].validateStatus = "error"
+    else fields[index].validateStatus = "success"
+
     this.setState({ fields });
 }
 
@@ -45,7 +53,7 @@ handleSubmit = async() => {
         <Form >
             {fields.map(item => {
                 return (
-                    <Form.Item key={item.name}>
+                    <Form.Item key={item.name} hasFeedback validateStatus={item.validateStatus} help={item.name === "Password" ? "Password must be at least 5 characters" : null } >
                         <Input key={item.name} type={item.name === "Password" ? "password" : null} value={item.value} placeholder={item.name} onChange={(e) => this.handleChange(e, item)} />
                     </Form.Item>
                 )
@@ -57,5 +65,22 @@ handleSubmit = async() => {
     )
   }
 }
+
+const usernameSchema = {
+    field: Joi.string().alphanum().min(5).max(30).required(),
+}
+
+const emailSchema = {
+    field: Joi.string().email().required(),
+}
+
+const nameSchema = {
+    field: Joi.string().min(3).max(55).required()
+}
+
+const passwordSchema = {
+    field: Joi.string().regex(/^[a-zA-Z0-9]{5,30}$/).required()
+}
+
 
 export default Register
