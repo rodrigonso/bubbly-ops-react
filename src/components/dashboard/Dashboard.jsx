@@ -62,7 +62,7 @@ export class Dashboard extends Component {
     handleDelete = async(item) => {
         try {
             this.setState({ isDeleting: true })
-            const { data } = await axios.delete(`http://localhost:3900/api/weeks/${item._id}`)
+            const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/weeks/${item._id}`)
             const weeks = [...this.state.weeks]
             const final = weeks.filter(week => week._id !== item._id)
 
