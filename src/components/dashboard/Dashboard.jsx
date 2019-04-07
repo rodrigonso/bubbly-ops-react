@@ -1,157 +1,104 @@
-import React, { Component } from 'react';
-import { getEventsById, handleGoogleUser } from '../../services/eventsService';
-import Weekday from '../weekday/Weekday';
-import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card, message, Button, Skeleton } from 'antd';
+import React, { Component } from 'react'
+import { List, Divider, Statistic, Card, Row, Col, Button } from 'antd';
+import axios from 'axios'
 import moment from 'moment'
 
-const { WeekPicker } = DatePicker
-const { Panel } = Collapse
-
 export class Dashboard extends Component {
-state = {
-    detailers: [
-      { id: 1, name: "Rodrigo", email: "rodrigo@bubblynow.com" },
-      { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
-      { id: 3, name: "Eric", email: "eric@bubblynow.com" },
-    ],
-    events: [],
-    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    selectedDetailer: { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
-    selectedRange: [],
-    weekRevenue: 0,
-    weekServices: 0,
-    skeleton: false
-}
+    state = {
+        weeks: [],
+        totalRevenue: 0,
+        totalServices: 0
+    }
 
-componentDidMount() {
-  handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
-}
+    async componentDidMount() {
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/weeks`)
+        this.setState({ weeks: data })
+        console.log(data)
+        this.getTotalRevenue()
+        this.getTotalServices()
+    }
 
-responseGoogle = (response) => {
-  console.log(response);
-  const token = response.accessToken
-  
-  if (!token) return "token invalid"
-  localStorage.setItem("accessToken", token);
-  this.props.history.replace("/dashboard")
-  return;
-};
+    getTotalRevenue = () => {
+        const total = this.state.weeks.map(week => week.totalRevenue)
 
-// handles detailer selection
-toggleDetailer = async(e) => {
-  const selectedDetailer = e.target.value;
+        if (total.length > 0) {
+            const sum = total.reduce((a, b) => a + b)
+            this.setState({ totalRevenue: sum })
+        } else {
+            return 0
+        }
+    }
 
-  try {
-    this.setState({ skeleton: true })
-    const events = await getEventsById(selectedDetailer.email, this.state.selectedRange);
-    this.setState({ events, selectedDetailer });
-  } catch(ex) {
-    message.error("Something went wrong!")
-  } finally {
-    this.setState({ skeleton: false })
-  }
-}
+    getTotalServices = () => {
+        const total = this.state.weeks.map(week => week.totalServices)
+        if (total.length > 0) {
+            const sum = total.reduce((a, b) => a + b)
+            this.setState({ totalServices: sum })
+        } else {
+            return 0
+        }
+    }
 
-getTotalServices = () => {
-  const total = this.state.events.map(event => event.events.length)
-  if (total.length > 0) {
-    const sum = total.reduce((a, b) => a + b)
-    this.setState({ weekServices: sum })
-  } else {
-    return 0
-  }
-}
+    formatRange = (range) => {
+        console.log(range)
+        const date1 = moment(range[0]).format("MMM Do YYYY")
+        const date2 = moment(range[1]).format("MMM Do YYYY")
 
+        return `${date1} - ${date2}`
+    }
 
-// gets appointments for selected detailer
-handleChange = async(date) => {
-  const { selectedDetailer } = this.state;
-  const dt = moment(date._d).subtract(6, 'days')
-  const start = dt._d
-  const end = dt._i
-  const range = [];
-  range.push(start, end);
-  
-  try {
-    this.setState({ skeleton: true })
+    renderDescription = (item) => {
+        console.log(item)
+        return (
+            <div>
+                <i style={{ color: "#2c3e50" }} className="fas fa-clock"></i> {item.totalHours}
+                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-dollar-sign"></i> {item.totalRevenue}
+                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-address-card"></i> {item.detailer.name}
 
-    const events = await getEventsById(selectedDetailer.email, range);
-    this.setState({ events, selectedRange: range })
-  } catch(ex) {
-    console.log(ex)
-    message.error("Something went wrong!")
-  } finally {
-    this.setState({ skeleton: false })
-    this.getTotalServices()
-  }
-}
+            </div>
+        )
+    } 
 
-getWeekRevenue = (days) => {
-  const sum = days.map((item, i) => {
-    if (!item.revenue) return 0;
-    if (!days[i + 1] || !days[i + 1].revenue) return item.revenue + 0
-    return item.revenue + days[i + 1].revenue
-  })
-  const total = sum.reduce((a, b) => a + b)
-  console.log(total)
-}
-
-render() {
-  const { detailers, selectedDetailer, weekRevenue, weekServices, events, skeleton } = this.state
+  render() {
     return (
-      <div style={{ height: "auto" }}>
-        <h1 style={{ fontSize: 32 }}>Appointments</h1>
-        <p>View and manage all detailers and respective appointments here.</p>
-        <Divider />
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
-        </div>
-        <div className="dashboard-tool-bar" style={toolbarStyle}>
-          <p style={{ display: "inline", marginRight: 20 }} >Select week</p>
-          <WeekPicker onChange={this.handleChange} />
-          <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
-          <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="solid" >
-            {detailers.map((detailer, i) => {
-              return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
-            })}
-          </Radio.Group>
-        </div>
-        <div className="dashboard-week-totals" style={{ backgroundColor: "#fff", marginTop: 20, padding: 24, borderRadius: 4 }} >
+        <div>
+          <h1 style={{ fontSize: 32 }}>Dashboard</h1>
+          <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
+          <Divider />
           <Row>
-            <Col span={4}>
-              <Statistic value={weekRevenue} title="Total Revenue" /> 
+            <Col span={8}>
+                <div className="dashboard-total-revenue" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5 }} >
+                    <Card bordered={false}>
+                        <h3>Total Revenue</h3>
+                        <Statistic value={this.state.totalRevenue} prefix="$" />
+                    </Card>
+                </div>
             </Col>
-            <Col span={4}>
-              <Statistic value={weekServices} suffix="/30" title="Total Services" /> 
+            <Col span={8}>
+                <div className="dashboard-total-services" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5, marginLeft: 10 }} >
+                    <Card bordered={false}>
+                        <h3>Total Services</h3>
+                        <Statistic value={this.state.totalServices} />
+                    </Card>
+                </div>
             </Col>
           </Row>
+
+          <div style={{ padding: 24, backgroundColor: "#fff", textAlign: "center", borderRadius: 5, marginTop: 20 }} >
+            <List dataSource={this.state.weeks} itemLayout="horizontal" renderItem={item => (
+                <List.Item style={{ textAlign: "left", marginBottom: 10 }} >
+                    <List.Item.Meta title={this.formatRange(item.range)} description={this.renderDescription(item)}/>
+                    <div className="content" style={{ marginTop: 15 }} >
+                        <Button style={{ marginRight: 10 }} shape="circle" ><i className="fas fa-chevron-down"></i></Button>
+                        <Button type="danger" shape="circle" ><i className="fas fa-trash-alt"></i></Button>
+                    </div>
+                </List.Item>
+            )}>
+            </List>
+          </div>
         </div>
-        <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
-          <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
-              {events.map((props, day) => {
-                if (skeleton) {
-                  return <Card style={{ border: 0, borderRadius: 4, backgroundColor: "#fff", padding: 24, marginBottom: 5 }} ><Skeleton active loading /></Card>
-                } else {
-                  return <Weekday {...props} key={day} sendData={this.recieveData} getWeekRevenue={this.getWeekRevenue} day={day} days={events} />
-                }
-              })}
-          </Collapse>
-        </div>
-      </div>
     )
   }
-};
-
-//<Google onSuccess={this.responseGoogle} onFailure={this.responseGoogle} />
-
-
-
-const toolbarStyle = {
-  marginTop: 10, 
-  maxWidth: 1200, 
-  backgroundColor: "#fff", 
-  padding: 20, 
-  borderRadius: 4
 }
 
 export default Dashboard

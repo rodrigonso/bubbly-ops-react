@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Layout, Button, Col, Row, Form, Input, message} from 'antd'
 import jwt from 'jsonwebtoken'
+import Joi from 'joi'
 import axios from 'axios'
 
 export class Login extends Component {
@@ -10,7 +11,7 @@ state = {
         { name: "Username", value: '' },
         { name: "Password", value: '' }
     ],
-    loadgin: false
+    loading: false
 }
 
 handleChange = (e, item) => {
@@ -26,6 +27,11 @@ handleSubmit = async() => {
         password: this.state.fields[1].value
     }
 
+    const { error } = Joi.validate(user, schema)
+    if (error) return this.setState({ validateStatus: "error" })
+
+    this.setState({ validateStatus: "success" })
+
     try {
         this.setState({ loading: true })
         const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/auth/login`, user);
@@ -38,26 +44,30 @@ handleSubmit = async() => {
     } finally {
         this.setState({ loading: false })
     }
-
 }
 
   render() {
-    const { fields } = this.state;
+    const { fields, loading, validateStatus } = this.state;
     return (
         <Form>
             {fields.map(item => {
                 return (
-                    <Form.Item key={item.name}>
+                    <Form.Item key={item.name} hasFeedback validateStatus={validateStatus}>
                         <Input key={item.name} type={item.name === "Password" ? "password" : null} value={item.value} placeholder={item.name} onChange={(e) => this.handleChange(e, item)} />
                     </Form.Item>
                 )
             })}
             <Form.Item>
-                <Button loading={this.state.loading} onClick={this.handleSubmit} type="primary" style={{ width: "100%", textAlign: "center" }}>Login</Button>
+                <Button loading={loading} onClick={this.handleSubmit} type="primary" style={{ width: "100%", textAlign: "center" }}>Login</Button>
             </Form.Item>
         </Form>
     )
   }
+}
+
+const schema = {
+    username: Joi.string().min(3).max(55).required(),
+    password: Joi.string().min(3).max(55).required()
 }
 
 export default Login

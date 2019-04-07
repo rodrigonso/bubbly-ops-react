@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import EventCard from '../eventCard/EventCard'
-import { Collapse, Card, Badge, Statistic, Row, Col } from 'antd';
+import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider } from 'antd';
 
 const { Panel } = Collapse;
 
 export class Weekday extends Component {
   state = { 
     events: [],
+    isValidated: false
   }
 
 
@@ -65,9 +66,8 @@ getTotalRevenue = () => {
     const sum = numbers.reduce((a, b) => a + b)
 
     this.props.days[this.props.day].revenue = sum
-
-    this.props.getWeekRevenue(this.props.days)
     return sum
+
   } else {
     return 0
   }
@@ -84,23 +84,57 @@ getTotalHours = () => {
   }
 }
 
+handleValidate = () => {
+  const dayIndex = this.props.day
+
+  const hours = this.getTotalHours()
+  const revenue = this.getTotalRevenue()
+  const driving = this.getTotalDriving()
+
+  const data = [
+    { name: "hours", value: hours},
+    { name: "revenue", value: revenue},
+    { name: "driving", value: driving},
+  ]
+  this.setState({ isValidated: true })
+  this.props.sendData(data, dayIndex)
+}
+
+renderValidateBadge = () => {
+  if (this.state.isValidated) return (
+    <React.Fragment>
+      <Badge count={this.props.events.length} style={customBadgeStyle} />
+      <span><i style={validatedIcon} className="fas fa-check-circle"></i></span>
+    </React.Fragment>
+  )
+  else return <div className="panel-extras"><Badge count={this.props.events.length} style={customBadgeStyle} /></div>
+}
+
   render() {
     return (
-      <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} extra={<Badge style={customBadgeStyle} count={this.props.events.length} />} >
-        {this.props.events.map(event => <EventCard sendData={this.recieveData} key={event.id} event={event} />)}
+      <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} extra={this.renderValidateBadge()} >
+        {this.props.events.map(event => {
+          return <EventCard sendData={this.recieveData} key={event.id} event={event} />
+        })}
         <Card size="small" style={cardStyle} >
           <Row>
-            <Col span={6}>
+            <Col span={4}>
               <Statistic title="Total Driving" value={this.getTotalDriving()} suffix="mins" />
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Statistic title="Total Services" value={this.props.events.length} suffix="/5" />
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Statistic title="Total Revenue" value={this.getTotalRevenue()} prefix="$" />
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Statistic title="Total Hours" value={this.getTotalHours()} suffix="hours" />
+            </Col>
+            <Col span={1}>
+              <Divider type="vertical" style={{ height: 60 }} />
+            </Col>
+            <Col offset={2} span={2}>
+              <Button onClick={this.handleValidate} style={{ marginTop: 15, marginLeft: 10 }} type="primary">Validate</Button>
             </Col>
           </Row>
         </Card>
@@ -111,12 +145,20 @@ getTotalHours = () => {
 
 const customBadgeStyle = {
     background: '#2c3e50',
+    marginBottom: 6
   };
+
+  const validatedIcon = {
+    color: "#27ae60",
+    fontSize: 20,
+    marginLeft: 5, 
+    marginTop: 5
+  }
 
   const customPanelStyle = {
     background: "#fff",
     borderRadius: 4,
-    marginBottom: 10,
+    marginBottom: 5,
     border: 0,
     overflow: "hidden"
   };
@@ -125,7 +167,6 @@ const customBadgeStyle = {
     padding: 20,
     marginLeft: -17, 
     marginRight: -17,
-    marginBottom: -2,
     border: 0,
     borderTop: "4px solid #f7f7f7"
   }

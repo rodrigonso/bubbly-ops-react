@@ -9,9 +9,8 @@ const { Sider } = Layout;
 export class SiderMenu extends Component {
 
 renderUserBadge = () => {
-  const token = localStorage.getItem("token")
-  if (token) {
-    const user = jwt.decode(token);
+  const { user } = this.props
+  if (user.username) {
     return (
       <SubMenu style={{ marginBottom: 20, marginTop: 20 }} title={<span><Avatar size="medium" shape="square">{user.username.charAt(0).toUpperCase()}</Avatar><span style={{ marginLeft: 20 }}>{user.username}</span></span>} >
         <Menu.Item>
@@ -42,12 +41,15 @@ handleLogout = () => {
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>
           <Menu theme="dark" mode="inline" style={{ marginTop: 20 }}>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
-            {this.renderUserBadge()}
+              {this.renderUserBadge()}
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
             <Menu.Item key="1">
               <NavLink to='/' >Home</NavLink>
             </Menu.Item>
             <Menu.Item key="2" disabled={user && user.isAdmin ? false : true} >
+              <NavLink to='/appointments' >Appointments</NavLink>
+            </Menu.Item>
+            <Menu.Item key="3" disabled={user && user.isAdmin ? false : true} >
               <NavLink to='/dashboard' >Dashboard</NavLink>
             </Menu.Item>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>

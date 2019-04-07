@@ -107,7 +107,6 @@ handleVehicleType = (value) => {
     return { name: item.name, price: price[0], duration: item.duration}
   })
   
-
   this.props.sendData(final[0])
 }
 
