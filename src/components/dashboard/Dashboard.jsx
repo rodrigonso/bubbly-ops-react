@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { List, Divider, Statistic, Card, Row, Col, Button, message } from 'antd';
+import { List, Divider, Statistic, Card, Row, Col, Button, message, Tag } from 'antd';
 import axios from 'axios'
 import moment from 'moment'
+
 
 export class Dashboard extends Component {
     state = {
         weeks: [],
         totalRevenue: 0,
         totalServices: 0,
+        totalDriving: 0,
         isDeleting: false
     }
 
@@ -53,8 +55,9 @@ export class Dashboard extends Component {
         return (
             <div>
                 <i style={{ color: "#2c3e50", marginLeft: 5 }} className="fas fa-address-card"></i>  {item.detailer.name}
-                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-clock"></i> {item.totalHours}
+                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-clock"></i> {item.totalHours} hours
                 <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-dollar-sign"></i> {item.totalRevenue}
+                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-car"></i> {item.totalDriving / 60} hours
             </div>
         )
     } 
@@ -104,10 +107,40 @@ export class Dashboard extends Component {
 
           <div style={{ padding: 24, backgroundColor: "#fff", textAlign: "center", borderRadius: 5, marginTop: 20 }} >
             <List dataSource={this.state.weeks} itemLayout="horizontal" renderItem={item => (
-                <List.Item style={{ textAlign: "left", marginBottom: 10 }} >
-                    <List.Item.Meta title={this.formatRange(item.range)} description={this.renderDescription(item)}/>
-                    <div className="content" style={{ marginTop: 5 }} >
-                        <Button onClick={() => this.handleDelete(item)} type="danger" loading={this.state.isDeleting} icon="delete" >Delete</Button>
+                <List.Item actions={[<Button onClick={() => this.handleDelete(item)} type="danger" loading={this.state.isDeleting} icon="delete" >Delete</Button>]} style={{ textAlign: "left", marginBottom: 10 }} >
+                    <List.Item.Meta 
+                    title={this.formatRange(item.range)}
+                    description={
+                        <span>
+                            <i className="fas fa-clipboard-check"></i>
+                            <p style={{ display: "inline", marginLeft: 10 }} >Rodrigo </p>
+                            <br />
+                        </span>
+                    }
+                    />
+                    <div className="content" >
+                        <Row style={{ minWidth: 200 }} >
+
+                            <Col span={10}>
+                                <p>Employee</p>
+                                <i class="fas fa-address-card"></i>
+                                <p style={{ display: "inline", marginLeft: 10 }} >{item.detailer.name}</p>
+                                <br />
+                                <i class="fas fa-money-check-alt"></i>
+                                <p style={{ display: "inline", marginLeft: 10 }} >${(item.totalDriving + item.totalHours) * 10 }</p>
+                            </Col>
+                            <Col offset={4} span={10}>
+                                <p>Other Info</p>
+                                <i class="fas fa-dollar-sign"></i>
+                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalRevenue}</p>
+                                <br />
+                                <i class="fas fa-road"></i>
+                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalDriving}</p>
+                                <br />
+                                <i class="fas fa-user-clock"></i>
+                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalHours}</p>
+                            </Col>
+                        </Row>
                     </div>
                 </List.Item>
             )}>

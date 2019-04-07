@@ -72,6 +72,7 @@ getTotalServices = () => {
 // gets appointments for selected detailer
 handleChange = async(date) => {
   const { selectedDetailer } = this.state;
+  console.log(date)
   const dt = moment(date._d).subtract(6, 'days')
   const start = dt._d
   const end = dt._i
@@ -155,7 +156,7 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="solid" disabled={!this.state.isDetailerBtn} >
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!this.state.isDetailerBtn} >
             {detailers.map((detailer, i) => {
               return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}

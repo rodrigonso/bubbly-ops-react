@@ -26,10 +26,12 @@ getFinalDistance = () => {
 getTotalDriving = () => {
   const distances = this.props.events.map(event => {
     const length = event.distances.rows.length
+    const time = event.distances.rows[0].elements[0].duration.text
+    
     if (length === 1) {
-      return event.distances.rows[0].elements[0].duration.text
+      return time
     } else if (length === 2) {
-      return (event.distances.rows[0].elements[0].duration.text)
+      return time
     } else {
       return "No distances found"
     }
@@ -41,6 +43,7 @@ getTotalDriving = () => {
 
   if (numbers.length === 0) return 0
   const sum = numbers.reduce((a, b) => a + b) + this.getFinalDistance()
+
   return sum
 }
 
@@ -89,7 +92,7 @@ handleValidate = () => {
 
   const hours = this.getTotalHours()
   const revenue = this.getTotalRevenue()
-  const driving = this.getTotalDriving()
+  const driving = this.getTotalDriving() / 60
 
   const data = [
     { name: "hours", value: hours},
@@ -119,7 +122,7 @@ renderValidateBadge = () => {
         <Card size="small" style={cardStyle} >
           <Row>
             <Col span={4}>
-              <Statistic title="Total Driving" value={this.getTotalDriving()} suffix="mins" />
+              <Statistic title="Total Driving" value={this.getTotalDriving() > 60 ? this.getTotalDriving() / 60 : this.getTotalDriving()} suffix={this.getTotalDriving() > 60 ? "hours" : "mins"} />
             </Col>
             <Col span={4}>
               <Statistic title="Total Services" value={this.props.events.length} suffix="/5" />
