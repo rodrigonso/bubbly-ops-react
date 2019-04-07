@@ -51,10 +51,9 @@ export class Dashboard extends Component {
         console.log(item)
         return (
             <div>
-                <i style={{ color: "#2c3e50" }} className="fas fa-clock"></i> {item.totalHours}
+                <i style={{ color: "#2c3e50", marginLeft: 5 }} className="fas fa-address-card"></i>  {item.detailer.name}
+                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-clock"></i> {item.totalHours}
                 <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-dollar-sign"></i> {item.totalRevenue}
-                <i style={{ color: "#2c3e50", marginLeft: 10 }} className="fas fa-address-card"></i> {item.detailer.name}
-
             </div>
         )
     } 
