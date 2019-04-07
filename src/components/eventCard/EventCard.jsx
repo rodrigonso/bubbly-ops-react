@@ -104,8 +104,13 @@ handleVehicleType = (value) => {
     const price = item.types.filter(type => type.name === value)
     return { name: item.name, price: price[0], duration: item.duration}
   })
-  
-  this.props.sendData(final[0])
+
+  const event = this.props.event
+  event.service = final[0]
+
+  console.log(event)
+
+  this.props.sendData(event)
 }
 
 

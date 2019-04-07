@@ -45,7 +45,7 @@ handleLogout = () => {
             <Menu.Item key="1">
               <NavLink to='/' >Home</NavLink>
             </Menu.Item>
-            <Menu.Item key="2" disabled={user && user.isAdmin ? false : true} >
+            <Menu.Item key="2" disabled={user.username ? false : true}  >
               <NavLink to='/appointments' >Appointments</NavLink>
             </Menu.Item>
             <Menu.Item key="3" disabled={user && user.isAdmin ? false : true} >

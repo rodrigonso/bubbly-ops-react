@@ -4,6 +4,8 @@ import Weekday from '../weekday/Weekday';
 import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card, message, Button, Skeleton, Tooltip } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
+import DataCard from './DataCard';
+import { userInfo } from 'os';
 
 const { WeekPicker } = DatePicker
 
@@ -152,7 +154,8 @@ handleValidate = async() => {
 }
 
 render() {
-  const { detailers, selectedDetailer, revenue, driving, hours, services, events, skeleton } = this.state
+  const { user } = this.props
+  const { detailers, selectedDetailer, revenue, driving, hours, services, events, skeleton, isDetailerBtn, enableValidate, isValidating } = this.state
     return (
       <div style={{ height: "auto" }}>
         <h1 style={{ fontSize: 32 }}>Appointments</h1>
@@ -165,52 +168,20 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!this.state.isDetailerBtn} >
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn} >
             {detailers.map((detailer, i) => {
               return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}
           </Radio.Group>
         </div>
-        <div className="dashboard-week-totals" style={{ backgroundColor: "#fff", marginTop: 20, padding: 24, borderRadius: 4 }} >
-          <Row>
-            <Col span={4}>
-              <Statistic value={revenue} prefix="$" title="Total Revenue" /> 
-            </Col>
-            <Col span={4}>
-              <Statistic value={services} suffix="/30" title="Total Services" /> 
-            </Col>
-            <Col span={4}>
-              <Statistic value={driving} suffix="" title="Total Driving" /> 
-            </Col>
-            <Col span={4}>
-              <Statistic value={hours} suffix="" title="Total Hours" /> 
-            </Col>
-            <Col span={1}>
-              <Divider type="vertical" style={{ height: 50 }} />
-            </Col>
-            <Col span={3}>
-              <Tooltip title="Save week" arrowPointAtCenter>
-                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="primary" icon="save" style={{ marginTop: 8, marginLeft: 15 }} >
-                Save
-                </Button>
-              </Tooltip>
-            </Col>
-            <Col span={2}>
-              <Tooltip title="Restart" arrowPointAtCenter>
-                <Button onClick={this.handleReset} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
-                Reset
-                </Button>
-              </Tooltip>
-            </Col>
-          </Row>
-        </div>
+        <DataCard isAdmin={user.isAdmin} handleValidate={this.handleValidate} handleReset={this.handleReset} revenue={revenue} services={services} driving={driving} hours={hours} isValidating={isValidating} enableValidate={enableValidate} />
         <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
           <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
               {events.map((props, day) => {
                 if (skeleton) {
                   return <Card style={{ border: 0, borderRadius: 4, backgroundColor: "#fff", padding: 24, marginBottom: 5 }} ><Skeleton active loading /></Card>
                 } else {
-                  return <Weekday {...props} key={day} sendData={this.recieveData} day={day} days={events} />
+                  return <Weekday {...props} key={day} isAdmin={user.isAdmin} sendData={this.recieveData} day={day} days={events} />
                 }
               })}
           </Collapse>

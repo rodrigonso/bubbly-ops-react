@@ -39,9 +39,9 @@ componentDidMount() {
             <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
               <div className="app" style={{ paddingTop: 100, minHeight: 1080, minWidth: 800 }}>
                 <Route  exact path="/appointments" render={(props) => {
-                  if (!user.isAdmin) return <Redirect to="/" />
-                  return <Appointments {...props} />
-                  }} 
+                  if (!user.username) return <Redirect to="/" />
+                  else return <Appointments {...props} user={user} />
+                }}
                 />
                 <Route  exact path="/dashboard" render={(props) => {
                   if (!user.isAdmin) return <Redirect to="/" />
