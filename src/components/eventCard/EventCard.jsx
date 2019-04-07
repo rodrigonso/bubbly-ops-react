@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Typography, Badge, Button, Popover, Input, message, Divider, List, Drawer, Select, Tag } from 'antd';
-import { getDistances } from '../../services/eventsService';
+import { Card, Row, Col, Typography, Badge, Button, Input, message, Divider, List, Drawer, Tag } from 'antd';
 import dateFormat from 'dateformat';
 import axios from 'axios';
 
 const { Text } = Typography;
-const { Option } = Select;
 const { CheckableTag } = Tag
 const { TextArea } = Input
 

@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Layout, Button, Col, Row, Form, Input, message} from 'antd'
-import jwt from 'jsonwebtoken'
+import { Button, Form, Input, message} from 'antd'
 import Joi from 'joi'
 import axios from 'axios'
 

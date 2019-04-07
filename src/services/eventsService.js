@@ -1,5 +1,4 @@
 import axios from 'axios';
-import moment from 'moment';
 import dateFormat from 'dateformat'
 
 
@@ -80,16 +79,6 @@ function updateSigninStatus(isSignedIn, calendarId, range) {
     if (!isSignedIn) window.gapi.auth2.getAuthInstance().signIn()
 }
 
-// sign user out
-function handleSignInClick() {
-    window.gapi.auth2.getAuthInstance().signIn()
-}
-
-// sign user in
-function handleSignOutClick() {
-    window.gapi.auth2.getAuthInstance().signOut()
-}
-
 
 // calculates total distance for each event
 export async function getDistances(event, eventIndex, events) {
@@ -117,38 +106,3 @@ export async function getDistances(event, eventIndex, events) {
     }
 }
 
-
-// Helper Functions
-function startOfWeek(date) {
-    const diff = date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
-    console.log(new Date(date.setDate(diff)))
-    return new Date(date.setDate(diff));
-}
-
-
-function getWeeksInMonth(month, year){
-    var weeks=[],
-        firstDate=new Date(year, month, 1),
-        lastDate=new Date(year, month+1, 0), 
-        numDays= lastDate.getDate();
-    
-    var start=1;
-    var end=7-firstDate.getDay();
-    while(start<=numDays){
-        weeks.push({start:start,end:end});
-        start = end + 1;
-        end = end + 7;
-        if(end>numDays)
-            end=numDays;    
-    }        
-     return weeks;
- }   
-
-function filterEventsByDay(day, events) {
-    const filteredEvents = events.filter(event => dateFormat(event.start.dateTime, "dddd") === this.getDay());
-    console.log(filteredEvents);
-    return { 
-      name: day, 
-      events: filteredEvents
-    };
-  } 

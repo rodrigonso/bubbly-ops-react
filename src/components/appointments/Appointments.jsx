@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { getEventsById, handleGoogleUser } from '../../services/eventsService';
 import Weekday from '../weekday/Weekday';
-import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card, message, Button, Skeleton } from 'antd';
+import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card, message, Button, Skeleton, Tooltip } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 
 const { WeekPicker } = DatePicker
-const { Panel } = Collapse
 
 export class Appointments extends Component {
 state = {
@@ -25,7 +24,8 @@ state = {
     revenue: 0,
     skeleton: false,
     enableValidate: false,
-    isValidating: false
+    isValidating: false,
+    isDetailerBtn: false
 }
 
 componentDidMount() {
@@ -89,6 +89,7 @@ handleChange = async(date) => {
   } finally {
     this.setState({ skeleton: false })
     this.getTotalServices()
+    this.setState({ isDetailerBtn: true })
   }
 }
 
@@ -103,10 +104,10 @@ recieveData = (data, dayIndex) => {
 }
 
 saveWeekData = () => {
-  const test = this.state.events.map(event => {
+  this.state.events.map(event => {
     if (!event.data) return;
-    const values = event.data.map(item => {
-      this.setState({ [item.name]: item.value + this.state[item.name] })
+      event.data.map(item => {
+        this.setState({ [item.name]: item.value + this.state[item.name] })
     })
   })
   this.setState({ enableValidate: true })
@@ -154,7 +155,7 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="solid" >
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="solid" disabled={!this.state.isDetailerBtn} >
             {detailers.map((detailer, i) => {
               return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}
@@ -177,8 +178,19 @@ render() {
             <Col span={1}>
               <Divider type="vertical" style={{ height: 50 }} />
             </Col>
-            <Col offset={2} span={2}>
-              <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="primary" style={{ marginTop: 8 }} >Validate</Button>
+            <Col span={3}>
+              <Tooltip title="Save week" arrowPointAtCenter>
+                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="secondary" icon="save" style={{ marginTop: 8, marginLeft: 15 }} >
+                Save
+                </Button>
+              </Tooltip>
+            </Col>
+            <Col span={2}>
+              <Tooltip title="Restart" arrowPointAtCenter>
+                <Button loading={this.state.isValidating} onClick={this.handleValidate} disabled={!this.state.enableValidate} type="danger" icon="reload" style={{ marginTop: 8, marginLeft: 10 }} >
+                Reset
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </div>

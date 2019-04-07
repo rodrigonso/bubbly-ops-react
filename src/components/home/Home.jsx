@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Row, Card, Tabs} from 'antd';
+import { Divider, Card, Tabs} from 'antd';
 import Login from '../common/Login';
 import Register from '../common/Register'
 import axios from 'axios';
@@ -34,8 +34,8 @@ export class Home extends Component {
               <TabPane tab="Login" key="1">
                 <p>Please login with your credentials below</p>
                 <Login />
-                <p>Don't have an account? <a>Register now!</a></p>
-              </TabPane>
+                <p>Don't have an account? <a href="/" >Register now!</a></p>
+              </TabPane>  
               <TabPane tab="Register" key="2">
                 <p>Enter your information below to sign-up</p>
                 <Register />

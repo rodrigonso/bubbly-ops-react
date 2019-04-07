@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Button, Col, Row, Form, Input, message} from 'antd'
-import jwt from 'jsonwebtoken'
+import { Button, Form, Input, message} from 'antd'
 import axios from 'axios'
 
 export class Register extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import EventCard from '../eventCard/EventCard'
-import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider } from 'antd';
+import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider, Tooltip } from 'antd';
 
 const { Panel } = Collapse;
 
@@ -133,8 +133,12 @@ renderValidateBadge = () => {
             <Col span={1}>
               <Divider type="vertical" style={{ height: 60 }} />
             </Col>
-            <Col offset={2} span={2}>
-              <Button onClick={this.handleValidate} style={{ marginTop: 15, marginLeft: 10 }} type="primary">Validate</Button>
+            <Col offset={2} span={4}>
+              <Tooltip title="Confirm changes">
+                 <Button onClick={this.handleValidate} style={{ marginTop: 15 }} type="secondary" icon="check" >
+                  Validate 
+                </Button>
+              </Tooltip>
             </Col>
           </Row>
         </Card>

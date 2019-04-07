@@ -87,9 +87,8 @@ export class Dashboard extends Component {
             <List dataSource={this.state.weeks} itemLayout="horizontal" renderItem={item => (
                 <List.Item style={{ textAlign: "left", marginBottom: 10 }} >
                     <List.Item.Meta title={this.formatRange(item.range)} description={this.renderDescription(item)}/>
-                    <div className="content" style={{ marginTop: 15 }} >
-                        <Button style={{ marginRight: 10 }} shape="circle" ><i className="fas fa-chevron-down"></i></Button>
-                        <Button type="danger" shape="circle" ><i className="fas fa-trash-alt"></i></Button>
+                    <div className="content" style={{ marginTop: 5 }} >
+                        <Button type="danger" icon="delete" >Delete</Button>
                     </div>
                 </List.Item>
             )}>

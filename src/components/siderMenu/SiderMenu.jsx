@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Layout, Menu, Avatar } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
-import jwt from 'jsonwebtoken'
 
 const { Sider } = Layout;
 

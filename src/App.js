@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import SiderMenu from './components/siderMenu/SiderMenu';
 import Home from './components/home/Home';
 import Appointments from './components/appointments/Appointments';
 import Dashboard from './components/dashboard/Dashboard';
 import Settings from './components/settings/Settings'
-import { Layout, message } from 'antd';
+import { Layout } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
 
 
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 class App extends Component {
 state = {
