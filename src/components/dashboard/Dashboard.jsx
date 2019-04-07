@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Divider, Statistic, Card, Row, Col, Button } from 'antd';
+import { List, Divider, Statistic, Card, Row, Col, Button, message } from 'antd';
 import axios from 'axios'
 import moment from 'moment'
 
@@ -7,7 +7,8 @@ export class Dashboard extends Component {
     state = {
         weeks: [],
         totalRevenue: 0,
-        totalServices: 0
+        totalServices: 0,
+        isDeleting: false
     }
 
     async componentDidMount() {
@@ -58,6 +59,24 @@ export class Dashboard extends Component {
         )
     } 
 
+    handleDelete = async(item) => {
+        try {
+            this.setState({ isDeleting: true })
+            const { data } = await axios.delete(`http://localhost:3900/api/weeks/${item._id}`)
+            const weeks = [...this.state.weeks]
+            const final = weeks.filter(week => week._id !== item._id)
+
+            this.setState({ weeks: final })
+            message.success("Item was deleted with success!")
+        } catch(ex) {
+            message.error("Something went wrong!")
+            console.log(ex)
+        } finally {
+            this.setState({ isDeleting: false })
+        }
+    }
+
+
   render() {
     return (
         <div>
@@ -88,7 +107,7 @@ export class Dashboard extends Component {
                 <List.Item style={{ textAlign: "left", marginBottom: 10 }} >
                     <List.Item.Meta title={this.formatRange(item.range)} description={this.renderDescription(item)}/>
                     <div className="content" style={{ marginTop: 5 }} >
-                        <Button type="danger" icon="delete" >Delete</Button>
+                        <Button onClick={() => this.handleDelete(item)} type="danger" loading={this.state.isDeleting} icon="delete" >Delete</Button>
                     </div>
                 </List.Item>
             )}>
