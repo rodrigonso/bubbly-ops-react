@@ -31,7 +31,16 @@ state = {
 }
 
 componentDidMount() {
+  const { user } = this.props;
   handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
+
+  const obj = {
+    id: user.id,
+    name: user.name,
+    email: user.email
+  }
+
+  if (!user.isAdmin) this.setState({ selectedDetailer: obj })
 }
 
 responseGoogle = (response) => {
@@ -168,7 +177,7 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn} >
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn || user.isAdmin ? false : true} >
             {detailers.map((detailer, i) => {
               return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}

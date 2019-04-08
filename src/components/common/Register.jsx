@@ -7,8 +7,8 @@ export class Register extends Component {
 state = {
     fields: [
         { name: "Name", value: '', validateStatus: "", schema: nameSchema },
-        { name: "Username", value: '', validateStatus: "", schema: usernameSchema },
         { name: "Email", value: '', validateStatus: "", schema: emailSchema },
+        { name: "Username", value: '', validateStatus: "", schema: usernameSchema },
         { name: "Password", value: '', validateStatus: "", schema: passwordSchema }
     ]
 }
@@ -36,7 +36,8 @@ handleSubmit = async() => {
         password: fields[3].value,
     }
     try {
-        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/register`, user);
+        const { data } = await axios.post(`http://localhost:3900/api/auth/register`, user);
+        //${process.env.REACT_APP_BACKEND_API}
         console.log(data);
         message.success("You have successfully signed in!")
         localStorage.setItem("token", data.token)
