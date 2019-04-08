@@ -132,7 +132,7 @@ renderValidateBadge = () => {
             </Col>
             <Col offset={isAdmin ? 2 : 4} span={4}>
               <Tooltip title="Confirm changes">
-                <Button onClick={this.handleValidate} style={{ marginTop: 15 }} disabled={isValidated || !isAdmin} type="secondary" icon="check">Validate</Button>
+                <Button onClick={this.handleValidate} style={{ marginTop: 15 }} disabled={isValidated} type="secondary" icon="check">Validate</Button>
               </Tooltip>
             </Col>
           </Row>
