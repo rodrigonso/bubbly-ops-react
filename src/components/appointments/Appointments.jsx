@@ -18,7 +18,7 @@ state = {
     ],
     events: [],
     days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    selectedDetailer: { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
+    selectedDetailer: {},
     selectedRange: [],
     services: 0,
     hours: 0,
@@ -41,6 +41,7 @@ componentDidMount() {
   }
 
   if (!user.isAdmin) this.setState({ selectedDetailer: obj })
+  else this.setState({ selectedDetailer: {id: 2, name: "Gustavo", email: "gutymaule@gmail.com"} })
 }
 
 responseGoogle = (response) => {
@@ -110,7 +111,7 @@ handleChange = async(date) => {
   } finally {
     this.setState({ skeleton: false })
     this.getTotalServices()
-    this.setState({ isDetailerBtn: true })
+    if (this.props.user.isAdmin) this.setState({ isDetailerBtn: true })
   }
 }
 
@@ -177,7 +178,7 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn || user.isAdmin ? false : true} >
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn} >
             {detailers.map((detailer, i) => {
               return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}
