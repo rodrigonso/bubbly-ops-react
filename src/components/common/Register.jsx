@@ -36,7 +36,7 @@ handleSubmit = async() => {
         password: fields[3].value,
     }
     try {
-        const { data } = await axios.post(`http://localhost:3900/api/auth/register`, user);
+        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}`, user);
         //${process.env.REACT_APP_BACKEND_API}
         console.log(data);
         message.success("You have successfully signed in!")
