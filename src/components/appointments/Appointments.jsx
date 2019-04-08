@@ -32,7 +32,6 @@ state = {
 
 componentDidMount() {
   const { user } = this.props;
-  handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
 
   const obj = {
     id: user.id,
@@ -42,6 +41,7 @@ componentDidMount() {
 
   if (!user.isAdmin) this.setState({ selectedDetailer: obj })
   else this.setState({ selectedDetailer: {id: 2, name: "Gustavo", email: "gutymaule@gmail.com"} })
+  handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
 }
 
 responseGoogle = (response) => {
