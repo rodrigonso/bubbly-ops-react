@@ -23,6 +23,7 @@ componentDidMount() {
   const token = localStorage.getItem("token")
   if (token) {
     const user = jwt.decode(token);
+    console.log(user)
     this.setState({ token, user })
   } else {
     console.log("No valid token found")

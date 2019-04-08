@@ -39,9 +39,11 @@ componentDidMount() {
     email: user.email
   }
 
-  if (!user.isAdmin) this.setState({ selectedDetailer: obj })
-  else this.setState({ selectedDetailer: {id: 2, name: "Gustavo", email: "gutymaule@gmail.com"} })
+  console.log(obj)
+
+  this.setState({ selectedDetailer: obj })
   handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
+  console.log(this.state.selectedDetailer)
 }
 
 responseGoogle = (response) => {
@@ -180,7 +182,7 @@ render() {
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
           <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn} >
             {detailers.map((detailer, i) => {
-              return <Radio.Button key={i} checked={detailer.name === selectedDetailer.name ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
+              return <Radio.Button key={i} checked={detailer.email === selectedDetailer.email ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
             })}
           </Radio.Group>
         </div>
