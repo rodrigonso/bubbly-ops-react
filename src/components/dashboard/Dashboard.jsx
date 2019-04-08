@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Divider, Statistic, Card, Row, Col, Button, message, Tag } from 'antd';
+import { List, Divider, Statistic, Card, Row, Col, Button, message, Icon, Spin } from 'antd';
 import axios from 'axios'
 import moment from 'moment'
 
@@ -10,15 +10,26 @@ export class Dashboard extends Component {
         totalRevenue: 0,
         totalServices: 0,
         totalDriving: 0,
-        isDeleting: false
+        isDeleting: false,
+        isLoading: false
     }
 
     async componentDidMount() {
-        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/weeks`)
-        this.setState({ weeks: data })
-        console.log(data)
-        this.getTotalRevenue()
-        this.getTotalServices()
+
+        try {
+            this.setState({ isLoading: true })
+            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/weeks`)
+            this.setState({ weeks: data })
+            console.log(data)
+            this.getTotalRevenue()
+            this.getTotalServices()
+        } catch(ex) {
+            console.log(ex)
+            message.error("Something went wrong!")
+        } finally {
+            this.setState({ isLoading: false })
+        }
+
     }
 
     getTotalRevenue = () => {
@@ -106,7 +117,7 @@ export class Dashboard extends Component {
           </Row>
 
           <div style={{ padding: 24, backgroundColor: "#fff", textAlign: "center", borderRadius: 5, marginTop: 20 }} >
-            <List dataSource={this.state.weeks} itemLayout="horizontal" renderItem={item => (
+            {!this.state.isLoading ? <List dataSource={this.state.weeks} itemLayout="horizontal" renderItem={item => (
                 <List.Item actions={[<Button onClick={() => this.handleDelete(item)} type="danger" loading={this.state.isDeleting} icon="delete" >Delete</Button>]} style={{ textAlign: "left", marginBottom: 10 }} >
                     <List.Item.Meta 
                     title={this.formatRange(item.range)}
@@ -121,7 +132,7 @@ export class Dashboard extends Component {
                     <div className="content" >
                         <Row style={{ minWidth: 200 }} >
 
-                            <Col span={10}>
+                            <Col span={8}>
                                 <p>Employee</p>
                                 <i class="fas fa-address-card"></i>
                                 <p style={{ display: "inline", marginLeft: 10 }} >{item.detailer.name}</p>
@@ -129,22 +140,15 @@ export class Dashboard extends Component {
                                 <i class="fas fa-money-check-alt"></i>
                                 <p style={{ display: "inline", marginLeft: 10 }} >${(item.totalDriving + item.totalHours) * 10 }</p>
                             </Col>
-                            <Col offset={4} span={10}>
-                                <p>Other Info</p>
-                                <i class="fas fa-dollar-sign"></i>
-                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalRevenue}</p>
-                                <br />
-                                <i class="fas fa-road"></i>
-                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalDriving}</p>
-                                <br />
-                                <i class="fas fa-user-clock"></i>
-                                <p style={{ display: "inline", marginLeft: 10 }} >{item.totalHours}</p>
+                            <Col offset={4} span={6}>
+                                <Statistic value={item.totalRevenue} title="Total Revenue" prefix="$" /> 
+                                <Statistic value={item.totalServices} title="Total Services" />
                             </Col>
                         </Row>
                     </div>
                 </List.Item>
             )}>
-            </List>
+            </List> : <Spin style={{ margin: "auto" }} indicator={<Icon type="loading" />} />}
           </div>
         </div>
     )
