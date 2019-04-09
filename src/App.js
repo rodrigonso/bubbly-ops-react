@@ -18,11 +18,17 @@ const { Content } = Layout;
 class App extends Component {
 state = {
   token: '',
-  user: {}
+  user: {},
+  isMobile: false
 }
 
 async componentDidMount() {
   const token = localStorage.getItem("token")
+
+
+  if (navigator.userAgent.match(/iPhone/i)) this.setState({ isMobile: true })
+
+
   if (token) {
     const user = jwt.decode(token);
     console.log(user)
@@ -35,10 +41,10 @@ async componentDidMount() {
 
 
   render() {
-    const { token, user } = this.state
+    const { token, user, isMobile } = this.state
     return (
         <Layout>
-          <SiderMenu user={user} isMobile={false}/>
+          <SiderMenu user={user} isMobile={isMobile}/>
           <Layout style={style}>
             <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
               <div className="app" style={{ paddingTop: 100, minHeight: 1080, minWidth: 800 }}>
@@ -54,7 +60,7 @@ async componentDidMount() {
                 />
                 <Route exact path="/test" component={TestMobile} />
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
-                <Route  exact path="/" render={(props) => <Home {...props} user={user} token={token} /> } />
+                <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} token={token} /> } />
               </div>
             </Content>
           </Layout>
