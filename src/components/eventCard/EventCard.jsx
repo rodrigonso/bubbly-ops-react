@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Typography, Badge, Button, Input, message, Divider, List, Drawer, Tag } from 'antd';
+import { Card, Row, Col, Typography, Badge, Button, Input, message, Divider, List, Drawer, Tag, Modal } from 'antd';
 import dateFormat from 'dateformat';
 import axios from 'axios';
+import TextMessage from '../textMessage/TextMessage';
 
 const { Text } = Typography;
 const { CheckableTag } = Tag
@@ -61,16 +62,19 @@ formatLocation = () => {
 }
 
 // opens and closes the drawer
-handleDrawer = () => {
+handleModal = () => {
   this.setState({ visible: !this.state.visible })
 }
 
 // sends text message
 handleTextSend = async() => {
   const { input } = this.state
+
+  const test = this.props.event.summary.match(/\d+/g).map(Number);
+
   const obj = {
     to: "18329298338",
-    text: input
+    text: `Hey, it's Bubbly Here!\n\nYour detailer is on the way to your location.\n\nCurrent ETA: ${input}\n\nThanks!`
   }
 
   try {
@@ -113,7 +117,6 @@ handleVehicleType = (value) => {
   this.props.sendData(event)
 }
 
-
   render() {
     const { event } = this.props;
     const { visible, input } = this.state
@@ -121,18 +124,9 @@ handleVehicleType = (value) => {
     if (event.organizer.email === "gustavo.e.hernandez@shell.com") return null;
       return (
           <React.Fragment>
-            <Drawer title="More Options" closable={true} onClose={this.handleDrawer} visible={visible} >
-              <List>
-                <List.Item>
-                  <div style={{ marginTop: 20 }}>
-                    <h4>Send SMS to customer</h4>
-                    To: <Input disabled={true} value="+1 (832) 929-8338" style={{ marginBottom: 10 }} />
-                    Message: <TextArea placeholder="Message Here" value={input} onChange={(e) => this.handleChange(e)} />
-                    <Button onClick={this.handleTextSend} style={{ marginTop: 10, width: "100%" }} >Send</Button>
-                  </div>
-                </List.Item>
-              </List>
-            </Drawer>
+            <Modal title="Notify Customer" footer={null} onCancel={this.handleModal} visible={visible} >
+              <TextMessage event={event} />
+            </Modal>
             <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
               <Row>
                 <Col span={10} style={{ textAlign: "left" }}>
@@ -147,16 +141,16 @@ handleVehicleType = (value) => {
                     <p style={{ fontSize: 12 }}>More Info</p>
                     <Text code>{this.formatVehicleInfo()}</Text>
                     <br/>
-                    <CheckableTag style={{ marginTop: 10 }} onChange={() => this.handleVehicleType("Sedan")} checked={this.state.vehicleType === "Sedan" ? true : false} >Sedan</CheckableTag>
-                    <CheckableTag onChange={() => this.handleVehicleType("Non-Sedan")} checked={this.state.vehicleType === "Non-Sedan" ? true : false} >Non-Sedan</CheckableTag>                   
+                    {!this.props.isMobile ? <span><CheckableTag style={{ marginTop: 10 }} onChange={() => this.handleVehicleType("Sedan")} checked={this.state.vehicleType === "Sedan" ? true : false} >Sedan</CheckableTag>
+                    <CheckableTag onChange={() => this.handleVehicleType("Non-Sedan")} checked={this.state.vehicleType === "Non-Sedan" ? true : false} >Non-Sedan</CheckableTag></span> : null}
                     <br/>
                     <Badge style={badgeStyle} count={event.distances ? event.distances.rows[0].elements[0].duration.text : "No elements"} />
                 </Col>
                 <Col span={1}>
                   <Divider type="vertical" style={dividerStyle} />
                 </Col>
-                <Col span={1} offset={2} style={{ textAlign: "center", marginTop: 30 }}>
-                  <i className="fas fa-ellipsis-h" onClick={this.handleDrawer} onClose={this.handleDrawer} style={{ cursor: "pointer" }} ></i>
+                <Col span={1} style={{ textAlign: "center", marginTop: 30, marginLeft: 60 }}>
+                  <Button onClick={this.handleModal} shape="circle"  type="primary"><i className="fas fa-comment"></i></Button> 
                 </Col>
               </Row>
             </Card>
@@ -187,16 +181,3 @@ const cardStyle = {
 }
 
 export default EventCard
-
-
-
-/*
-  if (test3 === "AmazingDetail" && value === "Sedan") return this.props.sendData(59)
-  if (test3 === "AmazingDetail" && value === "Non-Sedan") return 79
-  if (test3 === "SuperiorDetail" && value === "Sedan") return 99
-  if (test3 === "SuperiorDetail" && value === "Non-Sedan") return 119
-  if (test3 === "BubblyPro" && value === "Sedan") return 159
-  if (test3 === "BubblyPro" && value === "Non-Sedan") return 189
-  if (test3 === "BubblyShowroom" && value === "Sedan") return 249
-  if (test3 === "BubblyShowroom" && value === "Non-Sedan") return 289
-  */

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Layout, Menu, Avatar } from 'antd'
+import { Layout, Menu, Avatar, Button } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const { Sider } = Layout;
@@ -35,6 +35,7 @@ handleLogout = () => {
 
   render() {
     const { user } = this.props
+    if (this.props.isMobile) return <Button>Menu</Button>
     return (
         <Sider trigger={null} style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0 }}>
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>

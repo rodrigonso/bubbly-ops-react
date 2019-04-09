@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { getEventsById, handleGoogleUser } from './services/eventsService';
 import SiderMenu from './components/siderMenu/SiderMenu';
 import Home from './components/home/Home';
 import Appointments from './components/appointments/Appointments';
@@ -8,6 +9,7 @@ import Settings from './components/settings/Settings'
 import { Layout } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
+import TestMobile from './components/TestMobile';
 
 
 
@@ -19,12 +21,13 @@ state = {
   user: {}
 }
 
-componentDidMount() {
+async componentDidMount() {
   const token = localStorage.getItem("token")
   if (token) {
     const user = jwt.decode(token);
     console.log(user)
     this.setState({ token, user })
+
   } else {
     console.log("No valid token found")
   }
@@ -35,8 +38,8 @@ componentDidMount() {
     const { token, user } = this.state
     return (
         <Layout>
-          <SiderMenu user={user} />
-          <Layout style={{ marginLeft: 200, background: "#f7f7f7", mingHeight: "100%" }}>
+          <SiderMenu user={user} isMobile={false}/>
+          <Layout style={style}>
             <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
               <div className="app" style={{ paddingTop: 100, minHeight: 1080, minWidth: 800 }}>
                 <Route  exact path="/appointments" render={(props) => {
@@ -49,6 +52,7 @@ componentDidMount() {
                   return <Dashboard {...props} />
                   }} 
                 />
+                <Route exact path="/test" component={TestMobile} />
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} token={token} /> } />
               </div>
@@ -57,6 +61,17 @@ componentDidMount() {
         </Layout>
     )
   }
+}
+
+const style = {
+  marginLeft: 200,
+  background: "#f7f7f7",
+  mingHeight: "100%"
+}
+
+const styleMobile = {
+  background: "#f7f7f7",
+  mingHeight: "100%"
 }
 
 export default App;

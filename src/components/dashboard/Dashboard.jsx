@@ -18,9 +18,10 @@ export class Dashboard extends Component {
 
         try {
             this.setState({ isLoading: true })
-            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/weeks`)
-            this.setState({ weeks: data })
-            console.log(data)
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/weeks`)
+            console.log(res.error)
+            this.setState({ weeks: res.data })
+            console.log(res.data)
             this.getTotalRevenue()
             this.getTotalServices()
         } catch(ex) {

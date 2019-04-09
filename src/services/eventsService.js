@@ -22,12 +22,12 @@ export async function handleGoogleUser(calendarId, range) {
             window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
 
             // handle the inital sign-in state
-            updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get(), calendarId, range)
-
+            const res = updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get(), calendarId, range)
+            console.log(res)
+            return "Hello There!"
         });
     })
 }
-
 
 // gets events for the user by calendarid and range
 export async function getEventsById(calendarId, range) {
@@ -56,7 +56,6 @@ export async function getEventsById(calendarId, range) {
             const filteredEvents = response.result.items.filter(event => dateFormat(event.start.dateTime, "dddd") === day && event.organizer.email !== "gustavo.e.hernandez@shell.com" && event.summary);
             const promises = await filteredEvents.map(async(event, i) => await getDistances(event, i, filteredEvents));
             const res = await Promise.all(promises);
-            console.log(res)
             return { 
                 name: day, 
                 events: res
@@ -75,8 +74,8 @@ export async function getEventsById(calendarId, range) {
 
 
 function updateSigninStatus(isSignedIn, calendarId, range) {
-    if (isSignedIn) getEventsById(calendarId, range)
     if (!isSignedIn) window.gapi.auth2.getAuthInstance().signIn()
+    if (isSignedIn) return isSignedIn
 }
 
 

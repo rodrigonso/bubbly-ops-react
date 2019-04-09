@@ -42,7 +42,6 @@ componentDidMount() {
   console.log(obj)
 
   this.setState({ selectedDetailer: obj })
-  handleGoogleUser(this.state.selectedDetailer, this.state.selectedRange)
   console.log(this.state.selectedDetailer)
 }
 
