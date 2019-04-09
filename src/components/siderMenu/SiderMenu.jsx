@@ -37,7 +37,7 @@ handleLogout = () => {
     const { user } = this.props
     if (this.props.isMobile) return <Button>Menu</Button>
     return (
-        <Sider trigger={null} style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0 }}>
+        <Sider trigger={null} style={this.props.isMobile ? styleMobile : styleDesktop}>
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>
           <Menu theme="dark" mode="inline" style={{ marginTop: 20 }}>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
@@ -57,6 +57,20 @@ handleLogout = () => {
         </Sider>
     )
   }
+}
+
+const styleDesktop = {
+  overflow: "auto",
+  height: "100vh",
+  position: "fixed",
+  left: 0
+}
+
+const styleMobile = {
+  width: 0,
+  height: "100vh",
+  position: "fixed",
+  left: 0
 }
 
 export default SiderMenu

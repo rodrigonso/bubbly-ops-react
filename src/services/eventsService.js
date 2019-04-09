@@ -22,9 +22,7 @@ export async function handleGoogleUser(calendarId, range) {
             window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
 
             // handle the inital sign-in state
-            const res = updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get(), calendarId, range)
-            console.log(res)
-            return "Hello There!"
+            updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get(), calendarId, range)
         });
     })
 }

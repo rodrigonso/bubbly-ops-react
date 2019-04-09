@@ -17,7 +17,7 @@ export class Home extends Component {
     currentDay: [],
     currentUser: {},
     currentService: {},
-    currentStep: 1,
+    currentStep: 0,
     servicesToday: [],
   }
 
@@ -147,24 +147,24 @@ export class Home extends Component {
       )
     }
     return (
-        <div>
+        <div className="home-body" >
           <h1 style={{ fontSize: 32 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
           <Divider />
           <div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5 }} >
             <h2>Welcome, {user.username}</h2>
           </div>
-          <div className="home-weather" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5, marginTop: 20 }} >
+          <div className="home-load-services" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5, marginTop: 20 }} >
             <Button type="primary" onClick={this.getServicesToday}>Get Services</Button>
           </div>
-          {this.state.currentService && this.state.currentService.summary ? <div className="current-service" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
+          {this.state.currentService && this.state.currentService.summary ? <div className="home-steps" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
             <Steps size="small" current={this.state.currentStep}>
               <Step title="Text Customer">
               </Step>
               <Step title="Vehicle Type" />
               <Step title="Finish Service" />
             </Steps>
-            <div className="step-content" style={{ marginTop: 60}} >
+            <div className="home-step-content" style={{ marginTop: 60}} >
                <Row>
                 <Col offset={1} span={10}  >
                   <Card bordered={false}>

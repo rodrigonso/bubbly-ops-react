@@ -27,7 +27,7 @@ async componentDidMount() {
 
 
   if (navigator.userAgent.match(/iPhone/i)) this.setState({ isMobile: true })
-
+  handleGoogleUser()
 
   if (token) {
     const user = jwt.decode(token);
@@ -45,9 +45,9 @@ async componentDidMount() {
     return (
         <Layout>
           <SiderMenu user={user} isMobile={isMobile}/>
-          <Layout style={style}>
+          <Layout style={isMobile ? layoutStyleMobile : layoutStyleDesktop}>
             <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
-              <div className="app" style={{ paddingTop: 100, minHeight: 1080, minWidth: 800 }}>
+              <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>
                 <Route  exact path="/appointments" render={(props) => {
                   if (!user.username) return <Redirect to="/" />
                   else return <Appointments {...props} user={user} />
@@ -69,13 +69,26 @@ async componentDidMount() {
   }
 }
 
-const style = {
-  marginLeft: 200,
+const appStyleDesktop = {
+  paddingTop: 100,
+  minHeight: 1080,
+  minWidth: 800
+}
+
+const appStyleMobile = {
+  padding: 24,
+  minHeight: 1080,
+}
+
+const layoutStyleMobile = {
+  marginLeft: 0,
   background: "#f7f7f7",
   mingHeight: "100%"
 }
 
-const styleMobile = {
+
+const layoutStyleDesktop = {
+  marginLeft: 200,
   background: "#f7f7f7",
   mingHeight: "100%"
 }
