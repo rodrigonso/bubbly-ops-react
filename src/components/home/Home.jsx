@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Card, Tabs, Button, Steps, Row, Col, Empty } from 'antd';
+import { Divider, Card, Tabs, Button, Steps, Row, Col, Empty, Radio } from 'antd';
 import { getEventsById, handleGoogleUser } from '../../services/eventsService';
 import Login from '../common/Login';
 import Register from '../common/Register'
@@ -17,7 +17,7 @@ export class Home extends Component {
     currentDay: [],
     currentUser: {},
     currentService: {},
-    currentStep: 0,
+    currentStep: 1,
     servicesToday: [],
   }
 
@@ -88,13 +88,12 @@ export class Home extends Component {
       return <TextMessage event={this.state.currentService} nextStep={this.nextStep} />
     } else if (this.state.currentStep === 1) {
       return (
-          <div style={{ marginLeft: 80, marginTop: 30 }}>
-            <Button onClick={this.nextStep} size="large" shape="circle" type="primary"><i className="fas fa-truck-pickup"></i></Button>
-            <p style={{ display: "inline", marginLeft: 10 }} >Sedan</p>
-            <br/>
-            <br/>
-            <Button onClick={this.nextStep} size="large" style={{ margin: "auto", }} shape="circle" type="primary"><i className="fas fa-car-side"></i></Button>
-            <p style={{ display: "inline", marginLeft: 10 }} >Non-Sedan</p>
+          <div style={{ marginLeft: 55, marginTop: 20 }}>
+            <h4>Vehicle Type</h4>
+            <Radio.Group buttonStyle="solid" onChange={this.nextStep} >
+              <Radio.Button value="Sedan">Sedan</Radio.Button>
+              <Radio.Button value="Non-Sedan">Non-Sedan</Radio.Button>
+            </Radio.Group>
           </div>
       )
     } else {
@@ -130,8 +129,8 @@ export class Home extends Component {
           <h1 style={{ fontSize: 32 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
           <Divider />
-          <div style={{ padding: 50, margin: "auto", backgroundColor: "#fff" }} >
-            <Tabs style={{ width: 300, margin: "auto" }} >
+          <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff" }} >
+            <Tabs style={{ width: 250, margin: "auto" }} >
               <TabPane tab="Login" key="1">
                 <p>Please login with your credentials below</p>
                 <Login />
@@ -157,39 +156,23 @@ export class Home extends Component {
           <div className="home-load-services" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5, marginTop: 20 }} >
             <Button type="primary" onClick={this.getServicesToday}>Get Services</Button>
           </div>
-          {this.state.currentService && this.state.currentService.summary ? <div className="home-steps" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
-            <Steps size="small" current={this.state.currentStep}>
+          {this.state.currentService.summary && this.state.currentService ? <div><div className="home-steps" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
+            <Steps size="small" direction="horizontal" current={this.state.currentStep}>
               <Step title="Text Customer">
               </Step>
               <Step title="Vehicle Type" />
               <Step title="Finish Service" />
             </Steps>
-            <div className="home-step-content" style={{ marginTop: 60}} >
-               <Row>
-                <Col offset={1} span={10}  >
-                  <Card bordered={false}>
-                    <h4>Current Customer</h4>
-                    <i style={{ color: "#2c3e50" }} className="fas fa-user"></i>
-                    <p style={{ display: "inline", marginLeft: 10 }}>{this.formatSummary()} </p>
-                    <br />
-                    <br />
-                    <i style={{ color: "#2c3e50" }} className="fas fa-map-marker-alt"></i>
-                    <p style={{ display: "inline", marginLeft: 10 }}>{this.state.currentService.location} </p>
-                    <br />
-                    <br />
-                    <i style={{ color: "#2c3e50" }} className="fas fa-car"></i>
-                    <p style={{ display: "inline", marginLeft: 10 }}>{this.formatVehicleInfo()} </p>
-                  </Card>
-                </Col>
-                <Col span={2}>
-                  <Divider type="vertical" style={{ height: 80, marginTop: 40 }} />
-                </Col>
-                <Col span={10} >
-                  {this.renderCurrentStep()}
-                </Col>
-              </Row>
+            <div className="step-content" style={{ marginTop: 10, marginBottom: 20}} >
+              {this.renderCurrentStep()}
             </div>
-          </div> : <div style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }} ><Empty description="No Current Services" /></div>}
+          </div> 
+          <div className="step-customer" style={{ marginTop: 10, padding: 24, backgroundColor: "#fff"}} >
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}> 
+              <h4>{this.formatSummary()}</h4>
+              <p>{moment(this.state.currentService.start.dateTime).format("HH:MM")}</p>
+            </div>
+          </div></div> : <div style={{ marginTop: 10, padding: 24, backgroundColor: "#fff"}}><Empty description="All caught up!"  /></div>}
         </div>
     )
   }

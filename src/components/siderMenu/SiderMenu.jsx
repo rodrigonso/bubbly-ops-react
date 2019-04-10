@@ -35,8 +35,15 @@ handleLogout = () => {
 
   render() {
     const { user } = this.props
-    if (this.props.isMobile) return <Button>Menu</Button>
-    return (
+    if (this.props.isMobile) {
+      return (
+        <Menu mode="horizontal">
+          <Menu.Item><img alt="" src="https://bit.ly/2XPNPsM" width="80px" height="auto" /></Menu.Item>
+          {user.email ? <Menu.Item onClick={this.handleLogout}  style={{ float: "right" }} >Logout</Menu.Item> : null}
+        </Menu>
+      )
+    } 
+    else return (
         <Sider trigger={null} style={this.props.isMobile ? styleMobile : styleDesktop}>
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>
           <Menu theme="dark" mode="inline" style={{ marginTop: 20 }}>
