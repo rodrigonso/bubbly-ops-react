@@ -38,7 +38,6 @@ handleLogout = () => {
     if (this.props.isMobile) {
       return (
         <Menu mode="horizontal">
-          <Menu.Item><img alt="" src="https://bit.ly/2XPNPsM" width="80px" height="auto" /></Menu.Item>
           {user.email ? <Menu.Item onClick={this.handleLogout}  style={{ float: "right" }} >Logout</Menu.Item> : null}
         </Menu>
       )

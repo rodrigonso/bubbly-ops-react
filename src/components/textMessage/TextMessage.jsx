@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Typography, Badge, Button, Input, message, Divider, List, Drawer, Tag, Modal } from 'antd';
+import { Card, Row, Col, Typography, Badge, Button, Input, message, Divider, List, Drawer, Tag, Modal, TimePicker } from 'antd';
 import dateFormat from 'dateformat';
 import axios from 'axios';
+import moment from 'moment'
 
 const { Text } = Typography;
 const { CheckableTag } = Tag
@@ -37,9 +38,11 @@ handleTextSend = async() => {
 }
 
 // handles change in input for text message
-handleChange = (e) => {
-  const value = e.target.value;
-  this.setState({ input: value });
+handleChange = (time) => {
+  //const value = e.target.value;
+  const text = moment(time._d).format("hh:mm A")
+  this.setState({ input: text })
+
 }
 
   render() {
@@ -48,9 +51,10 @@ handleChange = (e) => {
         <div style={{ padding: 24, width: 300, margin: "auto", marginBottom: 20 }}>
             <h4>Send SMS to customer</h4>
             <Input disabled={true} value="+1 (832) 929-8338" style={{ marginBottom: 10 }} />
-            <Input placeholder="Current ETA" value={input} onChange={(e) => this.handleChange(e)} />
+            <p style={{ float: "left", marginTop: 5}}>Current ETA: </p>
+            <TimePicker style={{ float: "right", width: 160 }} format="hh:mm A" defaultValue={moment(new Date(), "hh:mm a")} use12Hours={true} onChange={this.handleChange} />
             <Button onClick={this.handleTextSend} type="primary" style={{ marginTop: 10, width: "100%" }} >Send</Button>
-      </div>
+        </div>
       )
   }
 }

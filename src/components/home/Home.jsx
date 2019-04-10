@@ -17,7 +17,7 @@ export class Home extends Component {
     currentDay: [],
     currentUser: {},
     currentService: {},
-    currentStep: 1,
+    currentStep: 0,
     servicesToday: [],
   }
 
@@ -46,6 +46,7 @@ export class Home extends Component {
     console.log(this.state.currentUser)
 
     const services = await getEventsById(this.props.user.email, range)
+    console.log(services);
     const servicesToday = services.filter(item => item.name === today)
 
     this.setState({ servicesToday: servicesToday[0].events })
@@ -156,7 +157,7 @@ export class Home extends Component {
           <div className="home-load-services" style={{ padding: 24, backgroundColor: "#fff", borderRadius: 5, marginTop: 20 }} >
             <Button type="primary" onClick={this.getServicesToday}>Get Services</Button>
           </div>
-          {this.state.currentService.summary && this.state.currentService ? <div><div className="home-steps" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
+          {this.state.currentService && this.state.currentService.summary ? <div><div className="home-steps" style={{ padding: 24, marginTop: 20, backgroundColor: "#fff" }}>
             <Steps size="small" direction="horizontal" current={this.state.currentStep}>
               <Step title="Text Customer">
               </Step>
