@@ -17,7 +17,7 @@ export class TextMessage extends Component {
 handleTextSend = async() => {
   const { input } = this.state
 
-  const test = this.props.event.summary.match(/\d+/g).map(Number);
+  //const test = this.props.event.summary.match(/\d+/g).map(Number);
 
   const obj = {
     to: "18329298338",
@@ -34,25 +34,20 @@ handleTextSend = async() => {
     console.log(ex);
     message.error("Something went wrong!")
   }
-  this.setState({ input: '' })
 }
 
 // handles change in input for text message
-handleChange = (time) => {
-  //const value = e.target.value;
-  const text = moment(time._d).format("hh:mm A")
-  this.setState({ input: text })
-
+handleChange = (e) => {
+  const value = e.target.value;
+  this.setState({ input: value })
 }
 
   render() {
       const { input, event } = this.state
       return (
-        <div style={{ padding: 24, width: 300, margin: "auto", marginBottom: 20 }}>
-            <h4>Send SMS to customer</h4>
+        <div style={{ padding: 24, width: 300, marginBottom: 20 }}>
             <Input disabled={true} value="+1 (832) 929-8338" style={{ marginBottom: 10 }} />
-            <p style={{ float: "left", marginTop: 5}}>Current ETA: </p>
-            <TimePicker style={{ float: "right", width: 160 }} format="hh:mm A" defaultValue={moment(new Date(), "hh:mm a")} use12Hours={true} onChange={this.handleChange} />
+            <Input addonBefore="Current ETA" value={input} onChange={this.handleChange} />
             <Button onClick={this.handleTextSend} type="primary" style={{ marginTop: 10, width: "100%" }} >Send</Button>
         </div>
       )

@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
-import { getEventsById, handleGoogleUser } from './services/eventsService';
 import './index.css';
 import App from './App';
 import 'antd/dist/antd.css';
 
-handleGoogleUser()
 
 
 ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));

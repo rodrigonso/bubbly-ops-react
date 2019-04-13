@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 import dateFormat from 'dateformat'
 
 
@@ -40,33 +40,20 @@ export async function getEventsById(calendarId, range) {
 
     console.log(d1, d2);
 
-    try {
-        const response = await window.gapi.client.calendar.events.list({
-            'calendarId': calendarId,
-            'timeMin': d1,
-            'timeMax': d2,
-            'orderBy': 'startTime',
-            'maxResults': 100,
-            'singleEvents': true,
-        });
+    const response = await window.gapi.client.calendar.events.list({
+        'calendarId': calendarId,
+        'timeMin': d1,
+        'timeMax': d2,
+        'orderBy': 'startTime',
+        'maxResults': 100,
+        'singleEvents': true,
+    });
 
-        const events = await days.map(async (day) => {
-            const filteredEvents = response.result.items.filter(event => dateFormat(event.start.dateTime, "dddd") === day && event.organizer.email !== "gustavo.e.hernandez@shell.com" && event.summary);
-            const promises = await filteredEvents.map(async(event, i) => await getDistances(event, i, filteredEvents));
-            const res = await Promise.all(promises);
-            return { 
-                name: day, 
-                events: res
-              };
-        });
-    
-        const res = await Promise.all(events);
-        console.log(res);
-        return res;
+    const jobs = response.result.items
+    const test = jobs.map(async(job, i) => await getDistances(job, i, jobs))
 
-    } catch (ex) {
-        console.log(ex)
-    }
+    const res = await Promise.all(test)
+    return res
 };
 
 

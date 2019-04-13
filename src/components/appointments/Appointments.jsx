@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getEventsById, handleGoogleUser } from '../../services/eventsService';
 import Weekday from '../weekday/Weekday';
+import JobCard from '../jobCard/JobCard';
 import { Divider, DatePicker, Radio, Collapse, Row, Col, Statistic, Card, message, Button, Skeleton, Tooltip } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
@@ -11,55 +12,31 @@ const { WeekPicker } = DatePicker
 
 export class Appointments extends Component {
 state = {
-    detailers: [
-      { id: 1, name: "Rodrigo", email: "rodrigo@bubblynow.com" },
-      { id: 2, name: "Gustavo", email: "gutymaule@gmail.com" },
-      { id: 3, name: "Eric", email: "eric@bubblynow.com" },
-    ],
-    events: [],
-    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    selectedDetailer: {},
-    selectedRange: [],
-    services: 0,
-    hours: 0,
-    driving: 0,
-    revenue: 0,
-    skeleton: false,
-    enableValidate: false,
-    isValidating: false,
-    isDetailerBtn: false
+  jobs: [],
+  employees: [],
 }
 
-componentDidMount() {
-  const { user } = this.props;
+async componentDidMount() {
+  this.setState({ jobs: this.props.jobs })
+  const employees = await axios.get(`http://localhost:3900/api/employees`)
+  this.setState({ employees: employees.data })
 
-  const obj = {
-    id: user.id,
-    name: user.name,
-    email: user.email
+  const jobs = await axios.get(`http://localhost:3900/api/jobs/getJobs/5caf78088186b9d280278f07`)
+  this.setState({ jobs: jobs.data })
+}
+
+getRevenue = () => {
+  const { jobs } = this.state
+  if (jobs.length > 0) {
+    const prices = jobs.map(job => job.serviceType.price)
+    return prices.reduce((a, b) => a + b)
   }
-
-  console.log(obj)
-
-  this.setState({ selectedDetailer: obj })
-  console.log(this.state.selectedDetailer)
+  else return 0
 }
-
-responseGoogle = (response) => {
-  console.log(response);
-  const token = response.accessToken
-  
-  if (!token) return "token invalid"
-  localStorage.setItem("accessToken", token);
-  this.props.history.replace("/dashboard")
-  return;
-};
 
 // handles detailer selection
 toggleDetailer = async(e) => {
   const selectedDetailer = e.target.value;
-
-  this.handleReset()
 
   try {
     this.setState({ skeleton: true })
@@ -73,20 +50,6 @@ toggleDetailer = async(e) => {
   }
 }
 
-getTotalServices = () => {
-  const total = this.state.events.map(event => event.events.length)
-  if (total.length > 0) {
-    const sum = total.reduce((a, b) => a + b)
-    this.setState({ services: sum })
-  } else {
-    return 0
-  }
-}
-
-handleReset = () => {
-  this.setState({ hours: 0, driving: 0, revenue: 0, services: 0 })
-  return false
-}
 
 // gets appointments for selected detailer
 handleChange = async(date) => {
@@ -116,57 +79,9 @@ handleChange = async(date) => {
   }
 }
 
-recieveData = (data, dayIndex) => {
-  const events = [...this.state.events]
-  const day = this.state.events.filter((event, i) => i === dayIndex)
-  day[0].data = data
-
-  events[dayIndex] = day[0]
-  this.setState({ events })
-  this.saveWeekData()
-}
-
-saveWeekData = () => {
-  this.state.events.map(event => {
-    if (!event.data) return;
-      event.data.map(item => {
-        this.setState({ [item.name]: item.value + this.state[item.name] })
-    })
-  })
-  this.setState({ enableValidate: true })
-}
-
-handleValidate = async() => {
-  const filteredEvents = this.state.events.filter(event => event.data)
-
-  const obj = {
-    data: filteredEvents,
-    range: this.state.selectedRange,
-    detailer: this.state.selectedDetailer,
-    totalHours: this.state.hours,
-    totalDriving: this.state.driving,
-    totalRevenue: this.state.revenue,
-    totalServices: this.state.services,
-  }
-
-  try {
-    this.setState({ isValidating: true })
-    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/weeks`, obj)
-    console.log(data)
-    message.success("Week was validated with sucess!")
-
-  } catch(ex) {
-    console.log(ex)
-    message.error("We were unable to validate the selected week!")
-
-  } finally {
-    this.setState({ isValidating: false })
-  }
-}
-
 render() {
-  const { user } = this.props
-  const { detailers, selectedDetailer, revenue, driving, hours, services, events, skeleton, isDetailerBtn, enableValidate, isValidating } = this.state
+  const { user, jobs } = this.props
+  const { employees, revenue } = this.state
     return (
       <div style={{ height: "auto" }}>
         <h1 style={{ fontSize: 32 }}>Appointments</h1>
@@ -179,22 +94,16 @@ render() {
           <WeekPicker onChange={this.handleChange} />
           <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
           <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
-          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" disabled={!isDetailerBtn} >
-            {detailers.map((detailer, i) => {
-              return <Radio.Button key={i} checked={detailer.email === selectedDetailer.email ? true : false} value={detailer} onChange={(e) => this.toggleDetailer(e)} >{detailer.name}</Radio.Button>
+          <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline"  >
+            {employees.map((employee, i) => {
+              return <Radio.Button key={i} onChange={(e) => this.toggleDetailer(e)} >{employee.name}</Radio.Button>
             })}
           </Radio.Group>
         </div>
-        <DataCard isAdmin={user.isAdmin} handleValidate={this.handleValidate} handleReset={this.handleReset} revenue={revenue} services={services} driving={driving} hours={hours} isValidating={isValidating} enableValidate={enableValidate} />
+        <DataCard isAdmin={user.isAdmin} jobs={jobs} />
         <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
           <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
-              {events.map((props, day) => {
-                if (skeleton) {
-                  return <Card style={{ border: 0, borderRadius: 4, backgroundColor: "#fff", padding: 24, marginBottom: 5 }} ><Skeleton active loading /></Card>
-                } else {
-                  return <Weekday {...props} key={day} isAdmin={user.isAdmin} sendData={this.recieveData} day={day} days={events} />
-                }
-              })}
+            {this.state.jobs ? this.state.jobs.map(job => <JobCard job={job} isMobile={false} />) : null}
           </Collapse>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import EventCard from '../eventCard/EventCard'
+import JobCard from '../jobCard/JobCard'
 import { Collapse, Card, Badge, Statistic, Row, Col, Button, Divider, Tooltip, Icon } from 'antd';
 
 const { Panel } = Collapse;
@@ -111,7 +111,7 @@ renderValidateBadge = () => {
     return (
       <Panel key="1" {...this.props} header={this.props.name} style={customPanelStyle} extra={this.renderValidateBadge()} >
         {events.map(event => {
-          return <EventCard sendData={this.recieveData} key={event.id} event={event} />
+          return <JobCard sendData={this.recieveData} key={event.id} event={event} />
         })}
         <Card size="small" style={cardStyle} >
           <Row>
