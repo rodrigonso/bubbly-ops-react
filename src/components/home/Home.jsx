@@ -18,7 +18,7 @@ export class Home extends Component {
     user: {},
     jobs: [],
     services: [],
-    currentStep: 1,
+    currentStep: 0,
     make: "",
     model: ""
   }
