@@ -34,7 +34,7 @@ handleSubmit = async() => {
 
     try {
         this.setState({ loading: true })
-        const { data } = await axios.post(`http://localhost:3900/api/auth/login`, user);
+        const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/auth/login`, user);
         console.log(data);
         localStorage.setItem("token", data.token)
         window.location.reload()

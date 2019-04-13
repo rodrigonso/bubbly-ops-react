@@ -61,7 +61,7 @@ updateSigninStatus = async(isSignedIn) => {
         jobData: job,
       }
 
-      const { data } = await axios.post(`http://localhost:3900/api/jobs/getJob/${job.id}`, newJob)
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/getJob/${job.id}`, newJob)
       return data
     })
     const res = await Promise.all(completedJobs)
@@ -100,7 +100,7 @@ handleJobCompletion = async(job) => {
   this.setState({ jobs: uncompletedJobs })
 
   console.log(job)
-  const { data } = await axios.post(`http://localhost:3900/api/jobs/saveJob/${this.state.user.employeeId}`, job)
+  const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.state.user.employeeId}`, job)
   console.log(data)
 }
 

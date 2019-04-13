@@ -18,10 +18,10 @@ state = {
 
 async componentDidMount() {
   this.setState({ jobs: this.props.jobs })
-  const employees = await axios.get(`http://localhost:3900/api/employees`)
+  const employees = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
   this.setState({ employees: employees.data })
 
-  const jobs = await axios.get(`http://localhost:3900/api/jobs/getJobs/5caf78088186b9d280278f07`)
+  const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getJobs/${this.props.user.employeeId}`)
   this.setState({ jobs: jobs.data })
 }
 

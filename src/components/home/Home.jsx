@@ -25,7 +25,7 @@ export class Home extends Component {
 
   async componentDidMount() {
     this.setState({ user: this.props.user })
-    const { data } = await axios.get("http://localhost:3900/api/services")
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
     this.setState({ services: data })
   }
  
