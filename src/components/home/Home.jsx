@@ -78,7 +78,8 @@ export class Home extends Component {
       } 
     })
     const res = service.filter(item => item != null)
-    return res[0]
+    console.log(res)
+    //return res[0]
   }
 
   renderCurrentStep = (job) => {
