@@ -40,7 +40,7 @@ handleChange = async(date) => {
 handleDelete = async(job) => {
   try {
     this.setState({ isLoading: false })
-    const { data } = await axios.delete(`http://localhost:3900/api/jobs/deleteJob/${job.employeeId}/${job._id}`)
+    const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/deleteJob/${job.employeeId}/${job._id}`)
   } catch (ex) {
     console.log(ex)
   } finally {
