@@ -47,7 +47,7 @@ handleSubmit = async() => {
 }
 
   render() {
-    const { fields, loading, validateStatus } = this.state;
+    const { fields, loading } = this.state;
     return (
         <Form>
             {fields.map(item => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag } from 'antd';
 import dateFormat from 'dateformat';
-import axios from 'axios';
+import moment from 'moment'
 import TextMessage from '../textMessage/TextMessage';
 
 const { Text } = Typography;
@@ -63,22 +63,51 @@ formatPrice = () => {
 }
 
   render() {
-    const { job, isMobile } = this.props;
-      return (
+    const { job, isMobile, isLoading } = this.props;
+    if (isMobile) return (
+      <React.Fragment>
+      <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
+      <div style={{ padding: 10 }}>
+         <div style={{ display: "grid", gridTemplateColumns: "70% 30%" }} >
+          <div >
+            <p>{this.formatSummary()}</p>
+            <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
+            <br />
+            <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
+            <br />
+            <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
+          </div>
+          <div style={{ margin: "auto" }} >
+            {this.props.job.isCompleted ? null : <Button type="primary" style={{ marginRight: 10 }}  >Begin</Button>}
+          </div>
+          </div> 
+        </div>
+      </Card>
+   </React.Fragment>
+    )
+    else return (
         <React.Fragment>
             <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
             <div style={{ padding: 10 }}>
-              <p>{this.formatSummary()}</p>
-               <div style={{ display: "grid", gridTemplateColumns: "3fr 1fr" }} >
-                <div>
+               <div style={{ display: "grid", gridTemplateColumns: "40% 40% 20%" }} >
+                <div >
+                  <p>{this.formatSummary()}</p>
                   <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
                   <br />
                   <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
                   <br />
-                  <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
                 </div>
-                {isMobile ? null : <Badge count={this.formatPrice()} style={{ backgroundColor: "#2c3e50" }} />}
-                {this.props.job.isCompleted ? null : <Button type="primary" >Begin<Icon type="caret-down" /></Button>}
+                <div style={{ margin: "auto" }} >
+                  <br/>
+                  <Icon type="dollar" style={{ marginRight: 5 }} />{this.formatPrice()}
+                  <br />
+                  <Icon type="car" style={{ marginRight: 5 }} />{this.formatVehicleInfo()}
+                  <br />
+                  <Icon type="calendar" style={{ marginRight: 5 }} />{moment(job.jobData.start.dateTime).format('L')}
+                </div>
+                <div style={{ margin: "auto" }} >
+                  <Button type="danger" onClick={() => this.props.handleDelete(job)} loading={isLoading} >Delete</Button>
+                </div>
                 </div> 
               </div>
             </Card>
@@ -87,13 +116,9 @@ formatPrice = () => {
   }
 }
 
-const dividerStyle = {
-  height: 80
-}
-
 const badgeStyle = {
-  backgroundColor: "#2c3e50",
-  borderRadius: 5
+  fontSize: 12,
+  padding: 5
 }
 
 const cardStyle = {

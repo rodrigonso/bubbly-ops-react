@@ -12,9 +12,9 @@ const { TextArea } = Input
 export class TextMessage extends Component {
   state = {
     input: '',
+    arrived: false,
     isLoading: false,
-    reply: "",
-    isSent: false
+    isSent: false,
   }
 
 // sends text message
@@ -30,7 +30,6 @@ handleTextSend = async() => {
 
   try {
     this.setState({ isLoading: true })
-    console.log(process.env.REACT_APP_BACKEND_API)
     const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
     console.log(data);
     message.success("Your message was sent!")
@@ -40,13 +39,13 @@ handleTextSend = async() => {
     message.error("Something went wrong!")
   } finally {
     this.setState({ isLoading: false })
-    setTimeout(() => this.setState({ reply: "Thanks! I will be waiting you here." }), 2000)
     this.setState({ isSent: true })
   }
 }
 
 handleArrived = () => {
-  this.props.nextStep()
+  setTimeout(() => this.setState({ arrived: true }), 1000)
+  setTimeout(() => this.props.nextStep(), 3000)
 }
 
 // handles change in input for text message
@@ -56,25 +55,27 @@ handleChange = (e) => {
 }
 
   render() {
-      const { input, event } = this.state
+      const { input, isSent } = this.state
       return (
         <div style={{width: 300, marginBottom: 20 }}>
+        <p>Type in the GPS ETA value and press send</p>
             <Card style={{ borderRadius: 5 }}  >
-            
               <div className="chat" style={{ minHeight: 200 }} >
-                {this.state.input ? <div className="customer" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
+                {this.state.input ? <div className="customer-otw" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
                   <p>Hey, it's Bubbly Here!</p>
                   <p>Your detailer is on the way to your location.</p>
                   <p>Current ETA: {this.state.input}</p>
                   <p>Thanks!</p>
                   <Spin spinning={this.state.isLoading} style={{ float: "right" }}  indicator={<Icon type="loading" style={{ color: "#fff" }}  /> } />
                 </div> : null }
-                {this.state.reply ? <div className="customer" style={{ padding: 10, backgroundColor: "#f5f5f5", width: 200, float: "left", color: "#000", borderRadius: 5, marginTop: 10, marginBottom: 20 }}>
-                  <p>{this.state.reply}</p>
-                </div> : null }
+                {this.state.arrived ? <div className="employee-arrived" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5, marginTop: 10, marginBottom: 10 }}>
+                  <p>Hey, it's Bubbly Here!</p>
+                  <p>Your detailer has arrived, {this.props.user.name} will be expecting you.</p>
+                  <p>Thanks!</p>
+                </div> : null}
               </div>
               <div className="actions" style={{ marginTop: 10 }} > 
-                <Search placeholder="12:30 PM" value={input} onChange={this.handleChange} enterButton="Send" onSearch={this.handleTextSend} />{this.state.isSent ? <Button onClick={this.handleArrived} style={{ backgroundColor: "#27ae60", color: "#fff", width: "100%", borderColor: "#2ecc71", marginTop: 10 }}>I have arrived!</Button> : null}
+                <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton="Send" onSearch={this.handleTextSend} />{this.state.isSent ? <Button onClick={this.handleArrived} style={{ backgroundColor: "#27ae60", color: "#fff", width: "100%", borderColor: "#2ecc71", marginTop: 10 }}>I have arrived!</Button> : null}
               </div>
             </Card>
 
