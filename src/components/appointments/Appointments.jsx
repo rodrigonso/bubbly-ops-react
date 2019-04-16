@@ -3,8 +3,10 @@ import JobCard from '../jobCard/JobCard';
 import { Divider, Collapse } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
-import DataCard from './DataCard';
 import FilterBar from '../common/FilterBar';
+import {
+  PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
 
 
 export class Appointments extends Component {
@@ -39,8 +41,11 @@ handleChange = async(date) => {
 
 handleDelete = async(job) => {
   try {
-    this.setState({ isLoading: false })
+    this.setState({ isLoading: true })
     const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/deleteJob/${job.employeeId}/${job._id}`)
+    const jobs = [...this.state.jobs]
+    const newJobs = jobs.filter(item => item._id !== job._id)
+    this.setState({ jobs: newJobs })
   } catch (ex) {
     console.log(ex)
   } finally {
@@ -58,8 +63,6 @@ render() {
         <h1 style={{ fontSize: 32 }}>Appointments</h1>
         <p>View and manage all detailers and respective appointments here.</p>
         <Divider />
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
-        </div>
         <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
         <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
           <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
@@ -73,6 +76,14 @@ render() {
     )
   }
 };
+
+const divStyle = {
+  marginTop: 10, 
+  maxWidth: 1200, 
+  backgroundColor: "#fff", 
+  padding: 20, 
+  borderRadius: 4
+}
 
 
 

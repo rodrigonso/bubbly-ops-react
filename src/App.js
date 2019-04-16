@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-
 import SiderMenu from './components/siderMenu/SiderMenu';
 import Home from './components/home/Home';
 import Appointments from './components/appointments/Appointments';
-import Dashboard from './components/dashboard/Dashboard';
 import Settings from './components/settings/Settings'
 import { Layout } from 'antd';
 import './App.css';
@@ -78,11 +76,6 @@ render() {
                   if (!user.username) return <Redirect to="/" />
                   else return <Appointments {...props} user={user} />
                 }}
-                />
-                <Route  exact path="/dashboard" render={(props) => {
-                  if (!user.isAdmin) return <Redirect to="/" />
-                  return <Dashboard {...props} />
-                  }} 
                 />
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />

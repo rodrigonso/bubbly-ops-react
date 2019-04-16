@@ -15,6 +15,13 @@ export class JobCard extends Component {
   }
 
 
+componentDidUpdate(prevProps) {
+  if (prevProps.isLoading !== this.props.isLoading) {
+      this.setState({ isLoading: this.props.isLoading })
+  }
+}
+
+
 // formats the event date to display only time
 formatDate = () => {
   const { job } = this.props

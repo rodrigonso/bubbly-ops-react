@@ -45,7 +45,7 @@ handleTextSend = async() => {
 
 handleArrived = () => {
   setTimeout(() => this.setState({ arrived: true }), 1000)
-  setTimeout(() => this.props.nextStep(), 3000)
+  this.props.nextStep()
 }
 
 // handles change in input for text message
@@ -75,7 +75,7 @@ handleChange = (e) => {
                 </div> : null}
               </div>
               <div className="actions" style={{ marginTop: 10 }} > 
-                <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton="Send" onSearch={this.handleTextSend} />{this.state.isSent ? <Button onClick={this.handleArrived} style={{ backgroundColor: "#27ae60", color: "#fff", width: "100%", borderColor: "#2ecc71", marginTop: 10 }}>I have arrived!</Button> : null}
+                <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton={<Icon type="arrow-up" />} onSearch={this.handleTextSend} />
               </div>
             </Card>
 

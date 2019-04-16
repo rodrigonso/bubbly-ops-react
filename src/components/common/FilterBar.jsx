@@ -6,10 +6,10 @@ const { RangePicker } = DatePicker
 function FilterBar(props) {
   return (
     <div className="dashboard-tool-bar" style={toolbarStyle}>
-        <p style={{ display: "inline", marginRight: 20 }} >Select week</p>
+        <p style={{ display: "inline", marginRight: 20 }} >Filter by range</p>
         <RangePicker onChange={props.handleChange} separator="|" />
         <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
-        <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Select detailer</p>
+        <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Filter by detailer</p>
         <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" onChange={props.onEmployeeChange} >
         <Radio.Button value={""} checked={props.selectedEmployee ? false : true} >All</Radio.Button>
             {props.employees.map((employee, i) => {

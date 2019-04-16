@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Rate } from 'antd';
+import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Card, Form, Select, Rate } from 'antd';
 import { getEventsById } from '../../services/eventsService';
 import TextMessage from '../textMessage/TextMessage'
 import JobCard from '../jobCard/JobCard';
@@ -7,6 +7,7 @@ import axios from 'axios'
 
 const { Step } = Steps;
 const { Text } = Typography;
+const { Option } = Select;
 
 export class CurrentJobs extends Component {
     state = {
@@ -18,7 +19,7 @@ export class CurrentJobs extends Component {
         start: "",
         end: "",
         isLoading: false,
-        rating: 0
+        rating: 3.5
     }
 
     async componentDidMount() {
@@ -130,16 +131,19 @@ export class CurrentJobs extends Component {
         return "Not Provided"
       }
     
-    handleSelect = (job, type) => {
-        if (type === "Non-Sedan") job.vehicleType = { type, make: this.state.make, model: this.state.model } 
-        if (type === "Sedan") job.vehicleType = { type, make: this.state.make, model: this.state.model } 
+    handleSelect = (value, job) => {
+      console.log(value)
+      job.vehicleType = { type: value, make: this.state.make, model: this.state.model }
+      console.log(job)
 
-        console.log(job)
+      const serviceType = this.calculateJobPrice(job)
+      job.serviceType = serviceType
+      console.log(job)
+      this.handleVehicleType(job)
+    }
 
-        const serviceType = this.calculateJobPrice(job)
-        job.serviceType = serviceType
-        console.log(job)
-        this.props.handleVehicleType(job)
+    handleRate = (value) => {
+      this.setState({ rating: value })
     }
 
 
@@ -148,15 +152,26 @@ export class CurrentJobs extends Component {
           return <TextMessage job={job} nextStep={this.nextStep} user={this.props.user} />
         } else if (this.state.currentStep === 1) {
           return (
-            <div style={{ width: 200, marginLeft: 45, marginBottom: 20 }} >
-              <Input placeholder="Ford" value={this.state.make} onChange={this.handleInput} />
-              <br />
-              <Input placeholder="F-150" value={this.state.model} onChange={this.handleInput} />
-              <br />
-              <Button onClick={() => this.handleSelect(job, "Sedan")} style={{ float: "left", width: "48%", marginBottom: 5, marginTop: 5 }} >Sedan</Button> 
-              <Button onClick={() => this.handleSelect(job, "Non-Sedan")} style={{ float: "right", width: "48%", marginTop: 5 }} >Non-Sedan</Button>
-              <br />
-              <Button onClick={this.handleJobStart} type="primary" style={{ backgroundColor: "#27ae60", borderColor: "#2ecc71", width: "100%",  }}>Start Job</Button>
+            <div style={{width: 300, marginBottom: 20 }} >
+              <Card style={{ borderRadius: 5 }} >
+                <Form>
+                  <Form.Item>
+                    <Input placeholder="Ford" value={this.state.make} onChange={this.handleInput} />
+                  </Form.Item>
+                  <Form.Item>
+                    <Input placeholder="F-150" value={this.state.model} onChange={this.handleInput} />
+                  </Form.Item>
+                  <Form.Item>
+                    <Select placeholder="Sedan" onChange={(value) => this.handleSelect(value, job)} >
+                      <Option value="Sedan">Sedan</Option>
+                      <Option value="Non-Sedan">Non-Sedan</Option>
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Rate the vehicle" >
+                    <Rate style={{ margin: "auto" }} value={this.state.rating} onChange={this.handleRate} />
+                  </Form.Item>
+                </Form>
+              </Card>
             </div>
           )
         } else {
@@ -175,11 +190,11 @@ export class CurrentJobs extends Component {
         console.log(serviceName)
     
         const service = services.map(service => {
-          if (job.vehicleType.type === service.vehicleType && serviceName === service.name) {
+          if (job.vehicleType.type === service.vehicleType && serviceName === service.slug) {
             console.log(service)
             return service
           }
-          if (job.vehicleType.type === service.vehicleType && serviceName === service.name ) {
+          if (job.vehicleType.type === service.vehicleType && serviceName === service.slug ) {
             console.log(service)
             return service
           } 
@@ -211,6 +226,7 @@ export class CurrentJobs extends Component {
                 <div className="steps-content" >
                   {this.renderCurrentStep(job)}
                 </div>
+                <Button style={{ width: "95%" }} type="primary" onClick={this.nextStep}  >Next</Button>
               </div> 
             </Collapse.Panel>
             )

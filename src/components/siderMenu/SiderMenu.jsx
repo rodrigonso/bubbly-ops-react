@@ -56,7 +56,7 @@ handleLogout = () => {
               <NavLink to='/appointments' >Appointments</NavLink>
             </Menu.Item>
             <Menu.Item key="3" disabled={user && user.isAdmin ? false : true} >
-              <NavLink to='/dashboard' >Dashboard</NavLink>
+              <NavLink to='/settings' >Settings</NavLink>
             </Menu.Item>
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
           </Menu>
