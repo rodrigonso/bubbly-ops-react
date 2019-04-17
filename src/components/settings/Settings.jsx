@@ -9,8 +9,8 @@ export class Settings extends Component {
   }
 
   async componentDidMount() {
-    const employees = await axios.get(`http://localhost:3900/api/employees`)
-    const services = await axios.get(`http://localhost:3900/api/services`)
+    const employees = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
+    const services = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
     this.setState({ employees: employees.data, services: services.data })
   }
 
