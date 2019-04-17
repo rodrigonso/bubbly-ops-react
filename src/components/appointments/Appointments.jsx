@@ -55,6 +55,7 @@ handleDelete = async(job) => {
 
 render() {
   const { employees, isLoading, jobs, range, selectedEmployee } = this.state
+
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
 

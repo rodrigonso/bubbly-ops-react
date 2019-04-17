@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker } from 'antd';
+import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker } from 'antd';
 import dateFormat from 'dateformat';
 import axios from 'axios';
-import moment from 'moment'
-import Search from 'antd/lib/input/Search';
 
 const { Text } = Typography;
 const { CheckableTag } = Tag
-const { TextArea } = Input
+const { Search } = Input
 
 export class TextMessage extends Component {
   state = {
@@ -58,7 +56,7 @@ handleChange = (e) => {
       const { input, isSent } = this.state
       return (
         <div style={{width: 300, marginBottom: 20 }}>
-        <p>Type in the GPS ETA value and press send</p>
+        <p>Let your customer know when to expect you!</p>
             <Card style={{ borderRadius: 5 }}  >
               <div className="chat" style={{ minHeight: 200 }} >
                 {this.state.input ? <div className="customer-otw" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
@@ -74,8 +72,8 @@ handleChange = (e) => {
                   <p>Thanks!</p>
                 </div> : null}
               </div>
-              <div className="actions" style={{ marginTop: 10 }} > 
-                <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton={<Icon type="arrow-up" />} onSearch={this.handleTextSend} />
+              <div className="actions" style={{ marginTop: 10, borderRadius: 5 }} >
+                <Search onChange={this.handleChange} placeholder="ETA" enterButton={<Icon type="arrow-up" />}  />
               </div>
             </Card>
 
@@ -83,5 +81,7 @@ handleChange = (e) => {
       )
   }
 }
+
+// <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton={<Icon type="arrow-up" />} onSearch={this.handleTextSend} />
 
 export default TextMessage

@@ -94,7 +94,7 @@ export class CurrentJobs extends Component {
       handleJobCompletion = async(job) => {
         const { jobs } = this.state
         const uncompletedJobs = jobs.filter(item => item.jobData.id !== job.jobData.id )
-        this.setState({ jobs: uncompletedJobs })
+        this.setState({ jobs: uncompletedJobs, currentStep: 0 })
       
         console.log(job)
         const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.state.user.employeeId}`, job)
@@ -102,6 +102,7 @@ export class CurrentJobs extends Component {
       }
 
       handleVehicleType = async(job) => {
+
         const jobs = [...this.state.jobs]
         const jobIndex = jobs.indexOf(job)
       
@@ -149,7 +150,12 @@ export class CurrentJobs extends Component {
 
     renderCurrentStep = (job) => {
         if (this.state.currentStep === 0) {
-          return <TextMessage job={job} nextStep={this.nextStep} user={this.props.user} />
+          return (
+            <React.Fragment>
+              <TextMessage job={job} nextStep={this.nextStep} user={this.props.user} />
+              <Button style={{ width: "95%" }} type="primary" onClick={this.nextStep}  >Next</Button>
+            </React.Fragment>
+          ) 
         } else if (this.state.currentStep === 1) {
           return (
             <div style={{width: 300, marginBottom: 20 }} >
@@ -172,6 +178,7 @@ export class CurrentJobs extends Component {
                   </Form.Item>
                 </Form>
               </Card>
+              <Button style={{ width: "100%", marginTop: 15 }} type="primary" onClick={this.nextStep}  >Next</Button>
             </div>
           )
         } else {
@@ -226,7 +233,6 @@ export class CurrentJobs extends Component {
                 <div className="steps-content" >
                   {this.renderCurrentStep(job)}
                 </div>
-                <Button style={{ width: "95%" }} type="primary" onClick={this.nextStep}  >Next</Button>
               </div> 
             </Collapse.Panel>
             )

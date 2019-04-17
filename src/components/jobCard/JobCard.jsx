@@ -111,6 +111,8 @@ formatPrice = () => {
                   <Icon type="car" style={{ marginRight: 5 }} />{this.formatVehicleInfo()}
                   <br />
                   <Icon type="calendar" style={{ marginRight: 5 }} />{moment(job.jobData.start.dateTime).format('L')}
+                  <br />
+                  <Icon type="hourglass" style={{ marginRight: 5 }} />{job.jobData.distances.rows[0].elements[0].duration.text}
                 </div>
                 <div style={{ margin: "auto" }} >
                   <Button type="danger" onClick={() => this.props.handleDelete(job)} loading={isLoading} >Delete</Button>
