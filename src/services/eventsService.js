@@ -49,11 +49,8 @@ export async function getEventsById(calendarId, range) {
         'singleEvents': true,
     });
 
-    const jobs = response.result.items
-    const test = jobs.map(async(job, i) => await getDistances(job, i, jobs))
-
-    const res = await Promise.all(test)
-    return res
+    const jobs = response.result.items 
+    return jobs
 };
 
 
@@ -65,27 +62,27 @@ function updateSigninStatus(isSignedIn, calendarId, range) {
 
 
 // calculates total distance for each event
-export async function getDistances(event, eventIndex, events) {
+export async function getDistances(job, jobIndex, jobs) {
 
-    if (eventIndex === 0 && eventIndex === events.length -1) {
-        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=12307+Moretti+Court|${event.location}&destinations=${event.location}|12307+Moretti+Court&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
-        event.distances = data;
-        return event;
+    if (jobIndex === 0 && jobIndex === jobs.length -1) {
+        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=12307+Moretti+Court|${job.jobData.location}&destinations=${job.jobData.location}|12307+Moretti+Court&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
+        job.distances = data;
+        return job;
 
-    } else if (eventIndex === 0) {
-        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=12307+Moretti+Court&destinations=${event.location}&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
-        event.distances = data;
-        return event;
+    } else if (jobIndex === 0) {
+        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=12307+Moretti+Court&destinations=${job.jobData.location}&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
+        job.distances = data;
+        return job;
 
-    } else if (eventIndex === events.length -1) {
-        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${events[eventIndex - 1].location}|${event.location}&destinations=${event.location}|12307+Moretti+Court&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`)
-        event.distances = data;
-        return event;
+    } else if (jobIndex === jobs.length -1) {
+        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${jobs[jobIndex - 1].jobData.location}&destinations=${job.jobData.location}&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`)
+        job.distances = data;
+        return job;
 
     } else {
-        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${events[eventIndex - 1].location}&destinations=${event.location}&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
-        event.distances = data;
-        return event;
+        const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${jobs[jobIndex - 1].jobData.location}&destinations=${job.jobData.location}&key=AIzaSyDCyhZeSmLOgYbJMin3rCH020lA6ArVltI`);
+        job.distances = data;
+        return job;
 
     }
 }

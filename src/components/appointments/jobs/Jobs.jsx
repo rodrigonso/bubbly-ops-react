@@ -26,7 +26,7 @@ export class Jobs extends Component {
       const { uncompletedJobs, completedJobs } = this.props
     return (
       <div>
-        <CompletedJob completedJobs={completedJobs} />
+        <CompletedJob completedJobs={completedJobs} user={user} />
         <CurrentJobs handleRefresh={this.props.handleRefresh} user={user} uncompletedJobs={uncompletedJobs} isGapiReady={isGapiReady} />
       </div>
     )

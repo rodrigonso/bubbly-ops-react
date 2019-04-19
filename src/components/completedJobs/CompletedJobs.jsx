@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
-import JobCard from '../jobCard/JobCard'
-import { Empty, Icon, Button } from 'antd'
+import { getDistances } from '../../services/eventsService'
+import { Empty, Icon, Button, Modal } from 'antd'
+import Axios from 'axios';
 
 export class CompletedJobs extends Component {
+    state = {
+        isLoading: false,
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.completedJobs !== this.props.completedJobs) {
+            this.setState({ completedJobs: this.props.completedJobs })
+        }
+      }
+
 
     formatSummary = (job) => {
         if (!job.jobData.summary) return "not found"
@@ -11,6 +22,28 @@ export class CompletedJobs extends Component {
         
         return summary;
     }
+
+    handleCompletion = async() => {
+        try {
+            this.setState({ isLoading: true })
+            const jobsWithDistances = this.props.completedJobs.map(async(job, i) => await getDistances(job, i, this.props.completedJobs))
+            const jobs = await Promise.all(jobsWithDistances)
+    
+            console.log(jobs)
+    
+            const res = jobs.map(async(item) => {
+                const response = await Axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.props.user.employeeId}`, item)
+                return response
+            })
+            const final = await Promise.all(res)
+            console.log(final)
+        } catch (ex) {
+            console.log(ex)
+        } finally {
+            this.setState({ isLoading: false })
+            Modal.success({ title: "Success!", content: "Your jobs have been saved to the database!" })
+        }
+      }
       
   render() {
       const { completedJobs } = this.props
@@ -28,7 +61,7 @@ export class CompletedJobs extends Component {
                         </div>
                     )
                 }) : <Empty description="No jobs completed yet :(" />}
-                {completedJobs.length > 0 ? <Button style={{ width: "100%" }}  type="danger">Finish Day</Button> : null} 
+                {completedJobs.length > 0 ? <Button loading={this.state.isLoading} onClick={this.handleCompletion} style={{ width: "100%" }}  type="danger">Finish Day</Button> : null} 
             </div>
         </React.Fragment>
     )

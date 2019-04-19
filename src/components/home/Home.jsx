@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Divider, Tabs } from 'antd';
+import { Divider, Tabs, Avatar, Badge, Button } from 'antd';
 import Login from '../common/Login';
 import Register from '../common/Register'
-import CurrentJobs from '../currentJobs/CurrentJobs'
 
 const { TabPane } = Tabs;
 
@@ -42,6 +41,12 @@ export class Home extends Component {
           <Divider />
           <div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5 }} >
             <h2>Welcome, {user.username}</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} >
+            <Button onClick={() => this.props.history.push("/jobs")} type="default" style={{marginTop: 15, minHeight: 125, marginRight: 10, backgroundColor: "#fff", textAlign: "center", borderRadius: 5}} >
+              <Badge count={this.props.uncompletedJobs.length} ><Avatar shape="square" size="large" icon="solution" /></Badge>
+              <h4>Current Jobs</h4>
+            </Button>
           </div>
         </div>
     )

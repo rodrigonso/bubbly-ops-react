@@ -133,7 +133,7 @@ render() {
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
                 <Route  exact path="/jobs/:id" render={(props) => <ActiveJob {...props} user={user} handleJobCompletion={this.handleJobCompletion} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
                 <Route  exact path="/jobs" render={(props) => <Jobs {...props} handleRefresh={this.handleRefresh} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
-                <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
+                <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} /> } />
               </div>
             </Content>
           </Layout>
