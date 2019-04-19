@@ -55,7 +55,7 @@ handleChange = (e) => {
   render() {
       const { input, isSent } = this.state
       return (
-        <div style={{width: 300, marginBottom: 20 }}>
+        <div style={{width: "100%" }}>
         <p>Let your customer know when to expect you!</p>
             <Card style={{ borderRadius: 5 }}  >
               <div className="chat" style={{ minHeight: 200 }} >
@@ -73,10 +73,9 @@ handleChange = (e) => {
                 </div> : null}
               </div>
               <div className="actions" style={{ marginTop: 10, borderRadius: 5 }} >
-                <Search onChange={this.handleChange} placeholder="ETA" enterButton={<Icon type="arrow-up" />}  />
+                <Search onChange={this.handleChange} placeholder="ETA" onSearch={this.handleTextSend} enterButton={<Icon type="arrow-up" />}  />
               </div>
             </Card>
-
         </div>
       )
   }

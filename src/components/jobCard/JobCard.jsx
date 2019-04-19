@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag } from 'antd';
 import dateFormat from 'dateformat';
 import moment from 'moment'
-import TextMessage from '../textMessage/TextMessage';
+import TextMessage from '../activeJob/jobSteps/TextMessage';
 
 const { Text } = Typography;
 const { CheckableTag } = Tag
@@ -11,6 +12,7 @@ const { TextArea } = Input
 export class JobCard extends Component {
   state = {
     visible: false,
+    isCompleted: false,
     input: '',
   }
 
@@ -74,9 +76,8 @@ formatPrice = () => {
     if (isMobile) return (
       <React.Fragment>
       <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
-      <div style={{ padding: 10 }}>
-         <div style={{ display: "grid", gridTemplateColumns: "70% 30%" }} >
-          <div >
+        <div style={{ padding: 10 }}>
+          <div>
             <p>{this.formatSummary()}</p>
             <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
             <br />
@@ -84,10 +85,7 @@ formatPrice = () => {
             <br />
             <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
           </div>
-          <div style={{ margin: "auto" }} >
-            {this.props.job.isCompleted ? null : <Button type="primary" style={{ marginRight: 10 }}  >Begin</Button>}
-          </div>
-          </div> 
+          {this.props.job.isCompleted ? null : <Link to={{ pathname:`jobs/${job.jobData.id}`, state: { job: job }}}><Button style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button></Link>}
         </div>
       </Card>
    </React.Fragment>
@@ -133,6 +131,7 @@ const badgeStyle = {
 const cardStyle = {
   minHeight: 150,
   border: 0,
+  borderRadius: 5,
   borderBottom: "2px solid #f7f7f7",
 }
 

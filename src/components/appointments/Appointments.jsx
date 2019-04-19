@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import JobCard from '../jobCard/JobCard';
-import { Divider, Collapse } from 'antd';
+import { Divider, Collapse, Spin, Icon } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
@@ -15,15 +15,24 @@ state = {
   employees: [],
   selectedEmployee: "",
   range: [],
-  isDeleting: false
+  isDeleting: false,
+  isLoading: false
 }
 
 async componentDidMount() {
   const employees = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
   this.setState({ employees: employees.data })
 
-  const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getAllJobs/`)
-  this.setState({ jobs: jobs.data })
+  this.setState({ isLoading: true })
+
+  try {
+    const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getAllJobs/`)
+    this.setState({ jobs: jobs.data })
+  } catch (ex) {
+    console.log(ex)
+  } finally {
+    this.setState({ isLoading: false })
+  }
 }
 
 handleEmployeeSelection = (e) => {
@@ -41,7 +50,7 @@ handleChange = async(date) => {
 
 handleDelete = async(job) => {
   try {
-    this.setState({ isLoading: true })
+    this.setState({ isDeleting: true })
     const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/deleteJob/${job.employeeId}/${job._id}`)
     const jobs = [...this.state.jobs]
     const newJobs = jobs.filter(item => item._id !== job._id)
@@ -49,12 +58,12 @@ handleDelete = async(job) => {
   } catch (ex) {
     console.log(ex)
   } finally {
-    this.setState({ isLoading: false })
+    this.setState({ isDeleting: false })
   }
 }
 
 render() {
-  const { employees, isLoading, jobs, range, selectedEmployee } = this.state
+  const { employees, isDeleting, isLoading, jobs, range, selectedEmployee } = this.state
 
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
@@ -66,12 +75,12 @@ render() {
         <Divider />
         <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
         <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
-          <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
+         {!isLoading ? <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
             {jobsByDate.map(job => {
               if (!job) return null
-              return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isLoading} />
+              return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
             })}
-          </Collapse>
+          </Collapse> : <Spin indicator={<Icon type="loading" /> } style={{ marginTop: "25%", marginLeft: "50%" }} />}
         </div>
       </div>
     )

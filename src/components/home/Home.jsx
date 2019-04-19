@@ -43,7 +43,6 @@ export class Home extends Component {
           <div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5 }} >
             <h2>Welcome, {user.username}</h2>
           </div>
-          <CurrentJobs user={user} isGapiReady={isGapiReady} />
         </div>
     )
   }
