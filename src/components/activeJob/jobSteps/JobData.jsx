@@ -1,32 +1,37 @@
 import React, { Component } from 'react'
-import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Card, Form, Select, Rate } from 'antd';
+import { Radio, Typography, Input, Button, Icon, Empty, Card, Form, Select, Rate, Divider } from 'antd';
 
 const { Option } = Select
+const { RadioGroup } = Radio
 
 export class JobData extends Component {
   render() {
       const { job, handleInput, handleRate, nextStep, make, model, rating, handleSelect } = this.props
     return (
         <div style={{ width: "100%" }} >
-            <Card style={{ borderRadius: 5, width: "100%" }} >
+            <p>Insert details of your current customer. When you're done, press next.</p>
+            <Divider />
             <Form>
-                <Form.Item>
+                <Form.Item label="Make">
                 <Input placeholder="Ford" value={make} onChange={handleInput} />
                 </Form.Item>
-                <Form.Item>
+                <Form.Item label="Model" >
                 <Input placeholder="F-150" value={model} onChange={handleInput} />
                 </Form.Item>
-                <Form.Item>
-                <Select placeholder="Sedan" onChange={(value) => handleSelect(value, job)} >
-                    <Option value="Sedan">Sedan</Option>
-                    <Option value="Non-Sedan">Non-Sedan</Option>
-                </Select>
+                <Divider />
+                <Form.Item label="Vehicle Size" >
+                    <Radio.Group onChange={handleSelect} >
+                        <Radio value="Sedan" >Sedan</Radio>
+                        <br/>
+                        <Radio value="Non-Sedan" >Non-Sedan</Radio>
+                    </Radio.Group>
                 </Form.Item>
-                <Form.Item label="Rate the vehicle" >
-                <Rate style={{ margin: "auto" }} value={rating} onChange={handleRate} />
+                <Divider />
+                <Form.Item label="Vehicle Conditions" >
+                    <Rate style={{ margin: "auto", fontSize: 30 }} value={rating} onChange={handleRate} />
                 </Form.Item>
+                <Divider />
             </Form>
-            </Card>
         </div>
     )
   }

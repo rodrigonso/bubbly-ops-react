@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker } from 'antd';
+import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form } from 'antd';
 import dateFormat from 'dateformat';
 import axios from 'axios';
 
@@ -55,10 +55,11 @@ handleChange = (e) => {
   render() {
       const { input, isSent } = this.state
       return (
-        <div style={{width: "100%" }}>
+        <div style={{width: "100%", minHeight: 350 }}>
         <p>Let your customer know when to expect you!</p>
-            <Card style={{ borderRadius: 5 }}  >
-              <div className="chat" style={{ minHeight: 200 }} >
+          <div>
+            <Card style={{ borderRadius: 5 }} >
+              <div className="chat" style={{ position: "relative", height: 200, top: 40 }} >
                 {this.state.input ? <div className="customer-otw" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
                   <p>Hey, it's Bubbly Here!</p>
                   <p>Your detailer is on the way to your location.</p>
@@ -71,14 +72,26 @@ handleChange = (e) => {
                   <p>Your detailer has arrived, {this.props.user.name} will be expecting you.</p>
                   <p>Thanks!</p>
                 </div> : null}
+                <div className="overlay" style={test} >
+                </div>
               </div>
-              <div className="actions" style={{ marginTop: 10, borderRadius: 5 }} >
+              <div className="actions" style={{ marginTop: 40, borderRadius: 5 }} >
                 <Search onChange={this.handleChange} placeholder="ETA" onSearch={this.handleTextSend} enterButton={<Icon type="arrow-up" />}  />
               </div>
             </Card>
+          </div>
         </div>
       )
   }
+}
+
+const test = {
+  top: -50,
+  height: 250,
+  width: 285,
+  position: "absolute",
+  background: "rgb(255,255,255)",
+  background: "linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.24455559490084988) 76%, rgba(255,255,255,1) 100%)"
 }
 
 // <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton={<Icon type="arrow-up" />} onSearch={this.handleTextSend} />

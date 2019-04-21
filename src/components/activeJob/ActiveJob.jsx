@@ -38,8 +38,8 @@ export class ActiveJob extends Component {
         this.setState({ rating: value })
     }
 
-    handleSelect = (value) => {
-        this.setState({ vehicleType: value })
+    handleSelect = (e) => {
+        this.setState({ vehicleType: e.target.value })
     }
 
     handleBack = () => {
@@ -96,12 +96,12 @@ export class ActiveJob extends Component {
       const { make, model, rating, currentStep } = this.state
       const { job } = this.props.location.state
     return (
-        <div style={{ minWidth: 330, borderStyle: "solid" }}  >
+        <div style={{ minWidth: 330 }}  >
             <PageHeader onBack={this.handleBack} title={this.formatSummary()} />
             <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
                 <Steps size="small" current={currentStep} >
-                    <Step title="Being" /> 
-                    <Step title="Middle" /> 
+                    <Step title="Text Customer" /> 
+                    <Step title="Customer Details" /> 
                     <Step title="Finish" /> 
                 </Steps>
                 <div className="content" style={{ marginTop: 20 }} >
