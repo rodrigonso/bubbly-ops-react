@@ -57,7 +57,7 @@ export class CompletedJobs extends Component {
                     return (
                         <div style={{ display: "grid", gridTemplateColumns: "90% 10%" }} >
                             <p>{this.formatSummary(job)}</p>
-                            <Icon type="check" />
+                            <Icon type="check-circle" style={{ color: "#27ae60", fontSize: 20 }} />
                         </div>
                     )
                 }) : <Empty description="No jobs completed yet :(" />}

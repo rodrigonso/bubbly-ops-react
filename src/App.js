@@ -11,6 +11,7 @@ import './App.css';
 import jwt from 'jsonwebtoken'
 import Jobs from './components/appointments/jobs/Jobs';
 import axios from 'axios'
+import moment from 'moment'
 
 
 
@@ -42,6 +43,14 @@ async componentDidMount() {
   if (navigator.userAgent.match(/iPhone/i)) this.setState({ isMobile: true })
 
   const token = localStorage.getItem("token")
+  const completedJobsDate = moment(new Date(localStorage.getItem("completedJobsDate"))).format("L")
+  const completedJobs = JSON.parse(localStorage.getItem("completedJobs"))
+
+  if (moment(startOfDay).format("L") !== completedJobsDate) {
+    return
+  } else if (completedJobs) {
+    this.setState({ completedJobs }) 
+  }
   
   if (token) {
     const user = jwt.decode(token);
@@ -112,8 +121,9 @@ handleJobCompletion = (job) => {
   const uncompletedJobs = this.state.uncompletedJobs.filter(item => item.jobData.id !== job.jobData.id )
   const completedJobs = [...this.state.completedJobs]
   completedJobs.push(job)
+  localStorage.setItem("completedJobs", JSON.stringify(completedJobs))
+  localStorage.setItem("completedJobsDate", new Date())
   this.setState({ uncompletedJobs, completedJobs })
-
 }
 
 render() {
