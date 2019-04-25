@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Spin, Form, Select, Rate, message } from 'antd';
+import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Spin, Form, Select, Rate, message, Skeleton } from 'antd';
 import JobCard from '../jobCard/JobCard';
 import axios from 'axios'
 
@@ -10,7 +10,6 @@ const { Option } = Select;
 export class CurrentJobs extends Component {
     state = {
         services: [],
-        isLoading: false,
     }
 
     async componentDidMount() {
@@ -22,20 +21,27 @@ export class CurrentJobs extends Component {
   render() {
       const { uncompletedJobs } = this.props
     return (
-    <div style={{ marginTop: 80, minWidth: 330 }} >
-      <div style={{ display: "grid", gridTemplateColumns: "90% 10%", backgroundColor: "#fff", padding: 15, borderRadius: 5, marginBottom: 2 }} >
-        <h4>Current jobs</h4>
-        <Button size="small" shape="circle" onClick={this.props.handleRefresh}  ><Icon type="sync" /></Button>  
+    <div style={{ marginTop: 20, minWidth: 330 }} >
+      <div style={{ display: "grid", gridTemplateColumns: "90% 10%", padding: 15, backgroundColor: "#fff", borderRadius: 5 }} >
+        <div>
+          <Icon style={{ fontSize: 18 }}  type="exception" />
+          <h4 style={{ marginTop: 5, marginLeft: 10, display: "inline", fontWeight: 400 }} >Uncompleted Jobs</h4>
+        </div>
       </div>
+      <div style={{ marginTop: 2 }} >
           {uncompletedJobs.length > 0 ? uncompletedJobs.map(job => {
             return (
               <JobCard job={job} isMobile={true} />
             )}
-          ) : null}
+          ) : <div style={{ padding: 15, backgroundColor: "#fff", marginTop: 2, minHeight: 200 }} >
+                <Button type="primary" onClick={this.props.handleRefresh} style={{ marginLeft: 100, marginTop: 50 }}><Icon type="reload" />Refresh</Button>
+              </div>}
+        </div>
       </div>
     )
   }
 }
 
 export default CurrentJobs
-//borderBottom: "2px solid #f7f7f7",
+//borderBottom: "2px solid #f7f7f7"
+//<Button size="small" shape="circle" onClick={this.props.handleRefresh}  ><Icon type="sync" /></Button> 

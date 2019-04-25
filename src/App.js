@@ -15,7 +15,7 @@ import moment from 'moment'
 
 
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 const apiKey =  process.env.REACT_APP_GOOGLE_APIKEY
 const clientId = process.env.REACT_APP_GOOGLE_CLIENTID

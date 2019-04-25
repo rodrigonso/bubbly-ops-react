@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Divider, Tabs, Avatar, Badge, Button } from 'antd';
+import { Divider, Tabs, Avatar, Badge, Button, Icon } from 'antd';
 import Login from '../common/Login';
 import Register from '../common/Register'
+import './Home.css'
 
 const { TabPane } = Tabs;
 
@@ -35,18 +36,22 @@ export class Home extends Component {
       )
     }
     return (
-        <div className="home-body" style={{ overflowX: "hidden", overflowY: "auto", }} >
+        <div className="home-body" style={{ overflowX: "hidden", overflowY: "auto" }} >
           <h1 style={{ fontSize: 32 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
           <Divider />
           <div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5 }} >
             <h2>Welcome, {user.username}</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} >
-            <Button onClick={() => this.props.history.push("/jobs")} type="default" style={{marginTop: 15, minHeight: 125, marginRight: 10, backgroundColor: "#fff", textAlign: "center", borderRadius: 5}} >
-              <Badge count={this.props.uncompletedJobs.length} ><Avatar shape="square" size="large" icon="solution" /></Badge>
+          <div className="cards" onClick={() => this.props.history.push("/jobs")} style={{ display: "grid", gridTemplateColumns: "30% 60% 10%", backgroundColor: "#fff", borderRadius: 5, padding: 24, marginTop: 5 }} >
+            <div style={{ marginLeft: 10 }} >
+              <Badge count={this.props.uncompletedJobs.length} ><Avatar shape="square" size="large" icon="solution" style={{ backgroundColor: "#1890ff" }} /></Badge>
+            </div>
+            <div>
               <h4>Current Jobs</h4>
-            </Button>
+              <p>Click here to see all jobs scheduled for today!</p>
+            </div> 
+             <Icon type="right" style={{ marginTop: 30 }}  />
           </div>
         </div>
     )
@@ -55,3 +60,4 @@ export class Home extends Component {
 
 
 export default Home
+//

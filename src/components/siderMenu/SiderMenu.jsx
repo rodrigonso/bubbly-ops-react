@@ -37,9 +37,12 @@ handleLogout = () => {
     const { user } = this.props
     if (this.props.isMobile) {
       return (
-        <Menu mode="horizontal">
-          {user.email ? <Menu.Item onClick={this.handleLogout}  style={{ float: "right" }} >Logout</Menu.Item> : null}
-        </Menu>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", backgroundColor: "#fff" }} >
+            <Menu mode="horizontal" style={{ border: 0 }} >
+              <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
+              {user.email ? <Menu.Item onClick={this.handleLogout}>Logout</Menu.Item> : null}
+            </Menu>
+          </div>
       )
     } 
     else return (
