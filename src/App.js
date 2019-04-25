@@ -9,7 +9,7 @@ import ActiveJob from './components/activeJob/ActiveJob'
 import { Layout } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
-import Jobs from './components/appointments/jobs/Jobs';
+import Jobs from './components/jobs/Jobs';
 import axios from 'axios'
 import moment from 'moment'
 
