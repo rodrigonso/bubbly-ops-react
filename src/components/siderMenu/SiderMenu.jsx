@@ -40,6 +40,7 @@ handleLogout = () => {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", backgroundColor: "#fff" }} >
             <Menu mode="horizontal" style={{ border: 0 }} >
               <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
+              <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
               {user.email ? <Menu.Item onClick={this.handleLogout}>Logout</Menu.Item> : null}
             </Menu>
           </div>

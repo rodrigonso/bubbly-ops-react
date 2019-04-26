@@ -94,6 +94,5 @@ const test = {
   background: "linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.24455559490084988) 76%, rgba(255,255,255,1) 100%)"
 }
 
-// <Search placeholder="12:30 PM" disabled={isSent} value={input} onChange={this.handleChange} enterButton={<Icon type="arrow-up" />} onSearch={this.handleTextSend} />
 
 export default TextMessage

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Spin, Form, Select, Rate, message, Skeleton } from 'antd';
-import JobCard from '../jobCard/JobCard';
+import JobCard from '../../jobCard/JobCard';
 import axios from 'axios'
 
 const { Step } = Steps;

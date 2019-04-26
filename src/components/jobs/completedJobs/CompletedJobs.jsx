@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getDistances } from '../../services/eventsService'
+import { getDistances } from '../../../services/eventsService'
 import { Empty, Icon, Button, Modal, Progress, Divider } from 'antd'
 import Axios from 'axios';
 

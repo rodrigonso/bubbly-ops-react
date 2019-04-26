@@ -5,13 +5,14 @@ import SiderMenu from './components/siderMenu/SiderMenu';
 import Home from './components/home/Home';
 import Appointments from './components/appointments/Appointments';
 import Settings from './components/settings/Settings'
-import ActiveJob from './components/activeJob/ActiveJob'
+import ActiveJob from './components/jobs/activeJob/ActiveJob'
 import { Layout } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
 import Jobs from './components/jobs/Jobs';
 import axios from 'axios'
 import moment from 'moment'
+import Earnings from './components/earnings/Earnings';
 
 
 
@@ -141,6 +142,7 @@ render() {
                 }}
                 />
                 <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
+                <Route  exact path="/earnings" render={(props) => <Earnings {...props} user={user} /> } />
                 <Route  exact path="/jobs/:id" render={(props) => <ActiveJob {...props} user={user} handleJobCompletion={this.handleJobCompletion} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
                 <Route  exact path="/jobs" render={(props) => <Jobs {...props} handleRefresh={this.handleRefresh} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} /> } />

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag } from 'antd';
 import dateFormat from 'dateformat';
 import moment from 'moment'
-import TextMessage from '../activeJob/jobSteps/TextMessage';
+import TextMessage from '../jobs/activeJob/jobSteps/TextMessage'
 
 const { Text } = Typography;
 const { CheckableTag } = Tag

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import CurrentJobs from '../currentJobs/CurrentJobs';
-import axios from 'axios'
-import CompletedJob from '../completedJobs/CompletedJobs'
+import CurrentJobs from './currentJobs/CurrentJobs';
+import CompletedJob from './completedJobs/CompletedJobs'
 
 export class Jobs extends Component {
     state = {
