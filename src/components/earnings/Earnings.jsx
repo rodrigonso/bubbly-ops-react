@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Divider, Button, Statistic } from 'antd';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, Tooltip } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, Tooltip, YAxis } from 'recharts'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -27,6 +27,8 @@ class Earnings extends Component {
 
 
 	getJobs = async() => {
+		if (!this.props.user.employeeId) return null
+
 		const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getJobs/${this.props.user.employeeId}`)
 		this.setState({ jobs: res.data })
 	}
@@ -87,9 +89,10 @@ class Earnings extends Component {
 			<Divider />
 			<div style={{ backgroundColor: "#fff", padding: 24, borderRadius: 5, margin: "auto" }} >
 				<h4>Services by Day</h4>
-				<BarChart width={300} height={100} data={this.getJobsByDay()} >
+				<BarChart width={280} height={140} data={this.getJobsByDay()} style={{ marginLeft: -25 }} >
 					<Tooltip />
-					<Bar dataKey="value" fill="#096dd9" />
+					<Bar dataKey="value" fill="#096dd9" barSize={20} />
+					<YAxis allowDecimals={false} />
 					<XAxis dataKey="name"  />
 				</BarChart>
 			</div>
