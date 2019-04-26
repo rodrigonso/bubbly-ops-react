@@ -94,7 +94,7 @@ formatPrice = () => {
         <React.Fragment>
             <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
             <div style={{ padding: 10 }}>
-               <div style={{ display: "grid", gridTemplateColumns: "40% 40% 20%" }} >
+               <div style={{ display: "grid", gridTemplateColumns: "50% 30% 20%" }} >
                 <div >
                   <p>{this.formatSummary()}</p>
                   <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
@@ -102,7 +102,7 @@ formatPrice = () => {
                   <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
                   <br />
                 </div>
-                <div style={{ margin: "auto" }} >
+                <div>
                   <br/>
                   <Icon type="dollar" style={{ marginRight: 5 }} />{this.formatPrice()}
                   <br />
