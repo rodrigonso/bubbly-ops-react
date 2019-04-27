@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form } from 'antd';
-import dateFormat from 'dateformat';
+import moment from 'moment'
 import axios from 'axios';
 
 const { Text } = Typography;
@@ -10,10 +10,16 @@ const { Search } = Input
 export class TextMessage extends Component {
   state = {
     input: '',
+    startTime: '',
     arrived: false,
     isLoading: false,
     isSent: false,
   }
+
+componentDidMount() { 
+  const startTime = this.getJobStart()
+  this.setState({ startTime })
+}
 
 // sends text message
 handleTextSend = async() => {
@@ -41,23 +47,71 @@ handleTextSend = async() => {
   }
 }
 
-handleArrived = () => {
-  setTimeout(() => this.setState({ arrived: true }), 1000)
-  this.props.nextStep()
+getJobStart = () => {
+  const { job } = this.props
+  const startTime = moment(job.jobData.start.dateTime).format('LT')
+  return startTime
 }
 
-// handles change in input for text message
-handleChange = (e) => {
-  const value = e.target.value;
-  this.setState({ input: value })
+handleSelect = (e) => {
+  const { job } = this.props
+  const value = e.target.value
+  const startTime = new Date(job.jobData.start.dateTime)
+  startTime.setMinutes(value)
+  const input = moment(startTime).format('LT')
+  this.setState({ input })
 }
 
   render() {
-      const { input, isSent } = this.state
+      const { input, isSent, startTime, isLoading } = this.state
       return (
         <div style={{width: "100%", minHeight: 350 }}>
-        <p>Let your customer know when to expect you!</p>
+          <p>Select the appropiate number according to your ETA.</p>
+          <Divider />
           <div>
+            <h4>Normal</h4>
+            <Button onClick={this.handleSelect} value={0} type="primary" style={{ marginRight: 5 }} >{startTime}</Button>
+            <Button onClick={this.handleSelect} value={5} style={{ marginRight: 2 }} >+5</Button>
+            <Button onClick={this.handleSelect} value={10} style={{ marginRight: 2 }}>+10</Button>
+            <Button onClick={this.handleSelect} value={15} >+15</Button>
+          </div>
+          <br />
+          {isSent ? 
+            <React.Fragment>
+              <Divider />
+              <Icon type="check-circle" theme="filled" style={{ marginLeft: 55, color: "#52c41a" }}  />
+              <p style={{ display: "inline", marginLeft: 5 }} >Your message was sent!</p>
+            </React.Fragment> 
+          : 
+            <div>
+              {isSent || this.state.input ? 
+                <React.Fragment>
+                  <Divider />
+                  <h4 style={{ marginTop: 20, display: "inline" }} >Current ETA:</h4>
+                  <p style={{ display: "inline", marginLeft: 5 }} >{input}</p>
+                  <Button onClick={this.handleTextSend} loading={isLoading} type="danger" style={{ marginLeft: 55 }} >Send</Button>
+                </React.Fragment> 
+                : null}
+            </div> }
+          <Divider />
+        </div>
+      )
+  }
+}
+
+const test = {
+  top: -50,
+  height: 250,
+  width: 285,
+  position: "absolute",
+  background: "rgb(255,255,255)",
+  background: "linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.24455559490084988) 76%, rgba(255,255,255,1) 100%)"
+}
+
+
+export default TextMessage
+
+/*
             <Card style={{ borderRadius: 5 }} >
               <div className="chat" style={{ position: "relative", height: 200, top: 40 }} >
                 {this.state.input ? <div className="customer-otw" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
@@ -79,20 +133,4 @@ handleChange = (e) => {
                 <Search onChange={this.handleChange} placeholder="ETA" onSearch={this.handleTextSend} enterButton={<Icon type="arrow-up" />}  />
               </div>
             </Card>
-          </div>
-        </div>
-      )
-  }
-}
-
-const test = {
-  top: -50,
-  height: 250,
-  width: 285,
-  position: "absolute",
-  background: "rgb(255,255,255)",
-  background: "linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.24455559490084988) 76%, rgba(255,255,255,1) 100%)"
-}
-
-
-export default TextMessage
+*/

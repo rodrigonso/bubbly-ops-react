@@ -105,7 +105,7 @@ export class ActiveJob extends Component {
                     <Step title="Finish" /> 
                 </Steps>
                 <div className="content" style={{ marginTop: 20 }} >
-                  {this.state.currentStep === 0 ? <TextMessage /> : null}
+                  {this.state.currentStep === 0 ? <TextMessage job={this.props.location.state.job} /> : null}
                   {this.state.currentStep === 1 ? <JobData handleInput={this.handleInput} make={make} model={model} rating={rating} handleRate={this.handleRate} handleSelect={this.handleSelect} /> : null}
                   {this.state.currentStep === 2 ? <CompleteJob /> : null}
                   {this.state.currentStep < 2 ? 
