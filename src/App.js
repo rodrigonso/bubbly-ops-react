@@ -141,8 +141,16 @@ render() {
                   else return <Appointments {...props} user={user} />
                 }}
                 />
-                <Route  exact path="/settings" render={(props) => <Settings {...props} /> } />
-                <Route  exact path="/earnings" render={(props) => <Earnings {...props} user={user} /> } />
+                <Route  exact path="/settings" render={(props) => {
+                  if (!user.username) return <Redirect to="/" />
+                  else return <Settings {...props} user={user} />
+                }}
+                />
+                <Route  exact path="/earnings" render={(props) => {
+                  if (!user.username) return <Redirect to="/" />
+                  else return <Earnings {...props} user={user} />
+                }}
+                />
                 <Route  exact path="/jobs/:id" render={(props) => <ActiveJob {...props} user={user} handleJobCompletion={this.handleJobCompletion} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
                 <Route  exact path="/jobs" render={(props) => <Jobs {...props} handleRefresh={this.handleRefresh} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} /> } />
