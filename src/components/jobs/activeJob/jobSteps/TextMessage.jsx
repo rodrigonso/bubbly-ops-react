@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form } from 'antd';
+import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form, Radio } from 'antd';
 import moment from 'moment'
 import axios from 'axios';
 
@@ -11,14 +11,15 @@ export class TextMessage extends Component {
   state = {
     input: '',
     startTime: '',
+    late1: '',
+    late2: '',
     arrived: false,
     isLoading: false,
     isSent: false,
   }
 
 componentDidMount() { 
-  const startTime = this.getJobStart()
-  this.setState({ startTime })
+  this.getTimes()
 }
 
 // sends text message
@@ -37,20 +38,26 @@ handleTextSend = async() => {
     const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
     console.log(data);
     message.success("Your message was sent!")
-    //if (this.props.nextStep) this.props.nextStep()
+    this.setState({ isSent: true })
   } catch(ex) {
     console.log(ex);
     message.error("Something went wrong!")
   } finally {
     this.setState({ isLoading: false })
-    this.setState({ isSent: true })
   }
 }
 
-getJobStart = () => {
+getTimes = () => {
   const { job } = this.props
-  const startTime = moment(job.jobData.start.dateTime).format('LT')
-  return startTime
+  const startTime = job.jobData.start.dateTime
+
+  const late1 = new Date(startTime)
+  late1.setMinutes(10)
+
+  const late2 = new Date(startTime)
+  late2.setMinutes(15)
+
+  this.setState({ startTime: moment(startTime).format("LT"), late1: moment(late1).format("LT"), late2: moment(late2).format("LT") })
 }
 
 handleSelect = (e) => {
@@ -63,17 +70,18 @@ handleSelect = (e) => {
 }
 
   render() {
-      const { input, isSent, startTime, isLoading } = this.state
+      const { input, isSent, startTime, isLoading, late1, late2 } = this.state
       return (
         <div style={{width: "100%", minHeight: 350 }}>
           <p>Select the appropiate number according to your ETA.</p>
           <Divider />
           <div>
             <h4>Normal</h4>
-            <Button onClick={this.handleSelect} value={0} type="primary" style={{ marginRight: 5 }} >{startTime}</Button>
-            <Button onClick={this.handleSelect} value={5} style={{ marginRight: 2 }} >+5</Button>
-            <Button onClick={this.handleSelect} value={10} style={{ marginRight: 2 }}>+10</Button>
-            <Button onClick={this.handleSelect} value={15} >+15</Button>
+            <Radio.Group defaultValue={0} onChange={this.handleSelect} buttonStyle="solid" >
+              <Radio.Button value={0}>{startTime}</Radio.Button>
+              <Radio.Button value={10}>{late1}</Radio.Button>
+              <Radio.Button value={15}>{late2}</Radio.Button>
+            </Radio.Group>
           </div>
           <br />
           {isSent ? 
@@ -89,7 +97,7 @@ handleSelect = (e) => {
                   <Divider />
                   <h4 style={{ marginTop: 20, display: "inline" }} >Current ETA:</h4>
                   <p style={{ display: "inline", marginLeft: 5 }} >{input}</p>
-                  <Button onClick={this.handleTextSend} loading={isLoading} type="danger" style={{ marginLeft: 55 }} >Send</Button>
+                  <Button onClick={this.handleTextSend} loading={isLoading} type="danger" style={{ marginLeft: 65 }} >Send</Button>
                 </React.Fragment> 
                 : null}
             </div> }
@@ -112,25 +120,8 @@ const test = {
 export default TextMessage
 
 /*
-            <Card style={{ borderRadius: 5 }} >
-              <div className="chat" style={{ position: "relative", height: 200, top: 40 }} >
-                {this.state.input ? <div className="customer-otw" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5,  }}>
-                  <p>Hey, it's Bubbly Here!</p>
-                  <p>Your detailer is on the way to your location.</p>
-                  <p>Current ETA: {this.state.input}</p>
-                  <p>Thanks!</p>
-                  <Spin spinning={this.state.isLoading} style={{ float: "right" }}  indicator={<Icon type="loading" style={{ color: "#fff" }}  /> } />
-                </div> : null }
-                {this.state.arrived ? <div className="employee-arrived" style={{ padding: 10, backgroundColor: "#1890ff", width: 200, float: "right", color: "#fff", borderRadius: 5, marginTop: 10, marginBottom: 10 }}>
-                  <p>Hey, it's Bubbly Here!</p>
-                  <p>Your detailer has arrived, {this.props.user.name} will be expecting you.</p>
-                  <p>Thanks!</p>
-                </div> : null}
-                <div className="overlay" style={test} >
-                </div>
-              </div>
-              <div className="actions" style={{ marginTop: 40, borderRadius: 5 }} >
-                <Search onChange={this.handleChange} placeholder="ETA" onSearch={this.handleTextSend} enterButton={<Icon type="arrow-up" />}  />
-              </div>
-            </Card>
+  <Button onClick={this.handleSelect} value={0} type="primary" style={{ marginRight: 5 }} >{startTime}</Button>
+  <Button onClick={this.handleSelect} value={5} style={{ marginRight: 2 }} >+5</Button>
+  <Button onClick={this.handleSelect} value={10} style={{ marginRight: 2 }}>+10</Button>
+  <Button onClick={this.handleSelect} value={15} >+15</Button>
 */

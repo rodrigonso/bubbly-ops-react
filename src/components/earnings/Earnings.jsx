@@ -30,6 +30,7 @@ class Earnings extends Component {
 		if (!this.props.user.employeeId) return null
 
 		const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getJobs/${this.props.user.employeeId}`)
+		console.log(res.data)
 		this.setState({ jobs: res.data })
 	}
 
@@ -54,15 +55,10 @@ class Earnings extends Component {
 		const { jobs } = this.state
 		const days = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
 
-		moment.updateLocale('en', {
-			weekdaysShort : days
-		});
-
 		if (jobs.length > 0) {
 			const jobsByDay =  days.map(day => {
-				return { name: day, value: jobs.filter(job => moment(job.jobData.start.dateTime).format("ddd") === day).length }
+				return { name: day, value: jobs.filter(job => moment(job.jobData.start.dateTime).format("ddd") == day).length }
 			}) 
-	
 			return jobsByDay
 		}
 		else return []
@@ -71,11 +67,14 @@ class Earnings extends Component {
 	getTotalEarned = () => {
 		const { jobs } = this.state
 		if (jobs.length > 0) {
-			const durations = jobs.map(job => job.serviceType.duration)
-			const driving = jobs.map(job =>  job.distances.rows.length > 0 ? parseInt(job.distances.rows[0].elements[0].duration.text) : 0)
+			const washing = jobs.map(job => job.serviceType.duration)
+			const totalWashing = washing.reduce((a, b) => a + b) * 10
 
-			const totalEarned = durations.reduce((a, b) => a + b) * 10 + driving.reduce((a, b) => a+ b)
-			return totalEarned
+			const driving = jobs.map(job =>  job.distances.rows.length > 0 ? parseInt(job.distances.rows[0].elements[0].duration.text) : 0)
+			const totalDriving = (driving.reduce((a, b) => a + b) / 60) * 10
+
+			const totalEarned = totalDriving + totalWashing
+			return Math.round(totalEarned)
 		}
 		else return 0
 	}

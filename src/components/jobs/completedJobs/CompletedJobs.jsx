@@ -75,7 +75,7 @@ export class CompletedJobs extends Component {
       
   render() {
 			const { completedJobs } = this.props
-			const { progress, isCompleted } = this.state
+			const { progress, isCompleted, isLoading } = this.state
     return (
 			<React.Fragment>
 				<div style={{ display: "grid", gridTemplateColumns: "90% 10%", backgroundColor: "#fff", borderRadius: 5, marginBottom: 2 }} >
@@ -95,7 +95,7 @@ export class CompletedJobs extends Component {
 							</div>
 						)
 					}) : <Empty image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original" />}
-					{progress === 100 && !isCompleted ? <span><Divider /><Button onClick={this.handleCompletion}  style={{ width: "100%", backgroundColor: "#52c41a", color: "#fff", borderColor: "#52c41a" }} type="primary"  >Done</Button></span>  : null}
+					{progress === 100 && !isCompleted ? <span><Divider /><Button loading={isLoading} onClick={this.handleCompletion}  style={{ width: "100%", backgroundColor: "#52c41a", color: "#fff", borderColor: "#52c41a" }} type="primary"  >Done</Button></span>  : null}
 				</div>
 			</React.Fragment>
     )
