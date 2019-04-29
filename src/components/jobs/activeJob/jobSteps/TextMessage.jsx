@@ -49,23 +49,22 @@ handleTextSend = async() => {
 
 getTimes = () => {
   const { job } = this.props
-  const startTime = job.jobData.start.dateTime
+  const startTime = moment(job.jobData.start.dateTime).format()
 
-  const late1 = new Date(startTime)
-  late1.setMinutes(10)
-
-  const late2 = new Date(startTime)
-  late2.setMinutes(15)
+  const late1 = moment(startTime).add(10, 'm').toDate()
+  const late2 = moment(startTime).add(15, 'm').toDate()
 
   this.setState({ startTime: moment(startTime).format("LT"), late1: moment(late1).format("LT"), late2: moment(late2).format("LT") })
 }
 
 handleSelect = (e) => {
   const { job } = this.props
+  
   const value = e.target.value
-  const startTime = new Date(job.jobData.start.dateTime)
-  startTime.setMinutes(value)
-  const input = moment(startTime).format('LT')
+  const time = moment(job.jobData.start.dateTime).format()
+  const sendTime = moment(time).add(value, "m").toDate()
+
+  const input = moment(sendTime).format("LT")
   this.setState({ input })
 }
 

@@ -104,21 +104,6 @@ class Earnings extends Component {
   }
 }
 
-const colors = [
-	"#1890ff",
-	"#096dd9",
-	"#0050b3",
-]
-
-const data = [
-	{ name: "Mo", value: 1},
-	{ name: "Tue", value: 5},
-	{ name: "Wed", value: 15},
-	{ name: "Thur", value: 7},
-	{ name: "Fri", value: 6},
-	{ name: "Sat", value: 9},
-]
-
 export default Earnings
 
 

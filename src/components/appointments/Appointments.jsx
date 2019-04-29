@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import JobCard from '../jobCard/JobCard';
-import { Divider, Collapse, Spin, Icon } from 'antd';
+import { Divider, Collapse, Spin, Icon, Skeleton } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
@@ -75,12 +75,9 @@ render() {
         <Divider />
         <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
         <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
-         {!isLoading ? <Collapse bordered={false} style={{ backgroundColor: "#f7f7f7" }} >
-            {jobsByDate.map(job => {
-              if (!job) return null
-              return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
-            })}
-          </Collapse> : <Spin indicator={<Icon type="loading" /> } style={{ marginTop: "25%", marginLeft: "50%" }} />}
+          {jobsByDate.map(job => {
+            return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
+          })}
         </div>
       </div>
     )
