@@ -13,6 +13,7 @@ export class ActiveJob extends Component {
         services: [],
         currentStep: 0,
         vehicleType: "",
+        upgrades: [],
         make: "",
         model: "",
         rating: 0,
@@ -46,8 +47,15 @@ export class ActiveJob extends Component {
         this.props.history.push("/jobs")
     }
 
+    handleUpgrade = (e) => {
+      const value = e.target.value
+      const upgrades = [...this.state.upgrades, value]
+
+      this.setState({ upgrades })
+    }
+
     calculateJobPrice = () => {
-        const { make, model, rating, vehicleType, services } = this.state
+        const { make, model, rating, vehicleType, services, upgrades } = this.state
         const { job } = this.props.location.state
 
         const summary = job.jobData.summary.split(" ")
@@ -67,10 +75,12 @@ export class ActiveJob extends Component {
         console.log(res)
 
         const obj = {
+            upgrades,
             vehicleType: { make, model, vehicleType, rating },
             serviceType: res[0],
             jobData: job.jobData
         }
+        console.log(obj)
         return obj
     }
 
@@ -105,12 +115,9 @@ export class ActiveJob extends Component {
                     <Step title="Finish" /> 
                 </Steps>
                 <div className="content" style={{ marginTop: 20 }} >
-                  {this.state.currentStep === 0 ? <TextMessage job={this.props.location.state.job} /> : null}
-                  {this.state.currentStep === 1 ? <JobData handleInput={this.handleInput} make={make} model={model} rating={rating} handleRate={this.handleRate} handleSelect={this.handleSelect} /> : null}
-                  {this.state.currentStep === 2 ? <CompleteJob /> : null}
-                  {this.state.currentStep < 2 ? 
-                    <Button style={{ width: "100%", marginTop: 10 }} type="primary" onClick={this.nextStep}>Next</Button> 
-                    : <Button style={{ width: "100%" }} type="danger" onClick={this.handleCompletion} >End Job</Button> }
+                  {this.state.currentStep === 0 ? <TextMessage job={this.props.location.state.job} nextStep={this.nextStep} /> : null}
+                  {this.state.currentStep === 1 ? <JobData handleInput={this.handleInput} nextStep={this.nextStep} make={make} model={model} rating={rating} handleRate={this.handleRate} handleSelect={this.handleSelect} /> : null}
+                  {this.state.currentStep === 2 ? <CompleteJob handleCompletion={this.handleCompletion} handleUpgrade={this.handleUpgrade} /> : null}
                 </div> 
             </div>
         </div>

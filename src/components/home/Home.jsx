@@ -43,13 +43,23 @@ export class Home extends Component {
           <div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5 }} >
             <h2>Welcome, {user.username}</h2>
           </div>
-          <div className="cards" onClick={() => this.props.history.push("/jobs")} style={{ display: "grid", gridTemplateColumns: "30% 60% 10%", backgroundColor: "#fff", borderRadius: 5, padding: 24, marginTop: 5 }} >
+          <div className="current-jobs" onClick={() => this.props.history.push("/jobs")} style={{ display: "grid", gridTemplateColumns: "30% 60% 10%", backgroundColor: "#fff", borderRadius: 5, padding: 24, marginTop: 20 }} >
             <div style={{ marginLeft: 10 }} >
               <Badge count={this.props.uncompletedJobs.length} ><Avatar shape="square" size="large" icon="solution" style={{ backgroundColor: "#1890ff" }} /></Badge>
             </div>
             <div>
               <h4>Current Jobs</h4>
               <p>Click here to see all jobs scheduled for today!</p>
+            </div> 
+             <Icon type="right" style={{ marginTop: 30 }}  />
+          </div>
+          <div className="earnings" onClick={() => this.props.history.push("/earnings")} style={{ display: "grid", gridTemplateColumns: "30% 60% 10%", backgroundColor: "#fff", borderRadius: 5, padding: 24, marginTop: 5 }} >
+            <div style={{ marginLeft: 10 }} >
+             <Avatar shape="square" size="large" icon="stock" style={{ backgroundColor: "#1890ff" }} />
+            </div>
+            <div>
+              <h4>My Earnings</h4>
+              <p>Click here to see an overview of your earnings.</p>
             </div> 
              <Icon type="right" style={{ marginTop: 30 }}  />
           </div>

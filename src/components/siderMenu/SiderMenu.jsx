@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Layout, Menu, Avatar, Button } from 'antd'
+import { Layout, Menu, Avatar, Divider } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const { Sider } = Layout;
@@ -41,7 +41,7 @@ handleLogout = () => {
             <Menu mode="horizontal" style={{ border: 0 }} >
               <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
               <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
-              {user.email ? <Menu.Item onClick={this.handleLogout}>Logout</Menu.Item> : null}
+              {user.email ? <Menu.Item style={{ marginLeft: 100 }} onClick={this.handleLogout} >Logout</Menu.Item> : null}
             </Menu>
           </div>
       )

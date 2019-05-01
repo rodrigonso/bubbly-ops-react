@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form, Radio } from 'antd';
+import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form, Radio, InputNumber } from 'antd';
 import moment from 'moment'
 import axios from 'axios';
 
@@ -70,13 +70,14 @@ handleSelect = (e) => {
 
   render() {
       const { input, isSent, startTime, isLoading, late1, late2 } = this.state
+      const { job } = this.props
       return (
         <div style={{width: "100%", minHeight: 350 }}>
           <p>Select the appropiate number according to your ETA.</p>
           <Divider />
           <div>
-            <h4>Normal</h4>
-            <Radio.Group defaultValue={0} onChange={this.handleSelect} buttonStyle="solid" >
+            <h4>On-Time</h4>
+            <Radio.Group onChange={this.handleSelect} buttonStyle="solid" >
               <Radio.Button value={0}>{startTime}</Radio.Button>
               <Radio.Button value={10}>{late1}</Radio.Button>
               <Radio.Button value={15}>{late2}</Radio.Button>
@@ -90,17 +91,18 @@ handleSelect = (e) => {
               <p style={{ display: "inline", marginLeft: 5 }} >Your message was sent!</p>
             </React.Fragment> 
           : 
-            <div>
+            <React.Fragment>
               {isSent || this.state.input ? 
-                <React.Fragment>
+                <div>
                   <Divider />
                   <h4 style={{ marginTop: 20, display: "inline" }} >Current ETA:</h4>
                   <p style={{ display: "inline", marginLeft: 5 }} >{input}</p>
                   <Button onClick={this.handleTextSend} loading={isLoading} type="danger" style={{ marginLeft: 65 }} >Send</Button>
-                </React.Fragment> 
+                </div> 
                 : null}
-            </div> }
+            </React.Fragment> }
           <Divider />
+          <Button disabled={isSent ? false : true} style={{ width: "100%", marginTop: 100  }} type="primary" onClick={this.props.nextStep}>Next</Button> 
         </div>
       )
   }

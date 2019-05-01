@@ -31,6 +31,7 @@ export class JobData extends Component {
                     <Rate style={{ margin: "auto", fontSize: 30 }} value={rating} onChange={handleRate} />
                 </Form.Item>
                 <Divider />
+                <Button style={{ width: "100%" }} type="primary" onClick={this.props.nextStep}>Next</Button> 
             </Form>
         </div>
     )

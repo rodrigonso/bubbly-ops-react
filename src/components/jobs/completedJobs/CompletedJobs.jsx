@@ -9,13 +9,16 @@ export class CompletedJobs extends Component {
 			uncompletedJobs: [],
 			isLoading: false,
 			progress: 0,
-			isCompleted: false,
+			isCompleted: true,
 		}
 
 	componentDidMount() {
 		const progress = this.calculateProgress()
-		console.log(progress)
 		this.setState({ progress })
+
+		const isCompleted = JSON.parse(localStorage.getItem("isCompleted"))
+		console.log(isCompleted)
+		this.setState({ isCompleted })
 	}
 		
 	componentDidUpdate(prevProps) {
@@ -52,12 +55,14 @@ export class CompletedJobs extends Component {
 				})
 				const final = await Promise.all(res)
 				this.setState({ isCompleted: true })
+				localStorage.setItem("isCompleted", true)
 				console.log(final)
+				Modal.success({ title: "Success!", content: "Your jobs have been saved to the database!" })
 		} catch (ex) {
 				console.log(ex)
+				Modal.error({ title: "Success!", content: "You have already saved these jobs!" })
 		} finally {
 				this.setState({ isLoading: false })
-				Modal.success({ title: "Success!", content: "Your jobs have been saved to the database!" })
 		}
 	}
 
@@ -80,7 +85,7 @@ export class CompletedJobs extends Component {
 			<React.Fragment>
 				<div style={{ display: "grid", gridTemplateColumns: "90% 10%", backgroundColor: "#fff", borderRadius: 5, marginBottom: 2 }} >
 					<div style={{ padding: 15 }} >
-						<Icon style={{ fontSize: 18 }}  type="file-protect" />
+						<Icon style={{ fontSize: 18 }}  type="file-done" />
 						<h4 style={{ marginLeft: 10, display: "inline", fontWeight: 400 }} >Completed Jobs</h4>
 					</div>
 				</div> 
