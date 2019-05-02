@@ -73,6 +73,7 @@ formatPrice = () => {
 
   render() {
     const { job, isMobile, isLoading } = this.props;
+    if (!job.jobData.summary) return null
     if (isMobile) return (
       <React.Fragment>
       <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
