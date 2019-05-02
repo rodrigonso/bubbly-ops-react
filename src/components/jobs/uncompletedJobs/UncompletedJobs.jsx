@@ -7,7 +7,7 @@ const { Step } = Steps;
 const { Text } = Typography;
 const { Option } = Select;
 
-export class CurrentJobs extends Component {
+export class UncompletedJobs extends Component {
     state = {
         services: [],
     }
@@ -21,7 +21,7 @@ export class CurrentJobs extends Component {
   render() {
       const { uncompletedJobs } = this.props
     return (
-    <div style={{ marginTop: 20, minWidth: 330 }} >
+    <div style={{ marginTop: 20, minWidth: 320 }} >
       <div style={{ display: "grid", gridTemplateColumns: "90% 10%", padding: 15, backgroundColor: "#fff", borderRadius: 5 }} >
         <div>
           <Icon style={{ fontSize: 18 }}  type="exception" />
@@ -42,6 +42,6 @@ export class CurrentJobs extends Component {
   }
 }
 
-export default CurrentJobs
+export default UncompletedJobs
 //borderBottom: "2px solid #f7f7f7"
 //<Button size="small" shape="circle" onClick={this.props.handleRefresh}  ><Icon type="sync" /></Button> 

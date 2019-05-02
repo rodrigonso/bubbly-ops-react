@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { getDistances } from '../../../services/eventsService'
-import { Empty, Icon, Button, Modal, Progress, Divider } from 'antd'
-import Axios from 'axios';
+import { Empty, Icon, Button, message, Progress, Divider } from 'antd'
+import axios from 'axios';
 
 export class CompletedJobs extends Component {
     state = {
@@ -25,20 +25,24 @@ export class CompletedJobs extends Component {
 		if (prevProps.completedJobs !== this.props.completedJobs) {
 			this.setState({ completedJobs: this.props.completedJobs })
 			const progress = this.calculateProgress()
-			this.setState({ progress, isCompleted: false })
+			this.setState({ progress })
 		} else if (prevProps.uncompletedJobs !== this.props.uncompletedJobs) {
 			this.setState({ uncompletedJobs: this.props.uncompletedJobs })
 			const progress = this.calculateProgress()
-			this.setState({ progress, isCompleted: false })
+			this.setState({ progress })
 		}
 	}
 
 	formatSummary = (job) => {
 		if (!job.jobData.summary) return "not found"
-		const regex = /[^0-9]/g;
-		const summary = job.jobData.summary.match(regex);
-		
-		return summary;
+
+		const summary = job.jobData.summary.split(" ")
+		const final = summary.slice(0, 4)
+		return final.join(" ")
+	}
+
+	handleJobDelete = (job) => {
+		console.log(job, "was deleted")
 	}
 
 	handleCompletion = async() => {
@@ -50,17 +54,17 @@ export class CompletedJobs extends Component {
 				console.log(jobs)
 
 				const res = jobs.map(async(item) => {
-						const response = await Axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.props.user.employeeId}`, item)
+						const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.props.user.employeeId}`, item)
 						return response
 				})
 				const final = await Promise.all(res)
 				this.setState({ isCompleted: true })
 				localStorage.setItem("isCompleted", true)
 				console.log(final)
-				Modal.success({ title: "Success!", content: "Your jobs have been saved to the database!" })
+				message.success("Your jobs have been saved to the database!")
 		} catch (ex) {
 				console.log(ex)
-				Modal.error({ title: "Success!", content: "You have already saved these jobs!" })
+				message.error("You have already saved these jobs!" )
 		} finally {
 				this.setState({ isLoading: false })
 		}
@@ -95,7 +99,7 @@ export class CompletedJobs extends Component {
 					<Divider />
 					{completedJobs.length > 0 ? completedJobs.map(job => {
 						return (
-							<div style={{ display: "grid", gridTemplateColumns: "90% 10%" }} >
+							<div style={{ display: "grid", gridTemplateColumns: "90% 10%" }} key={job.jobData.id} >
 								<p>{this.formatSummary(job)}</p>
 							</div>
 						)

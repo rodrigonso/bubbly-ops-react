@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PageHeader, Steps, Button, message } from 'antd';
+import { PageHeader, Steps, Button, Icon } from 'antd';
 import JobData from './jobSteps/JobData';
 import TextMessage from './jobSteps/TextMessage';
 import CompleteJob from './jobSteps/EndJob';
@@ -25,22 +25,13 @@ export class ActiveJob extends Component {
         this.setState({ services: data })
     }
 
-    nextStep = () => {
-        this.setState({ currentStep: this.state.currentStep + 1 })
-    }
+    nextStep = (data) => {
+      if (data) {
+        const { make, model, rating, vehicleType } = data
+        this.setState({ make, model, rating, vehicleType })
+      }
 
-    handleInput = (e) => {
-    const field = e.target.placeholder
-    if (field === "Ford") this.setState({ make: e.target.value })
-    else this.setState({ model: e.target.value })
-    }
-
-    handleRate = (value) => {
-        this.setState({ rating: value })
-    }
-
-    handleSelect = (e) => {
-        this.setState({ vehicleType: e.target.value })
+      this.setState({ currentStep: this.state.currentStep + 1 })
     }
 
     handleBack = () => {
@@ -106,8 +97,8 @@ export class ActiveJob extends Component {
       const { make, model, rating, currentStep } = this.state
       const { job } = this.props.location.state
     return (
-        <div style={{ minWidth: 330 }}  >
-            <PageHeader onBack={this.handleBack} title={this.formatSummary()} />
+        <div style={{ width: "100%" }}  >
+            <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }}  />
             <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
                 <Steps size="small" current={currentStep} >
                     <Step title="Text Customer" /> 
