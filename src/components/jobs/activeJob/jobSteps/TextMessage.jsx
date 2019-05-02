@@ -26,13 +26,13 @@ componentDidMount() {
 handleTextSend = async() => {
   const { input } = this.state
 
-  //const test = this.props.event.summary.match(/\d+/g).map(Number);
+  const phone = (this.props.job.jobData.summary.match(/\d+/g).map(Number)).join();
 
   const obj = {
-    to: "18329298338",
+    to: phone.length === 10 ? `1${phone}` : phone,
     text: `Hey, it's Bubbly Here!\n\nYour detailer is on the way to your location.\n\nCurrent ETA: ${input}\n\nThanks!`
   }
-
+  
   try {
     this.setState({ isLoading: true })
     const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
