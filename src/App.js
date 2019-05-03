@@ -153,7 +153,11 @@ render() {
                 }}
                 />
                 <Route  exact path="/jobs/:id" render={(props) => <ActiveJob {...props} user={user} handleJobCompletion={this.handleJobCompletion} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
-                <Route  exact path="/jobs" render={(props) => <Jobs {...props} handleRefresh={this.handleRefresh} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} user={user} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
+                <Route  exact path="/jobs" render={(props) => {
+                  if (!user.username) return <Redirect to="/" />
+                  else return <Jobs {...props} handleRefresh={this.handleRefresh} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} user={user} isMobile={isMobile} isGapiReady={isGapiReady} />
+                }}
+                />
                 <Route  exact path="/" render={(props) => <Home {...props} user={user} isMobile={isMobile} isGapiReady={isGapiReady} uncompletedJobs={uncompletedJobs} completedJobs={completedJobs} /> } />
               </div>
             </Content>
