@@ -70,9 +70,10 @@ class Earnings extends Component {
 			const washing = jobs.map(job => job.serviceType.duration)
 			const totalWashing = washing.reduce((a, b) => a + b) * 10
 
-			const driving = jobs.map(job =>  job.distances.rows.length > 0 ? parseInt(job.distances.rows[0].elements[0].duration.text) : 0)
-			const totalDriving = (driving.reduce((a, b) => a + b) / 60) * 10
+			const driving = jobs.map(job =>  job.distances.rows.length > 1 ? parseInt(job.distances.rows[0].elements[0].duration.text) : 0)
+			const drivingBack = jobs.map(job =>  job.distances.rows.length === 2 ? parseInt(job.distances.rows[1].elements[1].duration.text) : 0)
 
+			const totalDriving = ((driving.reduce((a, b) => a + b) / 60) * 10) + ((drivingBack.reduce((a, b) => a + b) / 60) * 10)
 			const totalEarned = totalDriving + totalWashing
 			return Math.round(totalEarned)
 		}
