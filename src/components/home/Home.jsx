@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Divider, Tabs, Avatar, Badge, Button, Icon } from 'antd';
 import Login from '../common/Login';
 import Register from '../common/Register'
-import './Home.css'
 
 const { TabPane } = Tabs;
 
