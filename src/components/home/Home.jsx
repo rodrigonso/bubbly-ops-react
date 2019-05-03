@@ -18,7 +18,7 @@ export class Home extends Component {
           <h1 style={{ fontSize: 32 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
           <Divider />
-          <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff" }} >
+          <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
             <Tabs style={{ width: 250, margin: "auto" }} >
               <TabPane tab="Login" key="1">
                 <p>Please login with your credentials below</p>
