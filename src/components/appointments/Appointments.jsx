@@ -70,14 +70,16 @@ render() {
 
     return (
       <div style={{ height: "auto" }}>
-        <h1 style={{ fontSize: 32 }}>Appointments</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
         <Divider />
-        <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
-        <div className="dashboard-days-card" style={{ marginTop: 20, maxWidth: 1200 }}>
-          {jobsByDate.map(job => {
-            return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
-          })}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr" }} >
+          <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
+          <div className="dashboard-days-card" style={{ marginTop: 10, maxWidth: 1200 }}>
+            {jobsByDate.map(job => {
+              return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
+            })}
+          </div>
         </div>
       </div>
     )
@@ -86,7 +88,7 @@ render() {
 
 const divStyle = {
   marginTop: 10, 
-  maxWidth: 1200, 
+  maxWidth: 1400, 
   backgroundColor: "#fff", 
   padding: 20, 
   borderRadius: 4

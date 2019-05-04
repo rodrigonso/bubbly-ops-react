@@ -84,7 +84,7 @@ class Earnings extends Component {
 		console.log(this.props.user)
     return (
 			<div className="home-body" style={{ overflowX: "hidden", overflowY: "auto" }} >
-			<h1 style={{ fontSize: 32 }}>Earnings</h1>
+			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
 			<p>Here you can find a full report of all of your earnings.</p>
 			<Divider />
 			<div style={{ backgroundColor: "#fff", padding: 24, borderRadius: 5, margin: "auto" }} >

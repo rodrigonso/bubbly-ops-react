@@ -18,7 +18,7 @@ export class Settings extends Component {
     if (this.state.employees.length < 0) return null
     return (
       <div>
-        <h1 style={{ fontSize: 32 }}>Settings</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700 }}>Settings</h1>
         <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
         <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
           <Card bordered={false} title="Employees" extra={<Icon type="plus" /> }>

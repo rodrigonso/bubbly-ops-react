@@ -1,0 +1,8 @@
+.desktop-menu {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    background-color: #fff;
+    height: 10;
+    font-weight: 700;
+    font-family: "Nunito Sans";
+}

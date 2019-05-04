@@ -79,7 +79,7 @@ formatPrice = () => {
       <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
         <div style={{ padding: 10 }}>
           <div>
-            <p>{this.formatSummary()}</p>
+            <p style={{ fontWeight: 700 }} >{this.formatSummary()}</p>
             <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
             <br />
             <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
@@ -97,24 +97,19 @@ formatPrice = () => {
             <div style={{ padding: 10 }}>
                <div style={{ display: "grid", gridTemplateColumns: "50% 30% 20%" }} >
                 <div >
-                  <p>{this.formatSummary()}</p>
-                  <Icon type="environment" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.jobData.location}</Text>
-                  <br />
+                  <h3 style={{ fontWeight: 700 }} >{this.formatSummary()}</h3>
                   <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
                   <br />
+                  <Icon type="calendar" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{moment(job.jobData.start.dateTime).format('L')}</Text> 
+                  <br />
+                  <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text> 
                 </div>
                 <div>
-                  <br/>
-                  <Icon type="dollar" style={{ marginRight: 5 }} />{this.formatPrice()}
-                  <br />
-                  <Icon type="car" style={{ marginRight: 5 }} />{this.formatVehicleInfo()}
-                  <br />
-                  <Icon type="calendar" style={{ marginRight: 5 }} />{moment(job.jobData.start.dateTime).format('L')}
-                  <br />
-                  <Icon type="hourglass" style={{ marginRight: 5 }} />{job.distances.rows[0].elements[0].duration.text}
+                  <p type="secondary" style={{ fontSize: 26, margin: 'auto', marginTop: 30 }}>{this.formatPrice()}</p>
                 </div>
-                <div style={{ margin: "auto" }} >
-                  <Button type="danger" onClick={() => this.props.handleDelete(job)} loading={isLoading} >Delete</Button>
+                <div>
+                  <Button shape="round" style={{ marginTop: 30, marginRight: 4 }} >Edit</Button>
+                  <Button shape="circle" style={{ display: "inline" }}  onClick={() => this.props.handleDelete(job)} loading={isLoading} ><Icon type="delete" /></Button>
                 </div>
                 </div> 
               </div>

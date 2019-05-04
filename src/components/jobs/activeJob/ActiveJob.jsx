@@ -100,10 +100,10 @@ export class ActiveJob extends Component {
         <div style={{ width: "100%" }}  >
             <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }}  />
             <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
-                <Steps size="small" current={currentStep} >
-                    <Step title="Text Customer" /> 
-                    <Step title="Customer Details" /> 
-                    <Step title="Finish" /> 
+                <Steps size="small" current={currentStep} style={{ fontWeight: 700 }} >
+                  <Step title="Text Customer"  /> 
+                  <Step title="Customer Details" /> 
+                  <Step title="Finish" /> 
                 </Steps>
                 <div className="content" style={{ marginTop: 20 }} >
                   {this.state.currentStep === 0 ? <TextMessage job={this.props.location.state.job} nextStep={this.nextStep} /> : null}

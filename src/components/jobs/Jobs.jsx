@@ -27,7 +27,7 @@ export class Jobs extends Component {
       const { uncompletedJobs, completedJobs } = this.props
     return (
       <div style={{ overflowX: "hidden", minWidth: "100%" }} >
-        <h1 style={{ fontSize: 32 }}>Your Jobs</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700 }}>Your Jobs</h1>
         <p>Here you can find all your jobs scheduled for today.</p>
         <Divider />
         <CompletedJobs completedJobs={completedJobs} uncompletedJobs={uncompletedJobs} user={user} />

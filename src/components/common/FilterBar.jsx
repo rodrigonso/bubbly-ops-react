@@ -1,31 +1,40 @@
 import React from 'react'
-import { Divider, DatePicker, Radio } from 'antd'
+import { Divider, DatePicker, Radio, Badge } from 'antd'
 
 const { RangePicker } = DatePicker
 
 function FilterBar(props) {
   return (
     <div className="dashboard-tool-bar" style={toolbarStyle}>
-        <p style={{ display: "inline", marginRight: 20 }} >Filter by range</p>
-        <RangePicker onChange={props.handleChange} separator="|" />
-        <Divider type="vertical" style={{ marginLeft: 40, height: 45 }}/>
-        <p style={{ display: "inline", marginRight: 5, marginLeft: 10 }}> Filter by detailer</p>
-        <Radio.Group size="medium" style={{ marginLeft: 20 }} buttonStyle="outline" onChange={props.onEmployeeChange} >
-        <Radio.Button value={""} checked={props.selectedEmployee ? false : true} >All</Radio.Button>
-            {props.employees.map((employee, i) => {
-                return <Radio.Button key={i} value={employee._id} checked={props.selectedEmployee === i ? true : false} >{employee.name}</Radio.Button>
-            })}
+        <h4> Filter Detailers</h4>
+        <Radio.Group size="default" buttonStyle="solid" onChange={props.onEmployeeChange} >
+          <Radio.Button style={radioStyle} value={""} checked={props.selectedEmployee ? false : true} >All</Radio.Button>
+          {props.employees.map((employee, i) => {
+              return <Radio.Button style={radioStyle}  key={i} value={employee._id} checked={props.selectedEmployee === i ? true : false} >{employee.name}</Radio.Button>
+          })}
         </Radio.Group>
+        <Divider />
+        <h4>Filter Ranges</h4>
+        <RangePicker onChange={props.handleChange} separator="|" placeholder={["Start", "End"]} style={{ width: "100%" }}  />
+        
+        <br/>
     </div>
   )
 }
 
+const radioStyle = {
+  display: "block",
+  marginBottom: 5,
+  width: 200,
+  borderRadius: 5
+}
+
 const toolbarStyle = {
     marginTop: 10, 
-    maxWidth: 1200, 
+    width: 250, 
     backgroundColor: "#fff", 
-    padding: 20, 
-    borderRadius: 4
+    padding: 25, 
+    borderRadius: 5
   }
 
 export default FilterBar

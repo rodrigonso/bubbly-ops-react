@@ -186,9 +186,8 @@ const layoutStyleMobile = {
 
 
 const layoutStyleDesktop = {
-  marginLeft: 200,
   background: "#f7f7f7",
-  mingHeight: "100%"
+  minHeight: "100%"
 }
 
 export default App;

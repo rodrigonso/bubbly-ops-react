@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Layout, Menu, Avatar, Divider } from 'antd'
+import { Layout, Menu, Avatar, Divider, Button } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
 const { Sider } = Layout;
@@ -35,18 +35,55 @@ handleLogout = () => {
 
   render() {
     const { user } = this.props
-    if (this.props.isMobile) {
+    if (!user.email) {
       return (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", backgroundColor: "#fff" }} >
-            <Menu mode="horizontal" style={{ border: 0 }} >
-              <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
-              <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
-              {user.email ? <Menu.Item style={{ marginLeft: 100 }} onClick={this.handleLogout} >Logout</Menu.Item> : null}
-            </Menu>
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: "10% 80% 10%", backgroundColor: "#fff", height: 55, fontWeight: 700 }} >
+        <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15 }}  />
+        <Menu mode="horizontal" style={{ marginTop: 5 }}  >
+          <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
+        </Menu>
+        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "50%" }} shape="round" >Logout</Button>
+      </div>
       )
-    } 
-    else return (
+    }
+    return (
+      <div style={menuDesktop} >
+        <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15 }}  />
+        <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16 }}  >
+          <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
+        </Menu>
+        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "35%" }} shape="round" >Logout</Button>
+      </div>
+    )
+  }
+}
+
+const menuDesktop = {
+  display: "grid",
+  gridTemplateColumns: "10% 80% 10%",
+  backgroundColor: "#fff",
+  height: 55,
+  fontWeight: 700,
+  fontFamily: "Nunito Sans",
+  boxShadow: "0 4px 8px 0 rgba(0,0,0,0.12),0 2px 4px 0 rgba(0,0,0,0.08)"
+  
+}
+const styleMobile = {
+  width: 0,
+  height: "100vh",
+  position: "fixed",
+  left: 0
+}
+
+export default SiderMenu
+
+/*
         <Sider trigger={null} style={this.props.isMobile ? styleMobile : styleDesktop}>
           <div style={{ margin: "auto" }} ><img alt="" src="https://bit.ly/2XPNPsM" style={{ margin: 20}} width="150px" height="auto" /></div>
           <Menu theme="dark" mode="inline" style={{ marginTop: 20 }}>
@@ -65,22 +102,4 @@ handleLogout = () => {
             <Menu.Divider style={{ backgroundColor: "rgba(255,255,255,0.1)", width: 150, margin: "auto" }}/>
           </Menu>
         </Sider>
-    )
-  }
-}
-
-const styleDesktop = {
-  overflow: "auto",
-  height: "100vh",
-  position: "fixed",
-  left: 0
-}
-
-const styleMobile = {
-  width: 0,
-  height: "100vh",
-  position: "fixed",
-  left: 0
-}
-
-export default SiderMenu
+*/
