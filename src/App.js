@@ -6,7 +6,7 @@ import Home from './components/home/Home';
 import Appointments from './components/appointments/Appointments';
 import Settings from './components/settings/Settings'
 import ActiveJob from './components/jobs/activeJob/ActiveJob'
-import { Layout } from 'antd';
+import { Layout, PageHeader } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
 import Jobs from './components/jobs/Jobs';
@@ -135,7 +135,7 @@ render() {
         <Layout>
           {isMobile ? <MobileMenu user={user} /> : <SiderMenu user={user} isMobile={isMobile}/>}
           <Layout style={isMobile ? layoutStyleMobile : layoutStyleDesktop}>
-            <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7" }} >
+            <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7", marginTop: 80 }} >
               <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>
                 <Route  exact path="/appointments" render={(props) => {
                   if (!user.username) return <Redirect to="/" />

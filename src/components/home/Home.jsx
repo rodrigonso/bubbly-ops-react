@@ -16,7 +16,7 @@ export class Home extends Component {
     if (!user.id) {
       return (
         <div>
-          <div style={{ padding: 24, margin: "auto", display: "grid", gridTemplateColumns: "30% 10% 60%", backgroundColor: "#fff", borderRadius: 5, minWidth: 1000 }} >
+          <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5, minWidth: 325 }} >
             <Tabs style={{ width: 250, margin: "auto" }} >
               <TabPane tab="Login" key="1">
                 <p>Please login with your credentials below</p>
@@ -31,7 +31,6 @@ export class Home extends Component {
             </Tabs>
             <Divider type="vertical" style={{ height: "80%", marginTop: 25, marginLeft: 20 }}  />
             <div style={{ margin: "auto" }} >
-              <h1 style={{ fontWeight: 900, fontSize: 26 }} >Bubbly</h1>
             </div>
           </div>
         </div>
