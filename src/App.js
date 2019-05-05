@@ -168,7 +168,7 @@ render() {
 }
 
 const appStyleDesktop = {
-  paddingTop: 100,
+  paddingTop: 20,
   minHeight: "100vh",
   minWidth: 800
 }

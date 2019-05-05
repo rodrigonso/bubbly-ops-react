@@ -69,7 +69,7 @@ render() {
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
 
     return (
-      <div style={{ height: "auto" }}>
+      <div style={{ height: "auto", marginBottom: 80 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
         <Divider />
