@@ -120,7 +120,7 @@ handleRefresh = () => {
 }
 
 handleJobCompletion = (job) => {
-  const uncompletedJobs = this.state.uncompletedJobs.filter(item => item.jobData.id !== job.jobData.id )
+  const uncompletedJobs = this.state.uncompletedJobs.filter(item => item.jobData.id !== job.id )
   const completedJobs = [...this.state.completedJobs]
   completedJobs.push(job)
   localStorage.setItem("completedJobs", JSON.stringify(completedJobs))
@@ -135,7 +135,7 @@ render() {
         <Layout>
           {isMobile ? <MobileMenu user={user} /> : <SiderMenu user={user} isMobile={isMobile}/>}
           <Layout style={isMobile ? layoutStyleMobile : layoutStyleDesktop}>
-            <Content style={{ margin: 'auto', overflow: "initial", maxWidth: 1000, background: "#f7f7f7", marginTop: 80 }} >
+            <Content style={{ margin: 'auto', maxWidth: 1400, background: "#f7f7f7", marginTop: 80 }} >
               <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>
                 <Route  exact path="/appointments" render={(props) => {
                   if (!user.username) return <Redirect to="/" />
@@ -168,7 +168,7 @@ render() {
 }
 
 const appStyleDesktop = {
-  paddingTop: 20,
+  paddingTop: 10,
   minHeight: "100vh",
   minWidth: 800
 }
@@ -181,7 +181,7 @@ const appStyleMobile = {
 const layoutStyleMobile = {
   marginLeft: 0,
   background: "#f7f7f7",
-  mingHeight: "100%"
+  minHeight: "100%"
 }
 
 

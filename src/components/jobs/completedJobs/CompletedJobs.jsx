@@ -99,7 +99,7 @@ export class CompletedJobs extends Component {
 					<Divider />
 					{completedJobs.length > 0 ? completedJobs.map(job => {
 						return (
-							<div style={{ display: "grid", gridTemplateColumns: "90% 10%" }} key={job.jobData.id} >
+							<div style={{ display: "grid", gridTemplateColumns: "90% 10%" }} key={job.id} >
 								<p>{this.formatSummary(job)}</p>
 							</div>
 						)

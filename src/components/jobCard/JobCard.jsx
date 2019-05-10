@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag } from 'antd';
+import { Redirect } from 'react-router-dom'
+import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag, Timeline } from 'antd';
 import dateFormat from 'dateformat';
 import moment from 'moment'
 import TextMessage from '../jobs/activeJob/jobSteps/TextMessage'
@@ -68,7 +68,6 @@ formatPrice = () => {
   const { job } = this.props
   if (job.serviceType) return `$${job.serviceType.price}`
   else return "$0"
-  
 }
 
   render() {
@@ -86,7 +85,7 @@ formatPrice = () => {
             <br />
             <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
           </div>
-          {this.props.job.isCompleted ? null : <Link to={{ pathname:`jobs/${job.jobData.id}`, state: { job: job }}}><Button style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button></Link>}
+          {this.props.job.isCompleted ? null : <Button onClick={() => this.props.handleBegin(job)} style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button>}
         </div>
       </Card>
    </React.Fragment>
@@ -104,20 +103,22 @@ formatPrice = () => {
                   <br />
                   <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text> 
                 </div>
-                <div>
-                  <p type="secondary" style={{ fontSize: 26, margin: 'auto', marginTop: 30 }}>{this.formatPrice()}</p>
+                <div style={{ justifyContent: "center", alignItems: "center", display: "flex" }} >
+                  <p type="secondary" style={{ fontSize: 24, marginTop: "16%" }} >{this.formatPrice()}</p>
                 </div>
-                <div>
-                  <Button shape="round" style={{ marginTop: 30, marginRight: 4 }} >Edit</Button>
-                  <Button shape="circle" style={{ display: "inline" }}  onClick={() => this.props.handleDelete(job)} loading={isLoading} ><Icon type="delete" /></Button>
+                <div style={{ display: "flex", alignItems: "center" }} >
+                  <Button shape="round" style={{ marginRight: 4 }}>Edit</Button>
+                  <Button shape="circle" onClick={() => this.props.handleDelete(job)} loading={isLoading}><Icon type="delete" style={{ marginTop: 5 }} /></Button>
                 </div>
-                </div> 
+                </div>
               </div>
             </Card>
          </React.Fragment>
       )
   }
 }
+
+
 
 const badgeStyle = {
   fontSize: 12,
@@ -129,6 +130,7 @@ const cardStyle = {
   border: 0,
   borderRadius: 5,
   borderBottom: "2px solid #f7f7f7",
+  marginBottom: 10
 }
 
 export default JobCard

@@ -12,6 +12,10 @@ export class Jobs extends Component {
 
     componentDidMount() {
         this.setState({ completedJobs: this.props.completedJobs, uncompletedJobs: this.props.uncompletedJobs })
+
+        const activeJob = JSON.parse(localStorage.getItem("activeJob"))
+        if (!activeJob) return
+        else this.props.history.push(`/jobs/${activeJob.jobData.id}`)
     }
 
     componentDidUpdate(prevProps) {
@@ -31,7 +35,7 @@ export class Jobs extends Component {
           <p>Here you can find all your jobs scheduled for today.</p>
           <Divider />
           <CompletedJobs completedJobs={completedJobs} uncompletedJobs={uncompletedJobs} user={user} />
-          <UncompletedJobs handleRefresh={this.props.handleRefresh} user={user} uncompletedJobs={uncompletedJobs} isGapiReady={isGapiReady} />
+          <UncompletedJobs {...this.props} handleRefresh={this.props.handleRefresh} user={user} uncompletedJobs={uncompletedJobs} isGapiReady={isGapiReady} />
           <UpcomingJobs user={user} />
         </div>
     )

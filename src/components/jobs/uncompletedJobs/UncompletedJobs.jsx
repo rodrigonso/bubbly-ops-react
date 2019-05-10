@@ -8,15 +8,20 @@ const { Text } = Typography;
 const { Option } = Select;
 
 export class UncompletedJobs extends Component {
-    state = {
-        services: [],
-    }
+  state = {
+      services: [],
+  }
 
-    async componentDidMount() {
-      this.setState({ user: this.props.user })
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
-      this.setState({ services: data })
-    }
+  async componentDidMount() {
+    this.setState({ user: this.props.user })
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
+    this.setState({ services: data })
+  }
+
+  handleBegin = (job) => {
+    localStorage.setItem("activeJob", JSON.stringify(job))
+    this.props.history.push(`/jobs/${job.jobData.id}`)
+  }
 
   render() {
       const { uncompletedJobs } = this.props
@@ -31,7 +36,7 @@ export class UncompletedJobs extends Component {
       <div style={{ marginTop: 2 }} >
           {uncompletedJobs.length > 0 ? uncompletedJobs.map(job => {
             return (
-              <JobCard job={job} isMobile={true} />
+              <JobCard job={job} isMobile={true} handleBegin={this.handleBegin} />
             )}
           ) : <div style={{ padding: 15, backgroundColor: "#fff", marginTop: 2, minHeight: 200 }} >
                 <Button type="primary" onClick={this.props.handleRefresh} style={{ marginLeft: 100, marginTop: 50 }}><Icon type="reload" />Refresh</Button>

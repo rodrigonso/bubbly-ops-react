@@ -25,8 +25,9 @@ componentDidMount() {
 // sends text message
 handleTextSend = async() => {
   const { input } = this.state
+  const { activeJob } = this.props
 
-  const phone = (this.props.job.jobData.summary.match(/\d+/g).map(Number)).join();
+  const phone = (activeJob.jobData.summary.match(/\d+/g).map(Number)).join();
 
   const obj = {
     to: phone.length === 10 ? `1${phone}` : phone,
@@ -47,8 +48,9 @@ handleTextSend = async() => {
 }
 
 getTimes = () => {
-  const { job } = this.props
-  const startTime = moment(job.jobData.start.dateTime).format()
+  const { activeJob } = this.props
+  console.log(activeJob)
+  const startTime = moment(activeJob.jobData.start.dateTime).format()
 
   const late1 = moment(startTime).add(10, 'm').toDate()
   const late2 = moment(startTime).add(15, 'm').toDate()
@@ -57,10 +59,10 @@ getTimes = () => {
 }
 
 handleSelect = (e) => {
-  const { job } = this.props
+  const { activeJob } = this.props
   
   const value = e.target.value
-  const time = moment(job.jobData.start.dateTime).format()
+  const time = moment(activeJob.jobData.start.dateTime).format()
   const sendTime = moment(time).add(value, "m").toDate()
 
   const input = moment(sendTime).format("LT")
@@ -69,7 +71,7 @@ handleSelect = (e) => {
 
   render() {
       const { input, isSent, startTime, isLoading, late1, late2 } = this.state
-      const { job } = this.props
+      const { activeJob } = this.props
       return (
         <div style={{width: "100%", minHeight: 350 }}>
           <p>Select the appropiate number according to your ETA.</p>

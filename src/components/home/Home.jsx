@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Tabs, Avatar, Badge, Typography, Icon } from 'antd';
+import { Divider, Tabs, Avatar, Badge, Typography, Icon, Carousel } from 'antd';
 import Login from '../common/Login';
 import Register from '../common/Register'
 
@@ -62,7 +62,7 @@ export class Home extends Component {
               <h4 style={{ fontWeight: 700 }} >My Earnings</h4>
               <p>Click here to see an overview of your earnings.</p>
             </div> 
-             <Icon type="right" style={{ marginTop: 30 }}  />
+            <Icon type="right" style={{ marginTop: 30 }}  />
           </div>
         </div>
     )
