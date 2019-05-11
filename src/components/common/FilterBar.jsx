@@ -31,8 +31,6 @@ const radioStyle = {
 
 const toolbarStyle = {
     height: 350,
-    marginTop: "21%",
-    width: "16rem", 
     backgroundColor: "#fff", 
     padding: 25, 
     borderRadius: 5

@@ -74,10 +74,34 @@ viewRecent = () => {
   this.setState({ viewAll: false })
 }
 
+getTotalHours = (jobs) => {
+  if (jobs.length === 0) return 0;
+
+  const washing = jobs.map(item => item.serviceType.duration)
+  const driving = jobs.map(item => {
+    const toDestination = parseInt(item.distances.rows[1].elements[1].duration.text) / 60
+    const fromOrigin = parseInt(item.distances.rows[0].elements[0].duration.text) / 60
+
+    if (toDestination) return toDestination + fromOrigin
+    else return fromOrigin
+
+  })
+  return Math.floor((washing.reduce((a, b) => a + b) + driving.reduce((a, b) => a + b)))
+}
+
+getTotalRevenue = (jobs) => {
+  if (jobs.length === 0) return 0
+
+  const services = jobs.map(item => item.serviceType.price)
+  const upgrades = jobs.map(item => item.upgrades.map(upgrade => upgrade.price)).flat()
+
+  return services.reduce((a, b) => a + b) + upgrades.reduce((a, b) => a + b)
+}
+
 expandedRowRender = (job) => {
   return (
     <React.Fragment>
-      <div style={{ display: "grid", gridTemplateColumns: "45% 25% 25%" }} >
+      <div style={{ display: "grid", gridTemplateColumns: "40% 20% 20% 20%" }} >
         <div>
           <Text style={{ fontSize: 12 }} type="secondary">Total</Text>
           <p style={{ fontSize: 16 }}  >${job.serviceType.price}</p>
@@ -89,6 +113,10 @@ expandedRowRender = (job) => {
         <div>
           <Text style={{ fontSize: 12 }} type="secondary">Distance</Text>
           <p style={{ fontSize: 16 }}  >{job.distances.rows[0].elements[0].distance.text}</p>
+        </div>
+        <div>
+          <Text style={{ fontSize: 12 }} type="secondary">Job Time</Text>
+          <p style={{ fontSize: 16 }}  >{job.serviceType.duration} hrs</p>
         </div>
       </div>
       <Divider />
@@ -121,13 +149,27 @@ render() {
   const  maxJobs = jobs.slice(0,5)
   const jobsByEmployee = selectedEmployee ? maxJobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
+  const totalHours = this.getTotalHours(jobsByDate)
+  const totalRevenue = this.getTotalRevenue(jobsByDate)
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
           <div style={{ display: "grid", gridTemplateColumns: "27% 73%" }} >
-            <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
+            <div style={{ width: "18em", marginTop: "4.35em" }} >
+              <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15, marginBottom: 10, display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+                <div>
+                  <Text style={{ fontSize: 12 }} type="secondary">Total Time</Text>
+                  <p style={{ fontSize: 16 }}  >{totalHours} hrs</p>
+                </div>
+                <div>
+                  <Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
+                  <p style={{ fontSize: 16 }} >${totalRevenue}</p>
+                </div>
+              </div> 
+              <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
+            </div>
             <div style={{ marginLeft: 20 }} className="dashboard-days-card" >
               <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 600 }}>
                 <TabPane key="1" tab="Recent Jobs" >
@@ -139,12 +181,12 @@ render() {
                 </TabPane>
                 <TabPane key="2" tab="All Jobs" >
                   <div>
-                    <Table expandedRowRender={(record) => this.expandedRowRender(record)} dataSource={jobsByDate} style={{ backgroundColor: "#fff", borderRadius: 5 }} pagination={{ defaultPageSize: 10 }}  >
-                      <Table.Column dataIndex="date" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Date</div> } />
-                      <Table.Column dataIndex="start" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Time</div> } />
-                      <Table.Column dataIndex="summary" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Name</div> } />
-                      <Table.Column dataIndex="serviceType.price" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
-                      <Table.Column dataIndex="id" style={{ borderRadius: 5}} render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } title={ <div style={{ fontWeight: 700 }}></div> } />
+                    <Table rowKey={(record) => record._id} expandedRowRender={(record) => this.expandedRowRender(record)} dataSource={jobsByDate} style={{ backgroundColor: "#fff", borderRadius: 5 }} pagination={{ defaultPageSize: 10 }}  >
+                      <Table.Column key="date" dataIndex="date" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Date</div> } />
+                      <Table.Column key="time" dataIndex="start" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Time</div> } />
+                      <Table.Column key="name" dataIndex="summary" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Name</div> } />
+                      <Table.Column key="amount" dataIndex="serviceType.price" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
+                      <Table.Column key="actions" dataIndex="id" style={{ borderRadius: 5}} render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } title={ <div style={{ fontWeight: 700 }}></div> } />
                     </Table>
                   </div>
                 </TabPane>

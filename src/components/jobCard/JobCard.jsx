@@ -71,7 +71,7 @@ formatPrice = () => {
 }
 
   render() {
-    const { job, isMobile, isLoading } = this.props;
+    const { job, isMobile, isLoading, i } = this.props;
     if (!job.jobData.summary) return null
     if (isMobile) return (
       <React.Fragment>
@@ -85,7 +85,7 @@ formatPrice = () => {
             <br />
             <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
           </div>
-          {this.props.job.isCompleted ? null : <Button onClick={() => this.props.handleBegin(job)} style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button>}
+          {this.props.job.isCompleted || i !== 0 ? null : <Button onClick={() => this.props.handleBegin(job)} style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button>}
         </div>
       </Card>
    </React.Fragment>

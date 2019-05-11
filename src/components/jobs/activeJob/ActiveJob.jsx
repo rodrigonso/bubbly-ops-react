@@ -53,7 +53,9 @@ export class ActiveJob extends Component {
     }
 
     handleBack = () => {
-        localStorage.removeItem("activeJob", "currentStep", "activeJobData")
+        localStorage.removeItem("activeJob")
+        localStorage.removeItem("currentStep")
+        localStorage.removeItem("activeJobData")
         this.props.history.push("/jobs")
     }
 
