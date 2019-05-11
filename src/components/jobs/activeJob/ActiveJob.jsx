@@ -105,7 +105,9 @@ export class ActiveJob extends Component {
       const job = this.calculateJobPrice()
       this.setState({ currentStep: 0 })
       this.props.handleJobCompletion(job)
-      localStorage.removeItem("activeJobData", "currentStep", "activeJob")
+      localStorage.removeItem("activeJobData")
+      localStorage.removeItem("currentStep")
+      localStorage.removeItem("activeJob")
       this.props.history.push("/jobs")
     }
 

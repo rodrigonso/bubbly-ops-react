@@ -33,6 +33,7 @@ state = {
 }
 
 async componentDidMount() {
+
   const startOfDay = new Date()
   startOfDay.setHours(0,0,0,0)
 
@@ -60,6 +61,7 @@ async componentDidMount() {
     this.loadGoogleApi()
   } 
 }
+
 
 updateSigninStatus = async(isSignedIn) => {
   if (!isSignedIn) {

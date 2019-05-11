@@ -36,7 +36,7 @@ export class UncompletedJobs extends Component {
       <div style={{ marginTop: 2 }} >
           {uncompletedJobs.length > 0 ? uncompletedJobs.map((job, i) => {
             return (
-              <JobCard key={i} i={i} job={job} isMobile={true} handleBegin={this.handleBegin} />
+              <JobCard key={i} i={i} job={job} handleRefresh={this.props.handleRefresh} isMobile={true} handleBegin={this.handleBegin} />
             )}
           ) : <div style={{ padding: 15, backgroundColor: "#fff", marginTop: 2, minHeight: 200 }} >
                 <Button type="primary" onClick={this.props.handleRefresh} style={{ marginLeft: 100, marginTop: 50 }}><Icon type="reload" />Refresh</Button>

@@ -23,8 +23,8 @@ export class MobileMenu extends Component {
     return (
 			 <React.Fragment>
 				<div style={menuStyle} >
-					<img src={require('./Artboard 1.png')} style={{ height: 40, position: "relative", top: 7, left: 15 }}  />
-					<div onClick={this.handleDrawer} style={{ marginLeft: 200, marginTop: 15, fontSize: 20, color: "#fff" }} >{user.email ? <i className={isOpen ? "fas fa-times" : "fas fa-bars"} /> : null}</div>
+					<img src={require('./Bubbly-Logo2.png')} style={{ height: 85, position: "relative", top: -12, left: 15 }}  />
+					<div onClick={this.handleDrawer} style={{ marginLeft: 200, marginTop: 15, fontSize: 20, color: "#2c3e50" }} >{user.email ? <i className={isOpen ? "fas fa-times" : "fas fa-bars"} /> : null}</div>
 				</div>
 				<Drawer placement="top" closable={false} visible={isOpen} height={300} onClose={this.handleDrawer} zIndex={5} bodyStyle={{ }}>
 					<Menu style={{ width: "24rem", marginLeft: "-1.5rem", fontFamily: 'Nunito Sans', marginTop: 50 }} mode="vertical" >
@@ -40,27 +40,15 @@ export class MobileMenu extends Component {
   }
 }
 
-const data = [
-	{ name: "Home", link: "/home" },
-	{ name: "Jobs", link: "/jobs" },
-	{ name: "Earnings", link: "/earnings" },
-]
-
 const menuStyle = {
-	background: "rgb(36,59,85)",
-	background: "linear-gradient(90deg, rgba(36,59,85,1) 0%, rgba(44,62,80,1) 100%)",
-	filter: "drop-shadow(0 0 0.5rem rgba(0,0,0,0.5))",
+	filter: "drop-shadow(0 0 0.5rem rgba(0,0,0,0.25))",
 	display: "grid",
 	position: "absolute",
 	gridTemplateColumns: "1fr 2fr",
-	backgroundColor: "#0184d4",
+	backgroundColor: "#fff",
 	height: 60,
 	zIndex: 10,
 	width: "100%"
 } 
 
 export default MobileMenu
-
-
-
-//

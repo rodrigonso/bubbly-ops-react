@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import JobCard from '../jobCard/JobCard';
-import { Divider, Typography, Spin, Icon, Skeleton, Button, Carousel, Tabs, Table, Pagination, Timeline, Badge, Tag } from 'antd';
+import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
 import {
   PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
+import NewJob from '../common/NewJob';
 
 
 const { TabPane } = Tabs
 const { Text } = Typography
+const { Option } = Select
 
 export class Appointments extends Component {
 state = {
@@ -20,7 +22,8 @@ state = {
   range: [],
   isDeleting: false,
   isLoading: false,
-  viewAll: false
+  viewAll: false,
+  isModalOpen: false
 }
 
 async componentDidMount() {
@@ -142,9 +145,13 @@ expandedRowRender = (job) => {
   )
 }
 
+createNewJob = () => {
+  this.setState({ isModalOpen: true })
+}
+
 
 render() {
-  const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, viewAll } = this.state
+  const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
 
   const  maxJobs = jobs.slice(0,5)
   const jobsByEmployee = selectedEmployee ? maxJobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
@@ -156,7 +163,8 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "27% 73%" }} >
+          <NewJob isModalOpen={isModalOpen} />
+          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div style={{ width: "18em", marginTop: "4.35em" }} >
               <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15, marginBottom: 10, display: "grid", gridTemplateColumns: "1fr 1fr" }}>
                 <div>
