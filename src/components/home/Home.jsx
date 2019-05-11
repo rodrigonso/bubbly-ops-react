@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Divider, Tabs, Avatar, Badge, Typography, Icon, Carousel } from 'antd';
+import { Divider, Tabs, Avatar, Badge, Typography, Icon, Button } from 'antd';
+import Auth from '../../services/Auth'
 import Login from '../common/Login';
 import Register from '../common/Register'
 

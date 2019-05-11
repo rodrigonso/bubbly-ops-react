@@ -63,12 +63,12 @@ async componentDidMount() {
 }
 
 
-updateSigninStatus = async(isSignedIn) => {
+updateSigninStatus = (isSignedIn) => {
   if (!isSignedIn) {
     console.log("User is not signed in")
     return window.gapi.auth2.getAuthInstance().signIn()
   }
-  if (isSignedIn) return;
+  if (isSignedIn) this.getCurrentJobs()
 
 }
 
@@ -85,7 +85,7 @@ loadGoogleApi = () => {
         scope: "https://www.googleapis.com/auth/calendar.readonly"
       }).then(() => {
         this.setState({ isGapiReady: true })
-        this.getCurrentJobs()
+        
 
         window.gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSigninStatus)
         this.updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get())

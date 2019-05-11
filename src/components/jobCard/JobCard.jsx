@@ -72,7 +72,10 @@ formatPrice = () => {
 
   render() {
     const { job, isMobile, isLoading, i } = this.props;
-    if (!job.jobData.summary) this.props.handleRefresh()
+    if (!job.jobData.summary) {
+      this.props.handleRefresh()
+      console.log("triggered a refresh")
+    } 
     if (isMobile) return (
       <React.Fragment>
       <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
