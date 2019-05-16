@@ -9,7 +9,7 @@ export class CompletedJobs extends Component {
 			uncompletedJobs: [],
 			isLoading: false,
 			progress: 0,
-			isCompleted: true,
+			isCompleted: false,
 		}
 
 	componentDidMount() {
