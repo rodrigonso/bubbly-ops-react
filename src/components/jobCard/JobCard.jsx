@@ -73,8 +73,7 @@ formatPrice = () => {
   render() {
     const { job, isMobile, isLoading, i } = this.props;
     if (!job.jobData.summary) {
-      this.props.handleRefresh()
-      console.log("triggered a refresh")
+      return "Not found"
     } 
     if (isMobile) return (
       <React.Fragment>
