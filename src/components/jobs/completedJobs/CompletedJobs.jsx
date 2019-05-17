@@ -30,6 +30,7 @@ export class CompletedJobs extends Component {
 		} else if (prevProps.uncompletedJobs !== this.props.uncompletedJobs) {
 			this.setState({ uncompletedJobs: this.props.uncompletedJobs })
 			const progress = this.calculateProgress()
+			localStorage.setItem("isCompleted", false)
 			this.setState({ progress })
 		}
 	}
