@@ -101,6 +101,23 @@ getTotalRevenue = (jobs) => {
   return services.reduce((a, b) => a + b) + upgrades.reduce((a, b) => a + b)
 }
 
+getServiceTypes = (jobs) => {
+
+  const amazing = jobs.filter(item => item.serviceType.name === "Amazing Detail")
+  const superior = jobs.filter(item => item.serviceType.name === "Superior Detail")
+  const pro = jobs.filter(item => item.serviceType.name === "Bubbly Pro")
+  const showroom = jobs.filter(item => item.serviceType.name === "Bubbly Showroom")
+
+  const test = [
+    { name: "Amazing Detail", value: amazing.length },
+    { name: "Superior Detail", value: superior.length },
+    { name: "Bubbly Pro", value: pro.length },
+    { name: "Bubbly Showroom", value: showroom.length },
+  ]
+
+  return test
+}
+
 expandedRowRender = (job) => {
   return (
     <React.Fragment>
@@ -152,12 +169,13 @@ createNewJob = () => {
 
 render() {
   const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
-
   const  maxJobs = jobs.slice(0,5)
   const jobsByEmployee = selectedEmployee ? maxJobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
+  const serviceTypes = this.getServiceTypes(jobs)
+  console.log(serviceTypes)
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
@@ -166,6 +184,14 @@ render() {
           <NewJob isModalOpen={isModalOpen} />
           <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div style={{ width: "18em", marginTop: "4.35em" }} >
+              <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 10 }} >
+                <PieChart width={150} height={150} >
+                  <Pie data={serviceTypes} dataKey="value" innerRadius={35} cx="50%" cy="50%"  >
+                    {serviceTypes.map((entry, index) => <Cell key={index} fill={pieColors[index]} /> )}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </div> 
               <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15, marginBottom: 10, display: "grid", gridTemplateColumns: "1fr 1fr" }}>
                 <div>
                   <Text style={{ fontSize: 12 }} type="secondary">Total Time</Text>
@@ -200,11 +226,18 @@ render() {
                 </TabPane>
               </Tabs>
             </div>
-          </div> 
+          </div>
         </div>
     )
   }
 };
+
+const pieColors = ["#1890ff", "#fadb14"]
+
+const pieData = [
+  { name: "Amazing Detail", value: 75 },
+  { name: "Superior Detail", value: 25 },
+]
 
 const divStyle = {
   maxWidth: 1400, 

@@ -13,7 +13,7 @@ export class ActiveJob extends Component {
     state = {
         activeJob: {},
         services: [],
-        currentStep: 0,
+        currentStep: 1,
         vehicleType: "",
         upgrades: [],
         make: "",
