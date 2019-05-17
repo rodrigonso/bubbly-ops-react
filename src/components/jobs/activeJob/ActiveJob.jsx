@@ -13,7 +13,7 @@ export class ActiveJob extends Component {
     state = {
         activeJob: {},
         services: [],
-        currentStep: 1,
+        currentStep: 0,
         vehicleType: "",
         upgrades: [],
         make: "",
@@ -126,7 +126,7 @@ export class ActiveJob extends Component {
     const activeJob = JSON.parse(localStorage.getItem("activeJob"))
     return (
         <div style={{ width: "100%" }}  >
-            <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }}  />
+            <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }} extra={currentStep === 0 ? <Icon onClick={this.nextStep} type="arrow-right">Skip</Icon> : null }  />
             <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
                 <Steps size="small" current={currentStep} style={{ fontWeight: 700 }} >
                   <Step title="Text Customer"  /> 
