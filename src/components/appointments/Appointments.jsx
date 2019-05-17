@@ -97,7 +97,8 @@ getTotalRevenue = (jobs) => {
   const services = jobs.map(item => item.serviceType.price)
   const upgrades = jobs.map(item => item.upgrades.map(upgrade => upgrade.price)).flat()
 
-  return services.reduce((a, b) => a + b) + upgrades.reduce((a, b) => a + b)
+  if (upgrades.length > 0) return services.reduce((a, b) => a + b) + upgrades.reduce((a, b) => a + b)
+  else return services.reduce((a, b) => a + b)
 }
 
 getServiceTypes = (jobs) => {
@@ -173,8 +174,7 @@ render() {
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
-  const serviceTypes = this.getServiceTypes(jobs)
-  console.log(serviceTypes)
+  const serviceTypes = this.getServiceTypes(jobsByDate)
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>

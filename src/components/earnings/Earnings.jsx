@@ -57,7 +57,7 @@ class Earnings extends Component {
 
 		if (jobs.length > 0) {
 			const jobsByDay =  days.map(day => {
-				return { name: day, value: jobs.filter(job => moment(job.jobData.start.dateTime).format("ddd") == day).length }
+				return { name: day, value: jobs.filter(job => moment(job.date).format("ddd") == day).length }
 			}) 
 			return jobsByDay
 		}
