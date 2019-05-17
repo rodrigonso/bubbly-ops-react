@@ -231,7 +231,7 @@ render() {
   }
 };
 
-const pieColors = ["#0050b3", "#096dd9", "#1890ff", "#40a9ff" ]
+const pieColors = ["#1890ff", "#096dd9", "#0050b3", "#003a8c" ]
 
 const pieData = [
   { name: "Amazing Detail", value: 75 },
