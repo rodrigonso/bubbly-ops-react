@@ -82,12 +82,11 @@ getTotalHours = (jobs) => {
 
   const washing = jobs.map(item => item.serviceType.duration)
   const driving = jobs.map(item => {
-    const toDestination = parseInt(item.distances.rows[1].elements[1].duration.text) / 60
+    const toDestination = item.distances.rows[1] ? parseInt(item.distances.rows[1].elements[1].duration.text) / 60 : 0
     const fromOrigin = parseInt(item.distances.rows[0].elements[0].duration.text) / 60
 
-    if (toDestination) return toDestination + fromOrigin
+    if (toDestination.length > 0) return toDestination + fromOrigin
     else return fromOrigin
-
   })
   return Math.floor((washing.reduce((a, b) => a + b) + driving.reduce((a, b) => a + b)))
 }
@@ -232,7 +231,7 @@ render() {
   }
 };
 
-const pieColors = ["#1890ff", "#fadb14"]
+const pieColors = ["#0050b3", "#096dd9", "#1890ff", "#40a9ff" ]
 
 const pieData = [
   { name: "Amazing Detail", value: 75 },

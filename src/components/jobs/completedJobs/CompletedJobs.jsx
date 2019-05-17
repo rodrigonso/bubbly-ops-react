@@ -14,6 +14,7 @@ export class CompletedJobs extends Component {
 
 	componentDidMount() {
 		const progress = this.calculateProgress()
+		if (!progress === 100 ) localStorage.setItem("isCompleted", false)
 		this.setState({ progress })
 
 		const isCompleted = JSON.parse(localStorage.getItem("isCompleted"))
