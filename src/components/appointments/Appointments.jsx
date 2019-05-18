@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import JobCard from '../jobCard/JobCard';
-import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse } from 'antd';
+import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse, notification } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
@@ -48,11 +48,24 @@ handleEmployeeSelection = (e) => {
 
 // gets appointments for selected detailer
 handleChange = async(date) => {
+  const { range, selectedEmployee, employees } = this.state
   console.log(date)
   const start = moment(date[0]._d).format()
   const end = moment(date[1]._d).format()
 
+  const employee = employees.filter(item => item._id === selectedEmployee)
+
   this.setState({ range: [start, end] })
+  if (selectedEmployee) {
+    notification.open({ 
+      message: "Run Payroll",
+      description: `Click here to run the payroll for ${employee[0].name} from ${moment(start).format("l")} to ${moment(end).format('l')} `, 
+      duration: 15,
+      btn: <Button type="primary" shape="round">Run</Button>,
+      onClick: this.handleModal,
+      key: "payroll"
+    })
+  }
 }
 
 handleDelete = async(job) => {
@@ -67,6 +80,11 @@ handleDelete = async(job) => {
   } finally {
     this.setState({ isDeleting: false })
   }
+}
+
+handleModal = () => {
+  notification.close("payroll")
+  this.setState({ isModalOpen: !this.state.isModalOpen })
 }
 
 viewAll = () => {
@@ -99,6 +117,19 @@ getTotalRevenue = (jobs) => {
 
   if (upgrades.length > 0) return services.reduce((a, b) => a + b) + upgrades.reduce((a, b) => a + b)
   else return services.reduce((a, b) => a + b)
+}
+
+getTotalMiles = (jobs) => {
+  if (jobs.length === 0) return 0
+
+  const driving = jobs.map(item => {
+    const toDestination = item.distances.rows[1] ? parseInt(item.distances.rows[1].elements[1].distance.text) : 0
+    const fromOrigin = parseInt(item.distances.rows[0].elements[0].distance.text)
+
+    if (toDestination.length > 0) return toDestination + fromOrigin
+    else return fromOrigin
+  })
+  return driving.reduce((a, b) => a + b)
 }
 
 getServiceTypes = (jobs) => {
@@ -175,11 +206,6 @@ expandedRowRender = (job) => {
   )
 }
 
-createNewJob = () => {
-  this.setState({ isModalOpen: true })
-}
-
-
 render() {
   const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
   const  maxJobs = jobs.slice(0,5)
@@ -189,12 +215,23 @@ render() {
   const totalRevenue = this.getTotalRevenue(jobsByDate)
   const serviceTypes = this.getServiceTypes(jobsByDate)
   const jobsByDay = this.getJobsByDay(jobsByDate)
+  const totalDriving = this.getTotalMiles(jobsByDate)
+  console.log(totalDriving)
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-          <NewJob isModalOpen={isModalOpen} />
+          <Modal visible={isModalOpen} title="Run Payroll" onCancel={this.handleModal} >
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }} >
+              <span><Text type="secondary">Total Jobs</Text><p>{jobsByDate.length}</p></span>
+              <span><Text type="secondary">Total Hours</Text><p>{totalHours}</p></span>
+              <span><Text type="secondary">Period</Text><p>{moment(range[0]).format("l")} - {moment(range[1]).format("l")}</p></span>
+            </div>
+            <Divider />
+            <h4>Total Due</h4>
+            <p style={{ fontSize: 20 }} >${totalHours * 10}</p>
+          </Modal>
           <div className="dashboard-main-layout" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div className="dashboard-vitals" style={{ width: "18em", marginTop: "4.35em" }} >
              <Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
@@ -226,8 +263,8 @@ render() {
                       <p style={{ fontSize: 16 }}  >${Math.floor(totalRevenue/jobsByDate.length)}</p>
                     </div>
                     <div>
-                      <Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
-                      <p style={{ fontSize: 16 }} >${totalRevenue}</p>
+                      <Text style={{ fontSize: 12 }} type="secondary">Average Distance</Text>
+                      <p style={{ fontSize: 16 }} >{Math.floor(totalDriving/jobsByDate.length)} miles</p>
                     </div>
                   </div>
                   <Divider />
