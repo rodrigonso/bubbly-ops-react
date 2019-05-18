@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import JobCard from '../jobCard/JobCard';
-import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker } from 'antd';
+import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
 import {
-  PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  PieChart, Pie, Cell, XAxis, YAxis, BarChart, Tooltip, Legend, Bar
 } from 'recharts';
 import NewJob from '../common/NewJob';
 
@@ -118,6 +118,19 @@ getServiceTypes = (jobs) => {
   return test
 }
 
+getJobsByDay = (jobs) => {
+  const days = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+  console.log(jobs)
+
+  if (jobs.length > 0) {
+    const jobsByDay =  days.map(day => {
+      return { name: day, value: jobs.filter(job => moment(job.date).format("ddd") == day).length }
+    }) 
+    return jobsByDay
+  }
+  else return []
+}
+
 expandedRowRender = (job) => {
   return (
     <React.Fragment>
@@ -175,33 +188,60 @@ render() {
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
   const serviceTypes = this.getServiceTypes(jobsByDate)
+  const jobsByDay = this.getJobsByDay(jobsByDate)
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
           <NewJob isModalOpen={isModalOpen} />
-          <div style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
-            <div style={{ width: "18em", marginTop: "4.35em" }} >
-              <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 10 }} >
-                <PieChart width={150} height={150} >
-                  <Pie data={serviceTypes} dataKey="value" innerRadius={35} cx="50%" cy="50%"  >
-                    {serviceTypes.map((entry, index) => <Cell key={index} fill={pieColors[index]} /> )}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </div> 
-              <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15, marginBottom: 10, display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-                <div>
-                  <Text style={{ fontSize: 12 }} type="secondary">Total Time</Text>
-                  <p style={{ fontSize: 16 }}  >{totalHours} hrs</p>
+          <div className="dashboard-main-layout" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
+            <div className="dashboard-vitals" style={{ width: "18em", marginTop: "4.35em" }} >
+             <Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
+                <div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} >
+                  <PieChart width={200} height={250} >
+                    <Pie data={serviceTypes} dataKey="value" innerRadius={45} cx="35%" cy="45%"  >
+                      {serviceTypes.map((entry, index) => <Cell key={index} fill={pieColors[index]} /> )}
+                    </Pie>
+                    <Tooltip />
+                    <Legend align="left" iconSize={8} iconType="circle" />
+                  </PieChart>
+                  <Divider />
                 </div>
-                <div>
-                  <Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
-                  <p style={{ fontSize: 16 }} >${totalRevenue}</p>
+                <div style={{backgroundColor: "#fff", marginTop: -25, padding: 15, display: "grid", gridTemplateColumns: "1fr 1fr", borderRadius: 5 }}>
+                  <div>
+                    <Text style={{ fontSize: 12 }} type="secondary">Total Jobs</Text>
+                    <p style={{ fontSize: 16 }}  >{jobsByDate.length}</p>
+                  </div>
+                  <div>
+                    <Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
+                    <p style={{ fontSize: 16 }} >${totalRevenue}</p>
+                  </div>
                 </div>
-              </div> 
-              <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
+                <Collapse.Panel style={{ border: 0 , marginTop: -40}} >
+                  <Divider />
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} >
+                    <div>
+                      <Text style={{ fontSize: 12 }} type="secondary">Job Average</Text>
+                      <p style={{ fontSize: 16 }}  >${Math.floor(totalRevenue/jobsByDate.length)}</p>
+                    </div>
+                    <div>
+                      <Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
+                      <p style={{ fontSize: 16 }} >${totalRevenue}</p>
+                    </div>
+                  </div>
+                  <Divider />
+                  <Text style={{ fontSize: 12 }} type="secondary" >Services by Day</Text>
+                  <BarChart width={270} height={170} data={jobsByDay} style={{ marginLeft: -50, fontSize: 14, marginTop: 5 }} >
+                    <Tooltip />
+                    <Bar dataKey="value" fill="#096dd9" barSize={15} />
+                    <YAxis allowDecimals={false} />
+                    <XAxis dataKey="name"  />
+                  </BarChart>
+                  <Divider />
+                </Collapse.Panel> 
+              </Collapse>
+             <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
             </div>
             <div style={{ marginLeft: 20 }} className="dashboard-days-card" >
               <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 600 }}>
