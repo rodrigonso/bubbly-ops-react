@@ -42,7 +42,7 @@ handleLogout = () => {
         <Menu mode="horizontal" style={{ marginTop: 5 }}  >
           <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
           <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
           <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
         </Menu>
         <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "50%" }} shape="round" >Logout</Button>
@@ -55,7 +55,7 @@ handleLogout = () => {
         <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16 }}  >
           <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
           <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/earnings">Earnings</NavLink></Menu.Item>
+          <Menu.Item><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
           <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
         </Menu>
         <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "20%" }} shape="round" >Logout</Button>

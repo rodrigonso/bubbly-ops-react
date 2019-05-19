@@ -43,7 +43,21 @@ async componentDidMount() {
 }
 
 handleEmployeeSelection = (e) => {
+  const { range, selectedEmployee, employees } = this.state
   this.setState({ selectedEmployee: e.target.value })
+
+  const employee = employees.filter(item => item._id === e.target.value)
+
+  if (range.length > 0) {
+    notification.open({ 
+      message: "Run Payroll",
+      description: `Click here to run the payroll for ${employee[0].name} from ${moment(range[0]).format("l")} to ${moment(range[1]).format('l')} `, 
+      duration: 15,
+      btn: <Button type="primary" shape="round">Run</Button>,
+      onClick: this.handleModal,
+      key: "payroll"
+    })
+  }
 }
 
 // gets appointments for selected detailer

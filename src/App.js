@@ -14,6 +14,7 @@ import axios from 'axios'
 import moment from 'moment'
 import Earnings from './components/earnings/Earnings';
 import MobileMenu from './components/menu/MobileMenu';
+import Payrolls from './components/payrolls/Payrolls';
 
 
 
@@ -152,6 +153,11 @@ render() {
                 <Route  exact path="/earnings" render={(props) => {
                   if (!user.username) return <Redirect to="/" />
                   else return <Earnings {...props} user={user} />
+                }}
+                />
+                <Route  exact path="/payrolls" render={(props) => {
+                  if (!user.username) return <Redirect to="/" />
+                  else return <Payrolls {...props} user={user} />
                 }}
                 />
                 <Route  exact path="/jobs/:id" render={(props) => <ActiveJob {...props} user={user} handleJobCompletion={this.handleJobCompletion} isMobile={isMobile} isGapiReady={isGapiReady} /> } />
