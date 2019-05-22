@@ -222,8 +222,7 @@ expandedRowRender = (job) => {
 
 render() {
   const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
-  const  maxJobs = jobs.slice(0,5)
-  const jobsByEmployee = selectedEmployee ? maxJobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
+  const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
@@ -231,6 +230,8 @@ render() {
   const jobsByDay = this.getJobsByDay(jobsByDate)
   const totalDriving = this.getTotalMiles(jobsByDate)
   console.log(totalDriving)
+
+    if (jobs.length === 0) return <div style={{ textAlign: "center", marginTop: "50%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
@@ -298,7 +299,7 @@ render() {
               <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 600 }}>
                 <TabPane key="1" tab="Recent Jobs" >
                   <div>
-                    {jobsByDate.map(job => {
+                    {jobsByDate.slice(0,5).map(job => {
                       return <JobCard key={job._id} job={job} isMobile={false} handleDelete={this.handleDelete} isLoading={isDeleting} />
                     })}
                   </div>

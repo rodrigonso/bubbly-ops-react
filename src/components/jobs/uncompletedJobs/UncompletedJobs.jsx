@@ -24,7 +24,7 @@ export class UncompletedJobs extends Component {
   }
 
   render() {
-      const { uncompletedJobs } = this.props
+    const { uncompletedJobs } = this.props
     return (
     <div style={{ marginTop: 20, minWidth: 320 }} >
       <div style={{ display: "grid", gridTemplateColumns: "90% 10%", padding: 15, backgroundColor: "#fff", borderRadius: 5 }} >
