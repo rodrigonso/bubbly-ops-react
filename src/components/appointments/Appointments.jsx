@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { css } from 'emotion'
 import JobCard from '../jobCard/JobCard';
 import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse, notification } from 'antd';
 import moment from 'moment'
@@ -306,11 +307,11 @@ render() {
                 </TabPane>
                 <TabPane key="2" tab="All Jobs" >
                   <div>
-                    <Table rowKey={(record) => record._id} expandedRowRender={(record) => this.expandedRowRender(record)} dataSource={jobsByDate} style={{ backgroundColor: "#fff", borderRadius: 5 }} pagination={{ defaultPageSize: 10 }}  >
+                    <Table className={body} rowKey={(record) => record._id} expandedRowRender={(record) => this.expandedRowRender(record)} dataSource={jobsByDate} style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} pagination={{ defaultPageSize: 10 }}  >
                       <Table.Column key="date" dataIndex="date" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Date</div> } />
                       <Table.Column key="time" dataIndex="start" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Time</div> } />
                       <Table.Column key="name" dataIndex="summary" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Name</div> } />
-                      <Table.Column key="amount" dataIndex="serviceType.price" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
+                      <Table.Column key="amount" render={(text, record, index) => <p>${record.serviceType.price}</p>} style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
                       <Table.Column key="actions" dataIndex="id" style={{ borderRadius: 5}} render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } title={ <div style={{ fontWeight: 700 }}></div> } />
                     </Table>
                   </div>
@@ -325,10 +326,12 @@ render() {
 
 const pieColors = ["#1890ff", "#096dd9", "#0050b3", "#003a8c" ]
 
-const pieData = [
-  { name: "Amazing Detail", value: 75 },
-  { name: "Superior Detail", value: 25 },
-]
+const body = css({
+  backgroundColor: 'green',
+  '& thead > tr > th': {
+    backgroundColor: 'white'
+  }
+})
 
 const divStyle = {
   maxWidth: 1400, 
