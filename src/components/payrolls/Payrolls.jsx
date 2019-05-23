@@ -1,22 +1,38 @@
 import React, { Component } from 'react'
-import { Table, Divider, Icon, Spin } from 'antd'
+import { Table, Divider, Icon, Spin, Button } from 'antd'
 import { css } from 'emotion' 
 import axios from 'axios';
 
 export class Payrolls extends Component {
 
 	state = {
-		payrolls: []
+		payrolls: [],
+		isLoading: false
 	}
 
 	async componentDidMount() { 
-		const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/payrolls`)
-		this.setState({ payrolls: data })
+		try {
+			const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/payrolls`)
+			this.setState({ payrolls: data, isLoading: true })
+		} catch(ex) {
+			console.log(ex)
+		} finally {
+			this.setState({ isLoading: false })
+		}
+	}
+
+	handleDelete = async(record) => {
+		console.log(record)
+		const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/payrolls/${record._id}`)
+		const payrolls = [...this.state.payrolls]
+		const updatedPayrolls = payrolls.filter(item => item._id !== record._id)
+		this.setState({ payrolls: updatedPayrolls })
+		console.log(data)
 	}
 
   render() {
-		const { payrolls } = this.state
-		if (payrolls.length === 0) return <div style={{ textAlign: "center", marginTop: "50%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
+		const { payrolls, isLoading } = this.state
+		if (isLoading) return <div style={{ textAlign: "center", marginTop: "50%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
 
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }} >
@@ -28,6 +44,7 @@ export class Payrolls extends Component {
 					<Table.Column key="2" title={ <div style={{ fontWeight: 700 }}>Employee</div> } dataIndex="employee.name" />
 					<Table.Column key="3" title={ <div style={{ fontWeight: 700 }}>Hours</div> } dataIndex="totalHours" />
 					<Table.Column key="4" title={ <div style={{ fontWeight: 700 }}>Total</div> } render={(text, record, index) => <div>${record.totalWage}</div>} dataIndex="totalWage" />
+					<Table.Column key="5" render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } />
 				</Table>
       </div>
     )
@@ -42,3 +59,4 @@ const body = css({
 })
 
 export default Payrolls
+

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { css } from 'emotion'
 import JobCard from '../jobCard/JobCard';
-import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse, notification } from 'antd';
+import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse, notification, InputNumber } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
@@ -9,6 +9,7 @@ import {
   PieChart, Pie, Cell, XAxis, YAxis, BarChart, Tooltip, Legend, Bar
 } from 'recharts';
 import NewJob from '../common/NewJob';
+import PayrollModal from './PayrollModal';
 
 
 const { TabPane } = Tabs
@@ -177,20 +178,22 @@ getJobsByDay = (jobs) => {
   else return []
 }
 
-handlePayroll = async() => {
+handlePayroll = async(data) => {
   const { selectedEmployee, range, employees, jobs } = this.state
+  const { totalWage, totalHours, totalTips } = data
   const employee = employees.filter(item => item._id === selectedEmployee)
-  const totalHours = this.getTotalHours(jobs)
+  
   const payroll = {
     range: [moment(range[0]).format('l'), moment(range[1]).format('l')],
     employee: { name: employee[0].name, email: employee[0].email, username: employee[0].username, wage: employee[0].wage, _id: employee[0]._id },
     totalHours,
+    totalTips,
+    totalWage,
     totalJobs: jobs.length,
-    totalWage: totalHours * employee[0].wage
   }
 
   const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
-  console.log(res)
+  this.setState({ isModalOpen: false })
 }
 
 expandedRowRender = (job) => {
@@ -254,16 +257,7 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-          <Modal visible={isModalOpen} title="Run Payroll" onCancel={this.handleModal} footer={<Button onClick={this.handlePayroll}  type="primary" shape="round">Submit</Button>  } >
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }} >
-              <span><Text type="secondary">Total Jobs</Text><p>{jobsByDate.length}</p></span>
-              <span><Text type="secondary">Total Hours</Text><p>{totalHours}</p></span>
-              <span><Text type="secondary">Period</Text><p>{moment(range[0]).format("l")} - {moment(range[1]).format("l")}</p></span>
-            </div>
-            <Divider />
-            <h4>Total Due</h4>
-            <p style={{ fontSize: 20 }} >${totalHours * 10}</p>
-          </Modal>
+          <PayrollModal jobsByDate={jobsByDate} totalHours={totalHours} range={range} isModalOpen={isModalOpen} handleModal={this.handleModal} handlePayroll={this.handlePayroll}  />
           <div className="dashboard-main-layout" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div className="dashboard-vitals" style={{ width: "18em", marginTop: "4.35em" }} >
              <Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
