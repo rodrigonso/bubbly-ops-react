@@ -38,7 +38,7 @@ export class Home extends Component {
       )
     }
     return (
-        <div className="home-body" style={{ overflowX: "hidden", overflowY: "auto" }} >
+        <div className="home-body" style={{ overflowX: "hidden", overflowY: "auto", minWidth: 1000 }} >
           <h1 style={{ fontSize: 32, fontWeight: 700 }}>Home</h1>
           <p>Welcome to Bubbly Operations Center, please login or register to get started.</p>
           <Divider />

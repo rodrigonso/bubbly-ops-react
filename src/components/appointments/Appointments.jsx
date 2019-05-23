@@ -177,6 +177,22 @@ getJobsByDay = (jobs) => {
   else return []
 }
 
+handlePayroll = async() => {
+  const { selectedEmployee, range, employees, jobs } = this.state
+  const employee = employees.filter(item => item._id === selectedEmployee)
+  const totalHours = this.getTotalHours(jobs)
+  const payroll = {
+    range: [moment(range[0]).format('l'), moment(range[1]).format('l')],
+    employee: { name: employee[0].name, email: employee[0].email, username: employee[0].username, wage: employee[0].wage, _id: employee[0]._id },
+    totalHours,
+    totalJobs: jobs.length,
+    totalWage: totalHours * employee[0].wage
+  }
+
+  const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
+  console.log(res)
+}
+
 expandedRowRender = (job) => {
   return (
     <React.Fragment>
@@ -238,7 +254,7 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-          <Modal visible={isModalOpen} title="Run Payroll" onCancel={this.handleModal} >
+          <Modal visible={isModalOpen} title="Run Payroll" onCancel={this.handleModal} footer={<Button onClick={this.handlePayroll}  type="primary" shape="round">Submit</Button>  } >
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }} >
               <span><Text type="secondary">Total Jobs</Text><p>{jobsByDate.length}</p></span>
               <span><Text type="secondary">Total Hours</Text><p>{totalHours}</p></span>
@@ -297,7 +313,7 @@ render() {
              <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
             </div>
             <div style={{ marginLeft: 20 }} className="dashboard-days-card" >
-              <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 600 }}>
+              <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 650 }}>
                 <TabPane key="1" tab="Recent Jobs" >
                   <div>
                     {jobsByDate.slice(0,5).map(job => {
@@ -311,7 +327,7 @@ render() {
                       <Table.Column key="date" dataIndex="date" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Date</div> } />
                       <Table.Column key="time" dataIndex="start" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Time</div> } />
                       <Table.Column key="name" dataIndex="summary" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Name</div> } />
-                      <Table.Column key="amount" render={(text, record, index) => <p>${record.serviceType.price}</p>} style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
+                      <Table.Column key="amount" render={(text, record, index) => <div>${record.serviceType.price}</div>} style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
                       <Table.Column key="actions" dataIndex="id" style={{ borderRadius: 5}} render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } title={ <div style={{ fontWeight: 700 }}></div> } />
                     </Table>
                   </div>
