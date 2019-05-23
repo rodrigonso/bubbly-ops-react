@@ -15,6 +15,12 @@ export class PayrollModal extends Component {
 		this.setState({ hours: this.props.totalHours })
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.totalHours !== this.props.totalHours) {
+				this.setState({ hours: this.props.totalHours })
+		}
+}
+
 	handleChange = (value, name) => {
 		this.setState({ [name]: value })
 	} 

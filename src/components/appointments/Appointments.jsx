@@ -57,7 +57,8 @@ handleEmployeeSelection = (e) => {
       duration: 15,
       btn: <Button type="primary" shape="round">Run</Button>,
       onClick: this.handleModal,
-      key: "payroll"
+      key: "payroll",
+      style: { marginTop: 40 }
     })
   }
 }
@@ -79,7 +80,8 @@ handleChange = async(date) => {
       duration: 15,
       btn: <Button type="primary" shape="round">Run</Button>,
       onClick: this.handleModal,
-      key: "payroll"
+      key: "payroll",
+      style: { marginTop: 40 }
     })
   }
 }
@@ -258,6 +260,7 @@ render() {
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
           <PayrollModal jobsByDate={jobsByDate} totalHours={totalHours} range={range} isModalOpen={isModalOpen} handleModal={this.handleModal} handlePayroll={this.handlePayroll}  />
+          
           <div className="dashboard-main-layout" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div className="dashboard-vitals" style={{ width: "18em", marginTop: "4.35em" }} >
              <Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
@@ -307,7 +310,7 @@ render() {
              <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
             </div>
             <div style={{ marginLeft: 20 }} className="dashboard-days-card" >
-              <Tabs tabBarStyle={{ textAlign: "right" }} style={{ maxWidth: 650 }}>
+              <Tabs  style={{ maxWidth: 650 }} tabBarExtraContent={<span><Button shape="round" type="ghost" >+ Job</Button><Button style={{ marginLeft: 10 }} type="primary" shape="round">+ Payroll</Button></span> } >
                 <TabPane key="1" tab="Recent Jobs" >
                   <div>
                     {jobsByDate.slice(0,5).map(job => {
