@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Divider, Button, Statistic } from 'antd';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, Tooltip, YAxis } from 'recharts'
+import { Divider, Button, Statistic, Typography } from 'antd';
+import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 import axios from 'axios'
 import moment from 'moment'
+
+const { Text } = Typography
 
 class Earnings extends Component {
 
@@ -87,14 +89,15 @@ class Earnings extends Component {
 			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
 			<p>Here you can find a full report of all of your earnings.</p>
 			<Divider />
-			<div style={{ backgroundColor: "#fff", padding: 24, borderRadius: 5, margin: "auto" }} >
-				<h4>Services by Day</h4>
-				<BarChart width={280} height={140} data={this.getJobsByDay()} style={{ marginLeft: -25 }} >
-					<Tooltip />
-					<Bar dataKey="value" fill="#096dd9" barSize={20} />
-					<YAxis allowDecimals={false} />
-					<XAxis dataKey="name"  />
-				</BarChart>
+			<div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }} >
+				<Text type="secondary">Services by Day</Text>
+				<div style={{ marginLeft: -45 }}>
+					<Chart width={340} height={300} data={this.getJobsByDay()} scale={scale} >
+						<Tooltip />
+						<Axis />
+						<Bar position="name*value" />
+					</Chart>
+				</div>
 			</div>
 			<div style={{ backgroundColor: "#fff", padding: 24, borderRadius: 5, margin: "auto", marginTop: 10 }} >
 				<h4>Total Earned</h4>
@@ -107,23 +110,7 @@ class Earnings extends Component {
 
 export default Earnings
 
-
-
-// pie chart
-/*
-<div style={{ padding: 50, backgroundColor: "#fff", textAlign: "center", borderRadius: 5, display: "grid", gridTemplateColumns: "50% 50%", maxWidth: 330 }} >
-<div className="chart" style={{ marginLeft: -60 }} >
-	<PieChart width={200} height={150} >
-			<Pie data={data} dataKey="value" innerRadius={40}>
-				{data.map((item, i) => <Cell key={`cell-${i}`} fill={colors[i]} /> )}
-			</Pie>
-		</PieChart>
-</div> 
-<div className="details" style={{ marginRight: -20 }} >
-	<p>Amazing Detail</p>
-	<p>Superior Detail</p>
-	<p>Bubbly Pro</p>
-	<p>Bubbly Showroom</p>
-</div>
-</div>
-*/
+const scale = [{
+	dataKey: 'value',
+	tickInterval: 1
+}]

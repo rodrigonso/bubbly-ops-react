@@ -10,6 +10,7 @@ const { Option } = Select;
 export class UncompletedJobs extends Component {
   state = {
       services: [],
+      uncompletedJobs: []
   }
 
   async componentDidMount() {
@@ -17,6 +18,12 @@ export class UncompletedJobs extends Component {
     const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
     this.setState({ services: data })
   }
+
+  componentDidUpdate(prevProps) {
+		if (prevProps.uncompletedJobs !== this.props.uncompletedJobs) {
+			this.setState({ uncompletedJobs: this.props.uncompletedJobs })
+		} 
+	}
 
   handleBegin = (job) => {
     localStorage.setItem("activeJob", JSON.stringify(job))
