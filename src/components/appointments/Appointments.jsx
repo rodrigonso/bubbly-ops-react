@@ -46,21 +46,8 @@ async componentDidMount() {
 
 handleEmployeeSelection = (e) => {
   const { range, selectedEmployee, employees } = this.state
-  this.setState({ selectedEmployee: e.target.value })
-
   const employee = employees.filter(item => item._id === e.target.value)
-
-  if (range.length > 0) {
-    notification.open({ 
-      message: "Run Payroll",
-      description: `Click here to run the payroll for ${employee[0].name} from ${moment(range[0]).format("l")} to ${moment(range[1]).format('l')} `, 
-      duration: 15,
-      btn: <Button type="primary" shape="round">Run</Button>,
-      onClick: this.handleModal,
-      key: "payroll",
-      style: { marginTop: 40 }
-    })
-  }
+  this.setState({ selectedEmployee: employee[0] })
 }
 
 // gets appointments for selected detailer
@@ -70,20 +57,7 @@ handleChange = async(date) => {
   const start = moment(date[0]._d).format()
   const end = moment(date[1]._d).format()
 
-  const employee = employees.filter(item => item._id === selectedEmployee)
-
   this.setState({ range: [start, end] })
-  if (selectedEmployee) {
-    notification.open({ 
-      message: "Run Payroll",
-      description: `Click here to run the payroll for ${employee[0].name} from ${moment(start).format("l")} to ${moment(end).format('l')} `, 
-      duration: 15,
-      btn: <Button type="primary" shape="round">Run</Button>,
-      onClick: this.handleModal,
-      key: "payroll",
-      style: { marginTop: 40 }
-    })
-  }
 }
 
 handleDelete = async(job) => {
@@ -101,8 +75,12 @@ handleDelete = async(job) => {
 }
 
 handleModal = () => {
+  const { range, selectedEmployee } = this.state
   notification.close("payroll")
-  this.setState({ isModalOpen: !this.state.isModalOpen })
+  if (range.length > 0 && selectedEmployee) {
+    this.setState({ isModalOpen: !this.state.isModalOpen })
+  }
+  else notification.error({ message: "Error", description: "Select the desired employee and period in order to run a new payroll." })
 }
 
 viewAll = () => {
@@ -111,6 +89,10 @@ viewAll = () => {
 
 viewRecent = () => {
   this.setState({ viewAll: false })
+}
+
+getSelectedEmployee = () => {
+
 }
 
 getTotalHours = (jobs) => {
@@ -181,17 +163,16 @@ getJobsByDay = (jobs) => {
 }
 
 handlePayroll = async(data) => {
-  const { selectedEmployee, range, employees, jobs } = this.state
-  const { totalWage, totalHours, totalTips } = data
-  const employee = employees.filter(item => item._id === selectedEmployee)
+  const { selectedEmployee, range } = this.state
+  const { totalWage, totalHours, totalTips, totalJobs } = data
   
   const payroll = {
     range: [moment(range[0]).format('l'), moment(range[1]).format('l')],
-    employee: { name: employee[0].name, email: employee[0].email, username: employee[0].username, wage: employee[0].wage, _id: employee[0]._id },
+    employee: { name: selectedEmployee.name, email: selectedEmployee.email, username: selectedEmployee.username, wage: selectedEmployee.wage, _id: selectedEmployee._id },
     totalHours,
     totalTips,
     totalWage,
-    totalJobs: jobs.length,
+    totalJobs: totalJobs.length
   }
 
   const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
@@ -244,7 +225,7 @@ expandedRowRender = (job) => {
 
 render() {
   const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
-  const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === this.state.selectedEmployee) : jobs
+  const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === selectedEmployee._id) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
@@ -259,8 +240,7 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-          <PayrollModal jobsByDate={jobsByDate} totalHours={totalHours} range={range} isModalOpen={isModalOpen} handleModal={this.handleModal} handlePayroll={this.handlePayroll}  />
-          
+          <PayrollModal selectedEmployee={selectedEmployee} jobsByDate={jobsByDate} totalHours={totalHours} range={range} isModalOpen={isModalOpen} handleModal={this.handleModal} handlePayroll={this.handlePayroll} />
           <div className="dashboard-main-layout" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
             <div className="dashboard-vitals" style={{ width: "18em", marginTop: "4.35em" }} >
              <Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
@@ -310,7 +290,7 @@ render() {
              <FilterBar handleChange={this.handleChange} employees={employees} selectedEmployee={selectedEmployee} onEmployeeChange={this.handleEmployeeSelection} />
             </div>
             <div style={{ marginLeft: 20 }} className="dashboard-days-card" >
-              <Tabs  style={{ maxWidth: 650 }} tabBarExtraContent={<span><Button shape="round" type="ghost" >+ Job</Button><Button style={{ marginLeft: 10 }} type="primary" shape="round">+ Payroll</Button></span> } >
+              <Tabs  style={{ maxWidth: 650 }} tabBarExtraContent={<span><Button shape="round" type="ghost" >+ Job</Button><Button onClick={this.handleModal} style={{ marginLeft: 10 }} type="primary" shape="round">+ Payroll</Button></span> } >
                 <TabPane key="1" tab="Recent Jobs" >
                   <div>
                     {jobsByDate.slice(0,5).map(job => {

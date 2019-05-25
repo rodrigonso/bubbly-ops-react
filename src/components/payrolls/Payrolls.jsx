@@ -43,8 +43,9 @@ export class Payrolls extends Component {
 					<Table.Column key="1" title={ <div style={{ fontWeight: 700 }}>Range</div> } dataIndex="range" render={(text, record, index) => <div>{record.range[0]} - {record.range[1]}</div>}  />
 					<Table.Column key="2" title={ <div style={{ fontWeight: 700 }}>Employee</div> } dataIndex="employee.name" />
 					<Table.Column key="3" title={ <div style={{ fontWeight: 700 }}>Hours</div> } dataIndex="totalHours" />
-					<Table.Column key="4" title={ <div style={{ fontWeight: 700 }}>Total</div> } render={(text, record, index) => <div>${record.totalWage}</div>} dataIndex="totalWage" />
-					<Table.Column key="5" render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } />
+					<Table.Column key="4" title={ <div style={{ fontWeight: 700 }}>Tips</div> } render={(text, record, index) => <div>${record.totalTips}</div>} dataIndex="totalTips" />
+					<Table.Column key="5" title={ <div style={{ fontWeight: 700 }}>Total</div> } render={(text, record, index) => <div>${record.totalWage}</div>} dataIndex="totalWage" />
+					<Table.Column key="6" render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } />
 				</Table>
       </div>
     )

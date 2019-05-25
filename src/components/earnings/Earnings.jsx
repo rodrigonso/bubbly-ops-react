@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Button, Statistic, Typography } from 'antd';
+import { Divider, Button, Statistic, Typography, Icon, Spin } from 'antd';
 import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 import axios from 'axios'
 import moment from 'moment'
@@ -12,7 +12,8 @@ class Earnings extends Component {
 		user: {},
 		jobs: [],
 		jobsByDay: [],
-		totalEarned: 0
+		totalEarned: 0,
+		isLoading: false
 	}
 
 	componentDidMount() {
@@ -31,9 +32,16 @@ class Earnings extends Component {
 	getJobs = async() => {
 		if (!this.props.user.employeeId) return null
 
-		const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getJobs/${this.props.user.employeeId}`)
-		console.log(res.data)
-		this.setState({ jobs: res.data })
+		try {
+			this.setState({ isLoading: true })
+			const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getJobs/${this.props.user.employeeId}`)
+			console.log(res.data)
+			this.setState({ jobs: res.data })
+		} catch (ex) {
+			console.log(ex)
+		} finally {
+			this.setState({ isLoading: false })
+		}
 	}
 
 
@@ -83,7 +91,7 @@ class Earnings extends Component {
 	}
 
   render() {
-		console.log(this.props.user)
+		if (this.state.isLoading) return <div style={{ overflowX: "hidden", overflowY: "auto", textAlign: "center", marginTop: "25%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
     return (
 			<div className="home-body" style={{ overflowX: "hidden", overflowY: "auto" }} >
 			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
