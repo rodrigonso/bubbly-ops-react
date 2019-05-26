@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Divider, Button, Statistic, Typography, Icon, Spin } from 'antd';
-import { Chart, Tooltip, Axis, Bar } from 'viser-react'
+import { Chart, Tooltip, Axis, Bar, Pie, Coord, Legend } from 'viser-react'
+import DataSet from '@antv/data-set'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -52,8 +53,8 @@ class Earnings extends Component {
 		const superior = jobs.filter(item => item.serviceType.name === "Superior Detail")
 
 		const test = [
-			{ name: "Amazing Detail", value: amazing.length },
-			{ name: "Superior Detail", value: superior.length }
+			{ key: 0, name: "Amazing Detail", value: amazing.length },
+			{ key: 1, name: "Superior Detail", value: superior.length }
 		]
 
 		console.log(test)
@@ -90,6 +91,37 @@ class Earnings extends Component {
 		else return 0
 	}
 
+
+getServiceTypes = (jobs) => {
+
+  const amazing = jobs.filter(item => item.serviceType.name === "Amazing Detail")
+  const superior = jobs.filter(item => item.serviceType.name === "Superior Detail")
+  const pro = jobs.filter(item => item.serviceType.name === "Bubbly Pro")
+  const showroom = jobs.filter(item => item.serviceType.name === "Bubbly Showroom")
+
+  const test = [
+    { item: "Amazing Detail", value: amazing.length },
+    { item: "Superior Detail", value: 3 },
+    { item: "Bubbly Pro", value: 4 },
+    { item: "Bubbly Showroom", value: 2 },
+  ]
+
+  return test
+}
+
+
+	test = () => {
+		const dv = new DataSet.View().source(this.getServiceTypes(this.state.jobs));
+		dv.transform({
+			type: 'percent',
+			field: 'value',
+			dimension: 'item',
+			as: 'percent'
+		})
+		const data = dv.rows
+		return data
+	}
+
   render() {
 		if (this.state.isLoading) return <div style={{ overflowX: "hidden", overflowY: "auto", textAlign: "center", marginTop: "25%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
     return (
@@ -106,10 +138,19 @@ class Earnings extends Component {
 						<Bar position="name*value" />
 					</Chart>
 				</div>
+				<Divider />
 			</div>
+
 			<div style={{ backgroundColor: "#fff", padding: 24, borderRadius: 5, margin: "auto", marginTop: 10 }} >
-				<h4>Total Earned</h4>
-				<Statistic value={this.getTotalEarned()} prefix="$" /> 
+				<div style={{ marginLeft: -45 }}>
+					<Chart height={300} data={this.test()} scale={scale2} >
+						<Tooltip showTitle={false} />
+						<Axis />
+						<Legend dataKey="item" />
+						<Coord type="theta" radius={0.75} innerRadius={0.6} />
+						<Pie position="percent" color="item" style={{ stroke: "#fff", lineWidth: 2 }} label={['item', 'value']} /> 
+					</Chart>
+				</div>
 			</div>
 		</div>
     )
@@ -117,6 +158,23 @@ class Earnings extends Component {
 }
 
 export default Earnings
+
+const sourceData = [
+  { item: 'Amazing Detail', count: 40 },
+  { item: 'Superior Detail', count: 21 },
+  { item: '事例三', count: 17 },
+  { item: '事例四', count: 13 },
+  { item: '事例五', count: 9 }
+];
+
+const scale2 = [{
+	dataKey: 'percent',
+	min: 0,
+	formatter: '.0%'
+}]
+
+const pieColors = ["#1890ff", "#096dd9", "#0050b3", "#003a8c" ]
+
 
 const scale = [{
 	dataKey: 'value',

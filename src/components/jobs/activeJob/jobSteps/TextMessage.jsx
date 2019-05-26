@@ -120,10 +120,3 @@ const test = {
 
 
 export default TextMessage
-
-/*
-  <Button onClick={this.handleSelect} value={0} type="primary" style={{ marginRight: 5 }} >{startTime}</Button>
-  <Button onClick={this.handleSelect} value={5} style={{ marginRight: 2 }} >+5</Button>
-  <Button onClick={this.handleSelect} value={10} style={{ marginRight: 2 }}>+10</Button>
-  <Button onClick={this.handleSelect} value={15} >+15</Button>
-*/

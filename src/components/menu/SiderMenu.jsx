@@ -45,7 +45,6 @@ handleLogout = () => {
           <Menu.Item><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
           <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
         </Menu>
-        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "50%" }} shape="round" >Logout</Button>
       </div>
       )
     }

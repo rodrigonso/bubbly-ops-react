@@ -3,7 +3,6 @@ import { Divider, Tabs, Avatar, Badge, Typography, Icon, Button } from 'antd';
 import Auth from '../../services/Auth'
 import Login from '../common/Login';
 import Register from '../common/Register'
-
 const { TabPane } = Tabs;
 const { Text } = Typography
  

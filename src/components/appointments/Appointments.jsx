@@ -165,7 +165,7 @@ getJobsByDay = (jobs) => {
 handlePayroll = async(data) => {
   const { selectedEmployee, range } = this.state
   const { totalWage, totalHours, totalTips, totalJobs } = data
-  
+
   const payroll = {
     range: [moment(range[0]).format('l'), moment(range[1]).format('l')],
     employee: { name: selectedEmployee.name, email: selectedEmployee.email, username: selectedEmployee.username, wage: selectedEmployee.wage, _id: selectedEmployee._id },

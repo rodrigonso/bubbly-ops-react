@@ -28,7 +28,7 @@ export class PayrollModal extends Component {
 	
 	handleSubmit = () => {
 		const { tips, hours } = this.state
-		const { jobsByDate } = this.state
+		const { jobsByDate } = this.props
 		const data = {
 			totalWage: this.getTotal(),
 			totalTips: tips,
