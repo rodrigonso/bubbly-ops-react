@@ -40,12 +40,12 @@ export class JobsTable extends Component {
 							<p type="secondary" style={{ fontSize: 10, marginTop: -15, color: "rgba(0, 0, 0, 0.45)" }}>{record.distances.destination_addresses[0]}</p> 
 						</Timeline.Item>
 					</Timeline>
-					<div style={{ marginLeft: 150 }} >
+					{record.upgrades.length > 0 ? <div style={{ marginLeft: 150 }} >
 						<Text type="secondary">Upgrades</Text>
 						<div style={{ marginTop: 10 }} >
 							{record.upgrades.map(item => <Tag style={{ marginBottom: 5 }}  color="blue">{item.name}</Tag> )}
 						</div>
-					</div>
+					</div> : null}
 				</div>
 			</React.Fragment>
 		)
