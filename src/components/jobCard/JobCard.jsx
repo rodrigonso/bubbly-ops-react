@@ -95,10 +95,14 @@ formatPrice = () => {
     else return (
         <React.Fragment>
             <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
-            <div style={{ padding: 10 }}>
+              <div style={{ padding: 10 }}>
                <div style={{ display: "grid", gridTemplateColumns: "50% 30% 20%" }} >
-                <div >
-                  <h3 style={{ fontWeight: 700 }} >{this.formatSummary()} </h3>
+                <div>
+                  <span>
+                    <h3 style={{ fontWeight: 700, display: "inline" }} >{this.formatSummary()} </h3>
+                    {job.distances.rows.length === 0 ? <Icon type="exclamation-circle" style={{ display: "inline", color: "red" }} /> : null}
+                  </span>
+                  <br />
                   <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
                   <br />
                   <Icon type="calendar" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{moment(job.jobData.start.dateTime).format('L')}</Text> 

@@ -7,6 +7,7 @@ const { Text } = Typography
 export class JobsTable extends Component {
 
 	expandedRowRender = (record) => {
+		if (record.distances.rows.length === 0) return null
 		return (
 			<React.Fragment>
 				<div style={{ display: "grid", gridTemplateColumns: "40% 20% 20% 20%" }} >
@@ -52,23 +53,55 @@ export class JobsTable extends Component {
 
 	render() {
 		const { data, handleDelete } = this.props
+		const body = css({
+			backgroundColor: 'green',
+			'& thead > tr > th': {
+				backgroundColor: 'white'
+			}
+		})
+
 		return (
-			<Table className={body} rowKey={(record) => record._id} expandedRowRender={(record) => this.expandedRowRender(record)} dataSource={data} style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} pagination={{ defaultPageSize: 10 }}  >
-				<Table.Column key="date" dataIndex="date" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Date</div> } />
-				<Table.Column key="time" dataIndex="start" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Time</div> } />
-				<Table.Column key="name" dataIndex="summary" style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Name</div> } />
-				<Table.Column key="amount" render={(text, record, index) => <div>${record.serviceType.price}</div>} style={{ borderRadius: 5}}  title={ <div style={{ fontWeight: 700 }}>Amount</div> } />
-				<Table.Column key="actions" dataIndex="id" style={{ borderRadius: 5}} render={(text, record) => <Button shape="circle" onClick={() => handleDelete(record)} ><Icon type="delete" /></Button> } title={ <div style={{ fontWeight: 700 }}></div> } />
+			<Table 
+				className={body} 
+				rowKey={(record) => record._id} 
+				expandedRowRender={(record) => this.expandedRowRender(record)} 
+				dataSource={data} 
+				style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} 
+				pagination={{ defaultPageSize: 10 }}
+			>
+				<Table.Column key="date"
+					dataIndex="date" 
+					style={{ borderRadius: 5}} 
+					title={ <div style={{ fontWeight: 700 }}>Date</div> }
+				/>
+				<Table.Column 
+					key="time" 
+					dataIndex="start" 
+					style={{ borderRadius: 5}}  
+					title={ <div style={{ fontWeight: 700 }}>Time</div> }
+				/>
+				<Table.Column 
+					key="name" 
+					dataIndex="summary" 
+					style={{ borderRadius: 5}}  
+					title={ <div style={{ fontWeight: 700 }}>Name</div> }
+				/>
+				<Table.Column 
+					key="amount" 
+					render={(text, record, index) => <div>${record.serviceType.price}</div>} 
+					style={{ borderRadius: 5}}  
+					title={ <div style={{ fontWeight: 700 }}>Amount</div> }
+				/>
+				<Table.Column 
+					key="actions" 
+					dataIndex="id" 
+					style={{ borderRadius: 5}} 
+					render={(text, record) => <Button shape="circle" onClick={() => handleDelete(record)} ><Icon type="delete" /></Button> } 
+					title={ <div style={{ fontWeight: 700 }}></div> }
+				/>
 			</Table>
 		)
 	}
 }
 
 export default JobsTable
-
-const body = css({
-  backgroundColor: 'green',
-  '& thead > tr > th': {
-    backgroundColor: 'white'
-  }
-})
