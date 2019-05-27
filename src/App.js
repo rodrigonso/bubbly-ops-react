@@ -3,10 +3,9 @@ import { Route, Redirect } from 'react-router-dom';
 import { getEventsById } from './services/eventsService'
 import SiderMenu from './components/menu/SiderMenu';
 import Home from './components/home/Home';
-import Appointments from './components/appointments/Appointments';
 import Settings from './components/settings/Settings'
 import ActiveJob from './components/jobs/activeJob/ActiveJob'
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
 import './App.css';
 import jwt from 'jsonwebtoken'
 import Jobs from './components/jobs/Jobs';
@@ -15,6 +14,7 @@ import moment from 'moment'
 import Earnings from './components/earnings/Earnings';
 import MobileMenu from './components/menu/MobileMenu';
 import Payrolls from './components/payrolls/Payrolls';
+import Dashboard from './components/dashboard/Dashboard';
 
 
 
@@ -142,7 +142,7 @@ render() {
               <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>
                 <Route  exact path="/appointments" render={(props) => {
                   if (!user.username) return <Redirect to="/" />
-                  else return <Appointments {...props} user={user} />
+                  else return <Dashboard {...props} user={user} />
                 }}
                 />
                 <Route  exact path="/settings" render={(props) => {

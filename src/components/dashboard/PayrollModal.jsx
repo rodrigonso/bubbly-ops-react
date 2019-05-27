@@ -52,10 +52,12 @@ export class PayrollModal extends Component {
 	render() {
 		const { isModalOpen, totalHours, handleModal, jobsByDate, range, selectedEmployee } = this.props
 		const { hours, tips, wage } = this.state
+		if (!selectedEmployee) return null
+		
 		return (
 			<Modal visible={isModalOpen} title="Run Payroll" onCancel={handleModal} footer={this.getSubmitButton()} >
 				<div >
-					<Tag color="#108ee9" style={{ borderRadius: 10 }}  >
+					<Tag color="#108ee9" style={{ borderRadius: 10, marginBottom: 5 }}  >
 						<Icon type="user" />
 						<Text style={{ color: "#fff", marginLeft: 5 }} >{selectedEmployee.name}</Text>
 					</Tag>
