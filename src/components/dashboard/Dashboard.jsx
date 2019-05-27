@@ -110,8 +110,10 @@ handlePayroll = async(data) => {
   const { selectedEmployee, range } = this.state
   const { totalWage, totalHours, totalTips, totalJobs } = data
 
+  const period = [moment(range[0]).format('l'), moment(range[1]).format('l')]
+
   const payroll = {
-    range: [moment(range[0]).format('l'), moment(range[1]).format('l')],
+    range: period,
     employee: { name: selectedEmployee.name, email: selectedEmployee.email, username: selectedEmployee.username, wage: selectedEmployee.wage, _id: selectedEmployee._id },
     totalHours,
     totalTips,
@@ -119,7 +121,17 @@ handlePayroll = async(data) => {
     totalJobs: totalJobs.length
   }
 
+  const msg = {
+    to: selectedEmployee.email,
+    range: period,
+    totalWage,
+    totalTips,
+    totalHours
+  }
+
   const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
+  const email = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sendGrid/payrollDone`, msg)
+  console.log(email)
   this.setState({ isModalOpen: false })
 }
 
