@@ -31,8 +31,8 @@ export class PayrollModal extends Component {
 		const { jobsByDate } = this.props
 		const data = {
 			totalWage: this.getTotal(),
-			totalTips: tips,
-			totalHours: hours,
+			totalTips: Math.floor(tips),
+			totalHours: Math.floor(hours),
 			totalJobs: jobsByDate
 		}
 		this.props.handlePayroll(data)
@@ -40,7 +40,7 @@ export class PayrollModal extends Component {
 	
 	getTotal = () => {
 		const { hours, tips, wage } = this.state
-		return (hours * wage) + tips
+		return Math.floor((hours * wage) + tips)
 	}
 
 	getSubmitButton = () => {
