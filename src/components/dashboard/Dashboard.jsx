@@ -46,7 +46,7 @@ getTotalHours = (jobs) => {
   const washing = jobs.map(item => item.serviceType.duration)
   const driving = jobs.map(item => {
     const toDestination = item.distances.rows[1] ? parseInt(item.distances.rows[1].elements[1].duration.text) / 60 : 0
-    const fromOrigin = parseInt(item.distances.rows[0].elements[0].duration.text) / 60
+    const fromOrigin = item.distances.rows[0]? parseInt(item.distances.rows[0].elements[0].duration.text) / 60 : 0
 
     if (toDestination.length > 0) return toDestination + fromOrigin
     else return fromOrigin
@@ -65,15 +65,17 @@ getTotalRevenue = (jobs) => {
 }
 
 getTotalMiles = (jobs) => {
-  if (jobs.length === 0) return 0
+  if (jobs.length === 0) return 0 
 
   const driving = jobs.map(item => {
+    if (item.distances.error_message) return 0
     const toDestination = item.distances.rows[1] ? parseInt(item.distances.rows[1].elements[1].distance.text) : 0
-    const fromOrigin = parseInt(item.distances.rows[0].elements[0].distance.text)
+    const fromOrigin = item.distances.rows[0] ? parseInt(item.distances.rows[0].elements[0].distance.text) : 0
 
     if (toDestination.length > 0) return toDestination + fromOrigin
     else return fromOrigin
   })
+
   return driving.reduce((a, b) => a + b)
 }
 
@@ -110,6 +112,8 @@ handlePayroll = async(data) => {
   const { selectedEmployee, range } = this.state
   const { totalWage, totalHours, totalTips, totalJobs } = data
 
+  console.log(totalJobs)
+
   const period = [moment(range[0]).format('l'), moment(range[1]).format('l')]
 
   const payroll = {
@@ -118,7 +122,7 @@ handlePayroll = async(data) => {
     totalHours,
     totalTips,
     totalWage,
-    totalJobs: totalJobs.length
+    totalJobs
   }
 
   const msg = {
@@ -126,7 +130,9 @@ handlePayroll = async(data) => {
     range: period,
     totalWage,
     totalTips,
-    totalHours
+    totalHours,
+    name: selectedEmployee.name,
+    totalJobs
   }
 
   const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)

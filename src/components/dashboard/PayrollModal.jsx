@@ -33,7 +33,7 @@ export class PayrollModal extends Component {
 			totalWage: this.getTotal(),
 			totalTips: Math.floor(tips),
 			totalHours: Math.floor(hours),
-			totalJobs: jobsByDate
+			totalJobs: jobsByDate.length
 		}
 		this.props.handlePayroll(data)
 	}
