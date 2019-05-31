@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Typography, Icon, Button, Table, Timeline, Tag } from 'antd';
+import { Divider, Typography, Icon, Button, Table, Timeline, Tag, Popconfirm } from 'antd';
 import { css } from 'emotion'
 
 const { Text } = Typography
@@ -52,7 +52,7 @@ export class JobsTable extends Component {
 	}
 
 	render() {
-		const { data, handleDelete } = this.props
+		const { data, handleDelete, handleEdit } = this.props
 		const body = css({
 			backgroundColor: 'green',
 			'& thead > tr > th': {
@@ -67,7 +67,7 @@ export class JobsTable extends Component {
 				expandedRowRender={(record) => this.expandedRowRender(record)} 
 				dataSource={data} 
 				style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} 
-				pagination={{ defaultPageSize: 10 }}
+				pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }}
 			>
 				<Table.Column key="date"
 					dataIndex="date" 
@@ -96,7 +96,14 @@ export class JobsTable extends Component {
 					key="actions" 
 					dataIndex="id" 
 					style={{ borderRadius: 5}} 
-					render={(text, record) => <Button shape="circle" onClick={() => handleDelete(record)} ><Icon type="delete" /></Button> } 
+					render={(text, record) => (
+						<div>
+							<Button onClick={() => handleEdit(record)} shape="round" icon="edit" style={{ marginRight: 5 }} />
+							<Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record)} onCancel={null}>
+								<Button shape="circle" icon="delete" />
+							</Popconfirm>
+						</div>
+					)} 
 					title={ <div style={{ fontWeight: 700 }}></div> }
 				/>
 			</Table>

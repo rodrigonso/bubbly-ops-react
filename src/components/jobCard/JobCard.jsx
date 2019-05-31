@@ -11,6 +11,7 @@ const { TextArea } = Input
 
 export class JobCard extends Component {
   state = {
+    isVisible: false,
     visible: false,
     isCompleted: false,
     input: '',
@@ -22,7 +23,6 @@ componentDidUpdate(prevProps) {
       this.setState({ isLoading: this.props.isLoading })
   }
 }
-
 
 // formats the event date to display only time
 formatDate = () => {
@@ -99,7 +99,7 @@ formatPrice = () => {
                <div style={{ display: "grid", gridTemplateColumns: "50% 30% 20%" }} >
                 <div>
                   <span>
-                    <h3 style={{ fontWeight: 700, display: "inline" }} >{this.formatSummary()} </h3>
+                    <h3 style={{ fontWeight: 700, display: "inline" }} >{job.summary} </h3>
                     {job.distances.rows.length === 0 ? <Icon type="exclamation-circle" style={{ display: "inline", color: "red" }} /> : null}
                   </span>
                   <br />
@@ -107,13 +107,13 @@ formatPrice = () => {
                   <br />
                   <Icon type="calendar" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{moment(job.jobData.start.dateTime).format('L')}</Text> 
                   <br />
-                  <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text> 
+                  <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.vehicleType.make} {job.vehicleType.model}</Text> 
                 </div>
                 <div style={{ justifyContent: "center", alignItems: "center", display: "flex" }} >
                   <p type="secondary" style={{ fontSize: 24, marginTop: "16%" }} >{this.formatPrice()}</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }} >
-                  <Button shape="round" style={{ marginRight: 4 }}>Edit</Button>
+                  <Button shape="round" onClick={() => this.props.handleEdit(job, i)} style={{ marginRight: 4 }}>Edit</Button>
                   <Button shape="circle" onClick={() => this.props.handleDelete(job)} loading={isLoading}><Icon type="delete" style={{ marginTop: 5 }} /></Button>
                 </div>
                 </div>

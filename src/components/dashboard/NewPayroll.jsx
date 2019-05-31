@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const { Text } = Typography
 
-export class PayrollModal extends Component {
+export class NewPayroll extends Component {
 	state = {
 		hours: 0,
 		tips: 0,
@@ -94,4 +94,4 @@ export class PayrollModal extends Component {
 	}
 }
 
-export default PayrollModal
+export default NewPayroll

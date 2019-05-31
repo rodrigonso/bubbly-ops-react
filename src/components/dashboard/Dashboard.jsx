@@ -4,9 +4,10 @@ import { Spin, Icon, Button, Tabs, notification } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
-import PayrollModal from './PayrollModal';
+import NewPayroll from './NewPayroll';
 import JobsTable from './JobsTable';
 import Metrics from './Metrics';
+import EditJob from './EditJob';
 
 const { TabPane } = Tabs
 
@@ -14,17 +15,22 @@ export class Dashboard extends Component {
 state = {
   jobs: [],
   employees: [],
+  serivces: [],
   selectedEmployee: "",
   range: [],
+  editingJob: {},
+  editingJobindex: null,
   isDeleting: false,
   isLoading: false,
   viewAll: false,
-  isModalOpen: false
+  isPayrollOpen: false,
+  isEditJobOpen: false,
 }
 
 async componentDidMount() {
   const employees = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
-  this.setState({ employees: employees.data })
+  const services = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
+  this.setState({ employees: employees.data, services: services.data })
 
   this.setState({ isLoading: true })
 
@@ -155,17 +161,33 @@ handleChange = async(date) => {
 }
 
 handleDelete = async(job) => {
+  const jobs = [...this.state.jobs]
   try {
     this.setState({ isDeleting: true })
     const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/deleteJob/${job.employeeId}/${job._id}`)
-    const jobs = [...this.state.jobs]
     const newJobs = jobs.filter(item => item._id !== job._id)
     this.setState({ jobs: newJobs })
   } catch (ex) {
     console.log(ex)
+    this.setState({ jobs })
   } finally {
     this.setState({ isDeleting: false })
   }
+}
+
+handleEdit = (job, index) => {
+  console.log(job)
+  this.setState({ isEditJobOpen: !this.state.isEditJobOpen })
+  this.setState({ editingJob: job, editingJobindex: index })
+  console.log(index)
+}
+
+handleSave = (job) => {
+  const { editingJobindex } = this.state
+  const jobs = [...this.state.jobs]
+  jobs[editingJobindex] = job
+  this.setState({ jobs })
+  this.setState({ isEditJobOpen: false })
 }
 
 handleModal = () => {
@@ -178,7 +200,7 @@ handleModal = () => {
 }
 
 render() {
-  const { employees, isDeleting, isLoading, jobs, range, selectedEmployee, isModalOpen } = this.state
+  const { employees, services, isDeleting, isEditJobOpen, jobs, range, selectedEmployee, isPayrollOpen, editingJob } = this.state
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === selectedEmployee._id) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const totalHours = this.getTotalHours(jobsByDate)
@@ -195,19 +217,26 @@ render() {
     ) 
 
     return (
-      <div style={{ height: "auto", marginBottom: 80, minWidth: 1000 }}>
+      <div style={{ height: "auto", marginBottom: 80, minWidth: 1200 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-        <PayrollModal 
+        <EditJob 
+          job={editingJob}
+          isVisible={isEditJobOpen}
+          services={services}
+          handleEdit={this.handleEdit}
+          handleSave={this.handleSave}
+        />
+        <NewPayroll 
           selectedEmployee={selectedEmployee} 
           jobsByDate={jobsByDate} 
           totalHours={totalHours} 
           range={range} 
-          isModalOpen={isModalOpen} 
+          isModalOpen={isPayrollOpen} 
           handleModal={this.handleModal} 
           handlePayroll={this.handlePayroll} 
         />
-        <div className="dashboard-main" style={{ display: "grid", gridTemplateColumns: "25% 75%" }} >
+        <div className="dashboard-main" style={{ display: "grid", gridTemplateColumns: "21% 79%" }} >
           <div className="dashboard-left-panel" style={{ width: "18em", marginTop: "4.35em" }} >
             <Metrics 
               jobs={jobs} 
@@ -226,7 +255,7 @@ render() {
           </div>
           <div style={{ marginLeft: 20 }} className="dashboard-right-panel" >
             <Tabs  
-              style={{ maxWidth: 650 }} 
+              style={{ maxWidth: 700 }} 
               tabBarExtraContent={
                 (
                   <div>
@@ -237,20 +266,23 @@ render() {
               } 
               >
               <TabPane key="1" tab="Recent Jobs" >
-                {jobsByDate.slice(0,5).map(job => {
+                {jobsByDate.slice(0,5).map((job, i) => {
                   return (
                     <JobCard 
+                      i={i}
                       key={job._id} 
                       job={job} 
                       isMobile={false} 
+                      services={services}
                       handleDelete={this.handleDelete} 
+                      handleEdit={this.handleEdit}
                       isLoading={isDeleting} 
                     />
                   ) 
                 })}
               </TabPane>
               <TabPane key="2" tab="All Jobs" >
-                <JobsTable data={jobsByDate} handleDelete={this.handleDelete}  />
+                <JobsTable data={jobsByDate} handleDelete={this.handleDelete} handleEdit={this.handleEdit} />
               </TabPane>
             </Tabs>
           </div>
