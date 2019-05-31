@@ -182,6 +182,10 @@ handleEdit = (job, index) => {
   console.log(index)
 }
 
+handleClose = () => {
+  this.setState({ isEditJobOpen: false })
+}
+
 handleSave = (job) => {
   const { editingJobindex } = this.state
   const jobs = [...this.state.jobs]
@@ -226,6 +230,7 @@ render() {
           services={services}
           handleEdit={this.handleEdit}
           handleSave={this.handleSave}
+          handleClose={this.handleClose}
         />
         <NewPayroll 
           selectedEmployee={selectedEmployee} 

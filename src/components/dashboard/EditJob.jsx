@@ -123,7 +123,7 @@ export class EditJob extends Component {
     if (!job.summary) return null
     return (
       <div>
-        <Modal onCancel={this.props.handleEdit} visible={isVisible} title="Edit Job" footer={<Button onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
+        <Modal onCancel={this.props.handleClose} visible={isVisible} title="Edit Job" footer={<Button onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
           <div style={{ marginTop: 20 }} >
             <Form {...formItemLayout} labelAlign="left" >
               <Form.Item label="Summary">
