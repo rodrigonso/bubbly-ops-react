@@ -97,8 +97,8 @@ export class EditJob extends Component {
         rows: [
           { elements : [
               {
-                distance: { text: distance },
-                duration: { text: duration }
+                distance: { text: `${distance} mi` },
+                duration: { text: `${duration} min` }
               }
             ] 
           }

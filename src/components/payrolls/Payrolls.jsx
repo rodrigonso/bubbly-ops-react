@@ -39,7 +39,7 @@ export class Payrolls extends Component {
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Payrolls</h1>
         <p>View and manage all payrolls submited.</p>
 				<Divider />
-				<Table className={body} dataSource={payrolls} style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} >
+				<Table className={body} dataSource={payrolls} style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }} >
 					<Table.Column key="1" title={ <div style={{ fontWeight: 700 }}>Range</div> } dataIndex="range" render={(text, record, index) => <div>{record.range[0]} - {record.range[1]}</div>}  />
 					<Table.Column key="2" title={ <div style={{ fontWeight: 700 }}>Employee</div> } dataIndex="employee.name" />
 					<Table.Column key="3" title={ <div style={{ fontWeight: 700 }}>Hours</div> } dataIndex="totalHours" />

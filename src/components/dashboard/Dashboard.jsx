@@ -179,19 +179,24 @@ handleEdit = (job, index) => {
   console.log(job)
   this.setState({ isEditJobOpen: !this.state.isEditJobOpen })
   this.setState({ editingJob: job, editingJobindex: index })
-  console.log(index)
 }
 
 handleClose = () => {
   this.setState({ isEditJobOpen: false })
 }
 
-handleSave = (job) => {
+handleSave = async(job) => {
   const { editingJobindex } = this.state
   const jobs = [...this.state.jobs]
-  jobs[editingJobindex] = job
-  this.setState({ jobs })
-  this.setState({ isEditJobOpen: false })
+  try {
+    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/updateJob/${job._id}`, job)
+    jobs[editingJobindex] = job
+    this.setState({ jobs })
+    this.setState({ isEditJobOpen: false })
+  }
+  catch (ex) {
+    console.log(ex)
+  }
 }
 
 handleModal = () => {
