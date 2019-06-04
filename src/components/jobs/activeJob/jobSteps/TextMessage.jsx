@@ -36,8 +36,7 @@ handleTextSend = async() => {
   
   try {
     this.setState({ isLoading: true })
-    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
-    console.log(data);
+    const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
     this.setState({ isSent: true })
   } catch(ex) {
     console.log(ex);

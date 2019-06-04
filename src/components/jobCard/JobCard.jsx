@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
-import { Card, Row, Col, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag, Timeline } from 'antd';
+import { Card, Row, Popconfirm, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag, Timeline } from 'antd';
 import dateFormat from 'dateformat';
 import moment from 'moment'
 import TextMessage from '../jobs/activeJob/jobSteps/TextMessage'
@@ -100,7 +100,7 @@ formatPrice = () => {
                 <div>
                   <span>
                     <h3 style={{ fontWeight: 700, display: "inline" }} >{job.summary} </h3>
-                    {job.distances.rows.length === 0 ? <Icon type="exclamation-circle" style={{ display: "inline", color: "red" }} /> : null}
+                    {job.distances.rows.length === 0 ? <Icon type="exclamation-circle" theme="filled" style={{ display: "inline", color: "red" }} /> : null}
                   </span>
                   <br />
                   <Icon type="clock-circle" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatDate()}</Text> 
@@ -114,7 +114,9 @@ formatPrice = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }} >
                   <Button shape="round" onClick={() => this.props.handleEdit(job, i)} style={{ marginRight: 4 }}>Edit</Button>
-                  <Button shape="circle" onClick={() => this.props.handleDelete(job)} loading={isLoading}><Icon type="delete" style={{ marginTop: 5 }} /></Button>
+                  <Popconfirm title="Are you sure?" onConfirm={() => this.props.handleDelete(job)} onCancel={null}>
+								    <Button shape="circle" icon="delete" />
+	              	</Popconfirm>
                 </div>
                 </div>
               </div>
