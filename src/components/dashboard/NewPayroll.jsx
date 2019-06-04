@@ -28,12 +28,12 @@ export class NewPayroll extends Component {
 	
 	handleSubmit = () => {
 		const { tips, hours } = this.state
-		const { jobsByDate } = this.props
+		const { jobs } = this.props
 		const data = {
 			totalWage: this.getTotal(),
 			totalTips: Math.floor(tips),
 			totalHours: Math.floor(hours),
-			totalJobs: jobsByDate.length
+			totalJobs: jobs.length
 		}
 		this.props.handlePayroll(data)
 	}
@@ -50,7 +50,7 @@ export class NewPayroll extends Component {
 	}
 
 	render() {
-		const { isPayrollOpen, totalHours, handleModal, jobsByDate, range, selectedEmployee } = this.props
+		const { isPayrollOpen, totalHours, handleModal, jobs, range, selectedEmployee } = this.props
 		const { hours, tips, wage } = this.state
 		if (!selectedEmployee) return null
 		

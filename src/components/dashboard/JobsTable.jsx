@@ -52,7 +52,7 @@ export class JobsTable extends Component {
 	}
 
 	render() {
-		const { data, handleDelete, handleEdit } = this.props
+		const { jobs, handleDelete, handleEdit } = this.props
 		const body = css({
 			backgroundColor: 'green',
 			'& thead > tr > th': {
@@ -65,7 +65,7 @@ export class JobsTable extends Component {
 				className={body} 
 				rowKey={(record) => record._id} 
 				expandedRowRender={(record) => this.expandedRowRender(record)} 
-				dataSource={data} 
+				dataSource={jobs} 
 				style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} 
 				pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }}
 			>

@@ -8,7 +8,7 @@ const { Text } = Typography
 
 export class Metrics extends Component {
 	render() {
-		const { jobs, jobsByDate, totalRevenue, totalDriving, jobsByDay, serviceTypes } = this.props
+		const { jobs, jobsBySearch, totalRevenue, totalDriving, jobsByDay, serviceTypes } = this.props
 		return (
 			<Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
 				<div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} >
@@ -24,7 +24,7 @@ export class Metrics extends Component {
 				<div style={{backgroundColor: "#fff", marginTop: -25, padding: 15, display: "grid", gridTemplateColumns: "1fr 1fr", borderRadius: 5 }}>
 					<div>
 						<Text style={{ fontSize: 12 }} type="secondary">Total Jobs</Text>
-						<p style={{ fontSize: 16 }}  >{jobsByDate.length}</p>
+						<p style={{ fontSize: 16 }}  >{jobsBySearch.length}</p>
 					</div>
 					<div>
 						<Text style={{ fontSize: 12 }} type="secondary">Total Revenue</Text>
@@ -36,11 +36,11 @@ export class Metrics extends Component {
 					<div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }} >
 						<div>
 							<Text style={{ fontSize: 12 }} type="secondary">Job Average</Text>
-							<p style={{ fontSize: 16 }}  >${Math.floor(totalRevenue/jobsByDate.length)}</p>
+							<p style={{ fontSize: 16 }}  >${Math.floor(totalRevenue/jobsBySearch.length)}</p>
 						</div>
 						<div>
 							<Text style={{ fontSize: 12 }} type="secondary">Average Distance</Text>
-							<p style={{ fontSize: 16 }} >{Math.floor(totalDriving/jobsByDate.length)} miles</p>
+							<p style={{ fontSize: 16 }} >{Math.floor(totalDriving/jobsBySearch.length)} miles</p>
 						</div>
 					</div>
 					<Divider />

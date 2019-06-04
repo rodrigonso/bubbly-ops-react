@@ -17,6 +17,7 @@ state = {
   employees: [],
   serivces: [],
   selectedEmployee: "",
+  search: "",
   range: [],
   editingJob: {},
   editingJobindex: null,
@@ -160,6 +161,10 @@ handleChange = async(date) => {
   this.setState({ range: [start, end] })
 }
 
+handleSearch = (e) => {
+  this.setState({ search: e.target.value })
+}
+
 handleDelete = async(job) => {
   const jobs = [...this.state.jobs]
   try {
@@ -209,9 +214,14 @@ handleModal = () => {
 }
 
 render() {
-  const { employees, services, isDeleting, isEditJobOpen, jobs, range, selectedEmployee, isPayrollOpen, editingJob } = this.state
+  const { employees, services, isDeleting, isEditJobOpen, jobs, range, selectedEmployee, isPayrollOpen, editingJob, search } = this.state
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === selectedEmployee._id) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
+  const jobsBySearch = search ? jobsByDate.filter(job => {
+    const lowerCase = job.summary.toLowerCase()
+    return lowerCase.indexOf(search) !== -1  
+  }) : jobsByDate 
+  
   const totalHours = this.getTotalHours(jobsByDate)
   const totalRevenue = this.getTotalRevenue(jobsByDate)
   const serviceTypes = this.getServiceTypes(jobsByDate)
@@ -239,7 +249,7 @@ render() {
         />
         <NewPayroll 
           selectedEmployee={selectedEmployee} 
-          jobsByDate={jobsByDate} 
+          jobs={jobsBySearch} 
           totalHours={totalHours} 
           range={range} 
           isPayrollOpen={isPayrollOpen} 
@@ -250,17 +260,19 @@ render() {
           <div className="dashboard-left-panel" style={{ width: "18em", marginTop: "4.35em" }} >
             <Metrics 
               jobs={jobs} 
-              jobsByDate={jobsByDate} 
+              jobsBySearch={jobsBySearch} 
               totalRevenue={totalRevenue} 
               totalDriving={totalDriving} 
               jobsByDay={jobsByDay} 
               serviceTypes={serviceTypes}
             />
             <FilterBar 
+              value={search} 
               handleChange={this.handleChange} 
               employees={employees} 
               selectedEmployee={selectedEmployee} 
               onEmployeeChange={this.handleEmployeeSelection} 
+              handleSearch={this.handleSearch}
             />
           </div>
           <div style={{ marginLeft: 20 }} className="dashboard-right-panel" >
@@ -276,7 +288,7 @@ render() {
               } 
               >
               <TabPane key="1" tab="Recent Jobs" >
-                {jobsByDate.slice(0,5).map((job, i) => {
+                {jobsBySearch.slice(0,5).map((job, i) => {
                   return (
                     <JobCard 
                       i={i}
@@ -292,7 +304,7 @@ render() {
                 })}
               </TabPane>
               <TabPane key="2" tab="All Jobs" >
-                <JobsTable data={jobsByDate} handleDelete={this.handleDelete} handleEdit={this.handleEdit} />
+                <JobsTable jobs={jobsBySearch} handleDelete={this.handleDelete} handleEdit={this.handleEdit} />
               </TabPane>
             </Tabs>
           </div>
