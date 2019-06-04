@@ -203,7 +203,7 @@ handleModal = () => {
   const { range, selectedEmployee } = this.state
   notification.close("payroll")
   if (range.length > 0 && selectedEmployee) {
-    this.setState({ isModalOpen: !this.state.isModalOpen })
+    this.setState({ isPayrollOpen: !this.state.isPayrollOpen })
   }
   else notification.error({ message: "Error", description: "Select the desired employee and period in order to run a new payroll." })
 }
@@ -242,7 +242,7 @@ render() {
           jobsByDate={jobsByDate} 
           totalHours={totalHours} 
           range={range} 
-          isModalOpen={isPayrollOpen} 
+          isPayrollOpen={isPayrollOpen} 
           handleModal={this.handleModal} 
           handlePayroll={this.handlePayroll} 
         />
