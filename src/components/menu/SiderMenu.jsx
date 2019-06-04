@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Layout, Menu, Avatar, Divider, Button } from 'antd'
+import { Menu, Avatar, Button } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
-const { Sider } = Layout;
-
 export class SiderMenu extends Component {
+state = {
+  currentKey: 'home'
+}
 
 renderUserBadge = () => {
   const { user } = this.props
@@ -27,6 +28,11 @@ renderUserBadge = () => {
   }
 }
 
+handleMenuChange = (e) => {
+  console.log(e)
+  this.setState({ currentKey: e.key })
+}
+
 handleLogout = () => {
   localStorage.removeItem("token");
   window.location.reload()
@@ -35,29 +41,26 @@ handleLogout = () => {
 
   render() {
     const { user } = this.props
+    const { currentKey } = this.state
     if (!user.email) {
       return (
-        <div style={{ display: "grid", gridTemplateColumns: "10% 80% 10%", backgroundColor: "#fff", height: 55, fontWeight: 700 }} >
-        <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15 }}  />
-        <Menu mode="horizontal" style={{ marginTop: 5 }}  >
-          <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
-        </Menu>
-      </div>
+        <div style={{ backgroundColor: "#fff", height: 55, fontWeight: 700, width: "100%" }} >
+          <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15 }}  />
+        </div>
       )
     }
     return (
       <div style={menuDesktop} >
-        <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15 }}  />
-        <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16 }}  >
-          <Menu.Item><NavLink to="/">Home</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
-          <Menu.Item><NavLink to="/settings">Settings</NavLink></Menu.Item>
+        <NavLink to="/" >
+          <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15, cursor: 'pointer' }}  key="home" onClick={() => this.handleMenuChange({ key: "home" })} />
+        </NavLink>
+        <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16 }} onClick={this.handleMenuChange} selectedKeys={[currentKey]}  >
+          <Menu.Item key="home" ><NavLink to="/">Home</NavLink></Menu.Item>
+          <Menu.Item key="dashboard" ><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
+          <Menu.Item key="payrolls" ><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
+          <Menu.Item key="settings" ><NavLink to="/settings">Settings</NavLink></Menu.Item>
         </Menu>
-        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "20%" }} shape="round" >Logout</Button>
+        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "20%" }} type="ghost" shape="round" >Logout</Button>
       </div>
     )
   }

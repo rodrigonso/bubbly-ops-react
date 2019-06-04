@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Typography, Spin, Icon, Skeleton, Button, Input, Tabs, Table, Pagination, Timeline, Badge, Tag, Modal, Form, Select, Radio, DatePicker, TimePicker, Collapse, notification, InputNumber } from 'antd';
+import { Divider, Typography, Icon, Collapse } from 'antd';
 import {
   PieChart, Pie, Cell, XAxis, YAxis, BarChart, Tooltip, Legend, Bar
 } from 'recharts';

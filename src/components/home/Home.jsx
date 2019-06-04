@@ -22,12 +22,7 @@ export class Home extends Component {
                 <p>Please login with your credentials below</p>
                 <Login />
                 <p>Don't have an account? <a href="/" >Register now!</a></p>
-              </TabPane>  
-              <TabPane tab="Register" key="2">
-                <p>Enter your information below to sign-up</p>
-                <Register />
               </TabPane>
-              
             </Tabs>
             <Divider type="vertical" style={{ height: "80%", marginTop: 25, marginLeft: 20 }}  />
             <div style={{ margin: "auto" }} >
@@ -71,4 +66,10 @@ export class Home extends Component {
 
 
 export default Home
-//
+
+/*
+  <TabPane tab="Register" key="2">
+    <p>Enter your information below to sign-up</p>
+    <Register />
+  </TabPane>
+*/              
