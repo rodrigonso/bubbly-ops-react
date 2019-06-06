@@ -38,6 +38,8 @@ formatDate = () => {
     const date = [`Expected: ${moment(startTime).calendar()}`, `Expected: ${moment(endTime).calendar()}`];
   
     return date
+  } else {
+    return `${moment(job.jobData.start.dateTime).format("LT")} - ${moment(job.jobData.end.dateTime).format("LT")}`
   }
 }
 
@@ -107,8 +109,6 @@ getCurrentLabel = () => {
   render() {
     const { job, isMobile, i, progress, handleBegin } = this.props;
     console.log(job)
-
-    if (job.currentStep === 0) return null
 
     if (isMobile) {
       return (
