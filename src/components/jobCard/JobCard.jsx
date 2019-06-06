@@ -108,7 +108,6 @@ getCurrentLabel = () => {
 
   render() {
     const { job, isMobile, i, progress, handleBegin } = this.props;
-    console.log(job)
 
     if (isMobile) {
       return (

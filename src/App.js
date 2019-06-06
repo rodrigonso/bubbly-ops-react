@@ -122,13 +122,15 @@ handleRefresh = () => {
   this.getCurrentJobs()
 }
 
-handleJobCompletion = (job) => {
+handleJobCompletion = async(job) => {
+  const { user } = this.state
   const uncompletedJobs = this.state.uncompletedJobs.filter(item => item.jobData.id !== job.id )
   const completedJobs = [...this.state.completedJobs]
   completedJobs.push(job)
   localStorage.setItem("completedJobs", JSON.stringify(completedJobs))
   localStorage.setItem("completedJobsDate", new Date())
   this.setState({ uncompletedJobs, completedJobs })
+  const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employee/${user.employeeId}`, {})
 }
 
 render() {

@@ -288,6 +288,7 @@ render() {
                   </div> 
                 )
               } 
+              defaultActiveKey="1"
               >
                 <TabPane key="0" tab="In Progress">
                   <InProgress 
