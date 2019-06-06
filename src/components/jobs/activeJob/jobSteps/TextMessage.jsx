@@ -22,6 +22,10 @@ componentDidMount() {
   this.getTimes()
 }
 
+componentDidUpdate(prevProps) {
+  if (prevProps.activeJob !== this.props.activeJob) this.forceUpdate()
+}
+
 // sends text message
 handleTextSend = async() => {
   const { input } = this.state
@@ -70,7 +74,7 @@ handleSelect = (e) => {
 
   render() {
       const { input, isSent, startTime, isLoading, late1, late2 } = this.state
-      const { activeJob } = this.props
+      if (!this.props.activeJob) return null
       return (
         <div style={{width: "100%", minHeight: 350 }}>
           <p>Select the appropiate number according to your ETA.</p>

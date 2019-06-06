@@ -3,6 +3,7 @@ import UncompletedJobs from './uncompletedJobs/UncompletedJobs';
 import CompletedJobs from './completedJobs/CompletedJobs'
 import UpcomingJobs from './upcomingJobs/UpcomingJobs'
 import { Divider, PageHeader } from 'antd';
+import axios from 'axios';
 
 export class Jobs extends Component {
     state = {
@@ -10,12 +11,15 @@ export class Jobs extends Component {
         uncompletedJobs: []
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        const { user } = this.props
         this.setState({ completedJobs: this.props.completedJobs, uncompletedJobs: this.props.uncompletedJobs })
 
-        const activeJob = JSON.parse(localStorage.getItem("activeJob"))
-        if (!activeJob) return
-        else this.props.history.push(`/jobs/${activeJob.jobData.id}`)
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
+        const jobInProgress = data.jobInProgress ? data.jobInProgress : null
+
+        if (!jobInProgress) return
+        else if (jobInProgress.currentStep !== 3) this.props.history.push(`/jobs/${jobInProgress.jobData.id}`)
     }
 
     componentDidUpdate(prevProps) {

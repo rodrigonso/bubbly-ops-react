@@ -56,7 +56,7 @@ export class CompletedJobs extends Component {
 				console.log(jobs)
 
 				const res = jobs.map(async(item) => {
-						const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/saveJob/${this.props.user.employeeId}`, item)
+						const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs`, item)
 						return response
 				})
 				const final = await Promise.all(res)

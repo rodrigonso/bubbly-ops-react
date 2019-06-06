@@ -100,7 +100,7 @@ getCurrentJobs = async () => {
   const allJobs = await getEventsById(this.state.user.email, this.state.range)
   const completedJobs = await allJobs.map(async job => {
       const newJob = { jobData: job }
-      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/getJob/${job.id}`, newJob)
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs/${job.id}`, newJob)
       return data
   })
   const res = await Promise.all(completedJobs)

@@ -25,8 +25,15 @@ export class UncompletedJobs extends Component {
 		} 
 	}
 
-  handleBegin = (job) => {
-    localStorage.setItem("activeJob", JSON.stringify(job))
+  handleBegin = async(job) => {
+    const { user } = this.props
+
+    const jobInProgress = {
+      currentStep: 0,
+      jobData: job.jobData
+    }
+
+    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
     this.props.history.push(`/jobs/${job.jobData.id}`)
   }
 

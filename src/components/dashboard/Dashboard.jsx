@@ -8,6 +8,8 @@ import NewPayroll from './NewPayroll';
 import JobsTable from './JobsTable';
 import Metrics from './Metrics';
 import EditJob from './EditJob';
+import RecentJobs from './RecentJobs';
+import InProgress from './InProgress';
 
 const { TabPane } = Tabs
 
@@ -36,7 +38,7 @@ async componentDidMount() {
   this.setState({ isLoading: true })
 
   try {
-    const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getAllJobs/`)
+    const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
     this.setState({ jobs: jobs.data })
   } catch (ex) {
     console.log(ex)
@@ -169,7 +171,7 @@ handleDelete = async(job) => {
   const jobs = [...this.state.jobs]
   try {
     this.setState({ isDeleting: true })
-    const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/deleteJob/${job.employeeId}/${job._id}`)
+    const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
     const newJobs = jobs.filter(item => item._id !== job._id)
     this.setState({ jobs: newJobs })
   } catch (ex) {
@@ -194,7 +196,7 @@ handleSave = async(job) => {
   const { editingJobindex } = this.state
   const jobs = [...this.state.jobs]
   try {
-    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/updateJob/${job._id}`, job)
+    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
     jobs[editingJobindex] = job
     this.setState({ jobs })
     this.setState({ isEditJobOpen: false })
@@ -287,25 +289,27 @@ render() {
                 )
               } 
               >
-              <TabPane key="1" tab="Recent Jobs" >
-                {jobsBySearch.slice(0,5).map((job, i) => {
-                  return (
-                    <JobCard 
-                      i={i}
-                      key={job._id} 
-                      job={job} 
-                      isMobile={false} 
-                      services={services}
-                      handleDelete={this.handleDelete} 
-                      handleEdit={this.handleEdit}
-                      isLoading={isDeleting} 
-                    />
-                  ) 
-                })}
-              </TabPane>
-              <TabPane key="2" tab="All Jobs" >
-                <JobsTable jobs={jobsBySearch} handleDelete={this.handleDelete} handleEdit={this.handleEdit} />
-              </TabPane>
+                <TabPane key="0" tab="In Progress">
+                  <InProgress 
+                    jobs={jobsBySearch}
+                  />
+                </TabPane> 
+                <TabPane key="1" tab="Recent Jobs" >
+                  <RecentJobs
+                    jobs={jobsBySearch} 
+                    services={services}
+                    handleDelete={this.handleDelete} 
+                    handleEdit={this.handleEdit}
+                    isLoading={this.isDeleting} 
+                  />
+                </TabPane>
+                <TabPane key="2" tab="All Jobs" >
+                  <JobsTable 
+                    jobs={jobsBySearch} 
+                    handleDelete={this.handleDelete} 
+                    handleEdit={this.handleEdit} 
+                  />
+                </TabPane>
             </Tabs>
           </div>
         </div>

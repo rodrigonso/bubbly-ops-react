@@ -23,25 +23,39 @@ export class ActiveJob extends Component {
     }
 
     async componentDidMount() {
-        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
-        this.setState({ services: data })
+        const { user } = this.props
+
+        const { data: services } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
+        this.setState({ services })
+
+        const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
+        console.log(employee, "IMMA SEE HOW LONG IT TAKES")
+        if (employee.jobInProgress) {
+          this.setState({ activeJob: employee.jobInProgress })
+        }
+
+        if (employee.jobInProgress.currentStep === 3) {
+          this.setState({ activeJob: {} })
+        } 
+
+        if (employee.jobInProgress.currentStep) {
+          this.setState({ currentStep: employee.jobInProgress.currentStep })
+        }
+
+        if (employee.jobInProgress.currentStep === 3) {
+          this.props.history.push("/jobs")
+        }
 
         const activeJobData = JSON.parse(localStorage.getItem("activeJobData"))
         if (activeJobData) {
           const { vehicleType, make, model, rating } = activeJobData
           this.setState({ vehicleType, make, model, rating }) 
         }
-
-        const currentStep = JSON.parse(localStorage.getItem("currentStep"))
-        if (currentStep) this.setState({ currentStep })
-
-        const activeJob = JSON.parse(localStorage.getItem("activeJob"))
-        console.log(activeJob)
-        if (activeJob) this.setState({ activeJob })
     }
 
-    nextStep = (data) => {
+    nextStep = async(data) => {
       const { activeJob } = this.state
+      const { user } = this.props
       if (data.make) {
         const { make, model, rating, vehicleType } = data
         this.setState({ make, model, rating, vehicleType })
@@ -49,12 +63,17 @@ export class ActiveJob extends Component {
       }
 
       this.setState({ currentStep: this.state.currentStep + 1 })
-      localStorage.setItem("currentStep", this.state.currentStep + 1)
+
+      const jobInProgress = {
+        currentStep: this.state.currentStep + 1,
+        start: new Date(),
+        jobData: activeJob.jobData
+      }
+      const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
+      console.log(res)
     }
 
     handleBack = () => {
-        localStorage.removeItem("activeJob")
-        localStorage.removeItem("currentStep")
         localStorage.removeItem("activeJobData")
         this.props.history.push("/jobs")
     }
@@ -102,13 +121,20 @@ export class ActiveJob extends Component {
 
         
     handleCompletion = async() => {
+      const { user } = this.props
       const job = this.calculateJobPrice()
       this.setState({ currentStep: 0 })
       this.props.handleJobCompletion(job)
       localStorage.removeItem("activeJobData")
-      localStorage.removeItem("currentStep")
-      localStorage.removeItem("activeJob")
       this.props.history.push("/jobs")
+
+      const jobInProgress = {
+        isCompleted: true,
+        currentStep: 3,
+        end: new Date(),
+        jobData: job
+      }
+      const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
     }
 
     formatSummary = () => {
@@ -122,9 +148,9 @@ export class ActiveJob extends Component {
     
 
   render() {
-    const { make, model, rating, currentStep } = this.state
-    const activeJob = JSON.parse(localStorage.getItem("activeJob"))
-    return (
+    const { make, model, rating, currentStep, activeJob } = this.state
+    if (!activeJob.jobData) return null
+    else return (
         <div style={{ width: "100%" }}  >
             <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }} extra={currentStep === 0 ? <Icon onClick={this.nextStep} type="arrow-right">Skip</Icon> : null }  />
             <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
