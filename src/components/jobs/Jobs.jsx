@@ -17,6 +17,7 @@ export class Jobs extends Component {
 
         const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
         const jobInProgress = data.jobInProgress ? data.jobInProgress : null
+        console.log(data)
 
         if (!jobInProgress) return
         else if (jobInProgress.currentStep !== 3) this.props.history.push(`/jobs/${jobInProgress.jobData.id}`)

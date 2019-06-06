@@ -130,7 +130,7 @@ handleJobCompletion = async(job) => {
   localStorage.setItem("completedJobs", JSON.stringify(completedJobs))
   localStorage.setItem("completedJobsDate", new Date())
   this.setState({ uncompletedJobs, completedJobs })
-  const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employee/${user.employeeId}`, {})
+
 }
 
 render() {

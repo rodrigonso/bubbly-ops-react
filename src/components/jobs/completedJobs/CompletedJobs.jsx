@@ -48,6 +48,7 @@ export class CompletedJobs extends Component {
 	}
 
 	handleCompletion = async() => {
+		const { user } = this.props
 		try {
 				this.setState({ isLoading: true })
 				const jobsWithDistances = this.props.completedJobs.map(async(job, i) => await getDistances(job, i, this.props.completedJobs))
@@ -62,6 +63,8 @@ export class CompletedJobs extends Component {
 				const final = await Promise.all(res)
 				this.setState({ isCompleted: true })
 				localStorage.setItem("isCompleted", true)
+				const result = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, {})
+				console.log(result)
 				console.log(final)
 				message.success("Your jobs have been saved to the database!")
 		} catch (ex) {
