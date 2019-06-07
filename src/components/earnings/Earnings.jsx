@@ -19,7 +19,7 @@ class Earnings extends Component {
 	}
 
 	async componentDidMount() {
-		const { data: allJobs } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs/getAllJobs`)
+		const { data: allJobs } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
 		const jobs = allJobs.filter(item => item.employeeId === this.props.user.employeeId)
 		this.setState({ jobs })
 
