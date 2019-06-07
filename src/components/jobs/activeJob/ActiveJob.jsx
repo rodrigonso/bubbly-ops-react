@@ -88,25 +88,25 @@ export class ActiveJob extends Component {
 
     calculateJobPrice = () => {
         const { make, model, rating, vehicleType, services, upgrades, activeJob } = this.state
+        const { user } = this.props
+        console.log(user.employeeId, "LOOK")
 
         const summary = activeJob.jobData.summary.split(" ")
         const serviceName = summary.slice(0,2).toString().replace(/,/g, "")
     
         const service = services.map(service => {
           if (vehicleType === service.vehicleType && serviceName === service.slug) {
-            console.log(service)
             return service
           }
           if (vehicleType === service.vehicleType && serviceName === service.slug ) {
-            console.log(service)
             return service
           } 
         })
         const res = service.filter(item => item != null)
-        console.log(res)
 
         const obj = {
           id: activeJob.jobData.id,
+          employeeId: user.employeeId,
           upgrades,
           vehicleType: { make, model, vehicleType, rating },
           serviceType: res[0],

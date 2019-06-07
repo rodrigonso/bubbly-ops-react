@@ -32,19 +32,19 @@ export class InProgress extends Component {
         {jobsInProgress.map((job, i) => {
           if (job.currentStep === 0) {
             return (
-              <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
+              <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5, marginBottom: 10 }}>
                  <Empty />
               </div> 
             )
           } else {
             return (
-              <JobCard 
-                progress
-                i={i}
-                job={job}
-                isMobile={false}
-                services={services}
-              />
+                <JobCard 
+                  progress
+                  i={i}
+                  job={job}
+                  isMobile={false}
+                  services={services}
+                />
             )
           }
         })}

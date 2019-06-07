@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Spin, Form, Select, Rate, message, Skeleton } from 'antd';
 import JobCard from '../../jobCard/JobCard';
 import axios from 'axios'
