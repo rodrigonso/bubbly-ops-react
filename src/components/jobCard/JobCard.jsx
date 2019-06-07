@@ -29,7 +29,7 @@ formatDate = () => {
   const { job } = this.props
 
   if (job.currentStep === 3) {
-    return [moment(job.end).calendar(), moment(job.start).calendar()]
+    return [moment(job.start).calendar(), moment(job.end).calendar()]
   } else if (job.currentStep === 2) {
     return [moment(job.start).calendar(), `Expected: ${moment(job.jobData.end.dateTime).calendar()}`];
   } else if (job.currentStep === 1 ) {

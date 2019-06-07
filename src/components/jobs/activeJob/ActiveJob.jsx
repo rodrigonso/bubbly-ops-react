@@ -63,6 +63,7 @@ export class ActiveJob extends Component {
       }
 
       this.setState({ currentStep: this.state.currentStep + 1 })
+      localStorage.setItem("startTime", new Date())
 
       const jobInProgress = {
         currentStep: this.state.currentStep + 1,
@@ -128,9 +129,12 @@ export class ActiveJob extends Component {
       localStorage.removeItem("activeJobData")
       this.props.history.push("/jobs")
 
+      const start = localStorage.getItem("startTime")
+
       const jobInProgress = {
         isCompleted: true,
         currentStep: 3,
+        start,
         end: new Date(),
         jobData: job
       }

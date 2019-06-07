@@ -19,26 +19,26 @@ export class InProgress extends Component {
     const { jobsInProgress } = this.state
     const { services } = this.props
 
-    if (jobsInProgress.length === 0 || jobsInProgress.currrentStep === 0) {
-      return (
-        <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
-          <Empty />
-        </div> 
-      )
-    }
-
     return (
       <div>
-        {jobsInProgress.slice(0,2).map((job, i) => {
-          return (
-            <JobCard 
-              progress
-              i={i}
-              job={job}
-              isMobile={false}
-              services={services}
-            />
-          )
+        {jobsInProgress.map((job, i) => {
+          if (job.currentStep > 0) {
+            return (
+              <JobCard 
+                progress
+                i={i}
+                job={job}
+                isMobile={false}
+                services={services}
+              />
+            )
+          } else {
+            return (
+              <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
+                <Empty />
+              </div> 
+            )
+          }
         })}
       </div>
     )
