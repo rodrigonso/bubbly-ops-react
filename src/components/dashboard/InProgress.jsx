@@ -19,10 +19,24 @@ export class InProgress extends Component {
     const { jobsInProgress } = this.state
     const { services } = this.props
 
+    if (jobsInProgress.length === 0) {
+      return (
+        <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
+          <Empty />
+        </div> 
+      )
+    }
+
     return (
       <div>
         {jobsInProgress.map((job, i) => {
-          if (job.currentStep > 0) {
+          if (job.currentStep === 0) {
+            return (
+              <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
+                 <Empty />
+              </div> 
+            )
+          } else {
             return (
               <JobCard 
                 progress
@@ -31,12 +45,6 @@ export class InProgress extends Component {
                 isMobile={false}
                 services={services}
               />
-            )
-          } else {
-            return (
-              <div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5 }}>
-                <Empty />
-              </div> 
             )
           }
         })}
