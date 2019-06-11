@@ -35,7 +35,10 @@ state = {
 
 async componentDidMount() {
 
-  navigator.geolocation.watchPosition((pos) => alert(`${pos.coords.latitude}  ${pos.coords.longitude}`))
+  navigator.geolocation.watchPosition( async(pos) => {
+    const test = await axios.post(`${process.env.REACT_APP_BACKEND_API}/geolocation`, pos)
+    return test
+  })
 
   const startOfDay = new Date()
   startOfDay.setHours(0,0,0,0)
