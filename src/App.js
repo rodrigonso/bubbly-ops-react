@@ -35,6 +35,8 @@ state = {
 
 async componentDidMount() {
 
+  navigator.geolocation.watchPosition((pos) => alert(`${pos.coords.latitude}  ${pos.coords.longitude}`))
+
   const startOfDay = new Date()
   startOfDay.setHours(0,0,0,0)
 
