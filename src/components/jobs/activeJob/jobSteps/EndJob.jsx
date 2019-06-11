@@ -8,6 +8,7 @@ export class CompleteJob extends Component {
     upgrades: [
       { key: 1, name: "Carpet Shampoo", slug: "CarpetShampoo", price: 40, duration: 0.5 },
       { key: 2, name: "Leather Cleaning", slug: "LeatherCleaning", price: 20, duration: 0.1 },
+      { key: 3, name: "Engine Detailing", slug: "EngineDetailing", price: 60, duration: 0.1 },
     ]
   }
   
@@ -35,10 +36,5 @@ export class CompleteJob extends Component {
     )
   }
 }
-
-const upgrades = [
-  { key: 1, name: "Carpet Shampoo", slug: "CarpetShampoo", price: 40, duration: 0.5 },
-  { key: 2, name: "Leather Cleaning", slug: "LeatherCleaning", price: 20, duration: 0.1 },
-]
 
 export default CompleteJob
