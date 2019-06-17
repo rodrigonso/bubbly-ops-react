@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PageHeader, Steps, Button, Icon } from 'antd';
+import { PageHeader, Steps, Button, Icon, notification, Spin } from 'antd';
 import JobData from './jobSteps/JobData';
 import TextMessage from './jobSteps/TextMessage';
 import CompleteJob from './jobSteps/EndJob';
@@ -19,7 +19,8 @@ export class ActiveJob extends Component {
         make: "",
         model: "",
         rating: 0,
-        price: {}
+        price: {},
+        isLoading: false
     }
 
     async componentDidMount() {
@@ -28,22 +29,29 @@ export class ActiveJob extends Component {
         const { data: services } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
         this.setState({ services })
 
-        const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
-        console.log(employee, "IMMA SEE HOW LONG IT TAKES")
-        if (employee.jobInProgress) {
-          this.setState({ activeJob: employee.jobInProgress })
-        }
-
-        if (employee.jobInProgress.currentStep === 3) {
-          this.setState({ activeJob: {} })
-        } 
-
-        if (employee.jobInProgress.currentStep) {
-          this.setState({ currentStep: employee.jobInProgress.currentStep })
-        }
-
-        if (employee.jobInProgress.currentStep === 3) {
-          this.props.history.push("/jobs")
+        try {
+          this.setState({ isLoading: true })
+          const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
+          console.log(employee, "IMMA SEE HOW LONG IT TAKES")
+          if (employee.jobInProgress) {
+            this.setState({ activeJob: employee.jobInProgress })
+          }
+  
+          if (employee.jobInProgress.currentStep === 3) {
+            this.setState({ activeJob: {} })
+          } 
+  
+          if (employee.jobInProgress.currentStep) {
+            this.setState({ currentStep: employee.jobInProgress.currentStep })
+          }
+  
+          if (employee.jobInProgress.currentStep === 3) {
+            this.props.history.push("/jobs")
+          }
+        } catch (ex) {
+          console.log(ex)
+        } finally {
+          this.setState({ isLoading: false })
         }
 
         const activeJobData = JSON.parse(localStorage.getItem("activeJobData"))
@@ -75,6 +83,8 @@ export class ActiveJob extends Component {
     }
 
     handleBack = () => {
+        const { user } = this.props
+        axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, {})
         localStorage.removeItem("activeJobData")
         this.props.history.push("/jobs")
     }
@@ -152,7 +162,8 @@ export class ActiveJob extends Component {
     
 
   render() {
-    const { make, model, rating, currentStep, activeJob } = this.state
+    const { make, model, rating, currentStep, activeJob, isLoading } = this.state
+    if (isLoading) return <Spin style={{ marginTop: "40vh" }} indicator={<Icon type="loading"/> } />
     if (!activeJob.jobData) return null
     else return (
         <div style={{ width: "100%" }}  >

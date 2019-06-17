@@ -2,25 +2,35 @@ import React, { Component } from 'react'
 import UncompletedJobs from './uncompletedJobs/UncompletedJobs';
 import CompletedJobs from './completedJobs/CompletedJobs'
 import UpcomingJobs from './upcomingJobs/UpcomingJobs'
-import { Divider, PageHeader } from 'antd';
+import { Divider, PageHeader, notification, Spin, Icon } from 'antd';
 import axios from 'axios';
 
 export class Jobs extends Component {
     state = {
         completedJobs: [],
-        uncompletedJobs: []
+        uncompletedJobs: [],
+        isLoading: false
     }
 
     async componentDidMount() {
         const { user } = this.props
         this.setState({ completedJobs: this.props.completedJobs, uncompletedJobs: this.props.uncompletedJobs })
 
-        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
-        const jobInProgress = data.jobInProgress ? data.jobInProgress : null
-        console.log(data)
+        try {
+            this.setState({ isLoading: true })
+            const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
+            const jobInProgress = data.jobInProgress ? data.jobInProgress : null
+            console.log(data)
+            
+            if (!jobInProgress) return
+            if (jobInProgress.currentStep !== 3) this.props.history.push(`/jobs/${jobInProgress.jobData.id}`)
+        } catch(ex) {
+            console.log(ex)
+            notification.error(ex)
+        } finally {
+            this.setState({ isLoading: false })
+        }
 
-        if (!jobInProgress) return
-        else if (jobInProgress.currentStep !== 3) this.props.history.push(`/jobs/${jobInProgress.jobData.id}`)
     }
 
     componentDidUpdate(prevProps) {
@@ -33,7 +43,9 @@ export class Jobs extends Component {
 
   render() {
       const { isGapiReady, user } = this.props
-      const { uncompletedJobs, completedJobs } = this.props
+      const { uncompletedJobs, completedJobs,  } = this.props
+      const { isLoading } = this.state
+    if (isLoading) return <div style={{ margin: "auto", marginTop: "40vh"}} ><Spin indicator={<Icon style={{ fontSize: 20 }} type="loading" /> } /></div>
     return (
         <div style={{ overflowX: "hidden", minWidth: "100%" }} >
           <h1 style={{ fontSize: 32, fontWeight: 700 }}>Your Jobs</h1>

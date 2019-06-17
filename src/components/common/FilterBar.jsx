@@ -63,7 +63,7 @@ const radioStyle = {
 };
 
 const toolbarStyle = {
-  height: 450,
+  height: "30rem",
   backgroundColor: "#fff",
   padding: 25,
   borderRadius: 5
