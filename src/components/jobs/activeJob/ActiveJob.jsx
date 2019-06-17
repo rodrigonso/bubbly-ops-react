@@ -10,56 +10,60 @@ const { Step } = Steps
 
 export class ActiveJob extends Component {
 
-    state = {
-        activeJob: {},
-        services: [],
-        currentStep: 0,
-        vehicleType: "",
-        upgrades: [],
-        make: "",
-        model: "",
-        rating: 0,
-        price: {},
-        isLoading: false
+  state = {
+    activeJob: {},
+    services: [],
+    currentStep: 0,
+    vehicleType: "",
+    upgrades: [],
+    make: "",
+    model: "",
+    rating: 0,
+    price: {},
+    isLoading: false
+  }
+
+  async componentDidMount() {
+    const { user } = this.props
+
+    const { data: services } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
+    this.setState({ services })
+
+    try {
+      this.setState({ isLoading: true })
+      const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
+
+      if (employee.jobInProgress) {
+        this.setState({ activeJob: employee.jobInProgress })
+      }
+
+      if (!employee.jobInProgress) {
+        return this.props.history.push("/jobs")
+      }
+
+      if (employee.jobInProgress.currentStep === 3) {
+        this.setState({ activeJob: {} })
+      } 
+
+      if (employee.jobInProgress.currentStep) {
+        this.setState({ currentStep: employee.jobInProgress.currentStep })
+      }
+
+      if (employee.jobInProgress.currentStep === 3) {
+        this.props.history.push("/jobs")
+      }
+    } catch (ex) {
+      console.log(ex)
+    } finally {
+      this.setState({ isLoading: false })
     }
 
-    async componentDidMount() {
-        const { user } = this.props
-
-        const { data: services } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
-        this.setState({ services })
-
-        try {
-          this.setState({ isLoading: true })
-          const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`)
-          console.log(employee, "IMMA SEE HOW LONG IT TAKES")
-          if (employee.jobInProgress) {
-            this.setState({ activeJob: employee.jobInProgress })
-          }
-  
-          if (employee.jobInProgress.currentStep === 3) {
-            this.setState({ activeJob: {} })
-          } 
-  
-          if (employee.jobInProgress.currentStep) {
-            this.setState({ currentStep: employee.jobInProgress.currentStep })
-          }
-  
-          if (employee.jobInProgress.currentStep === 3) {
-            this.props.history.push("/jobs")
-          }
-        } catch (ex) {
-          console.log(ex)
-        } finally {
-          this.setState({ isLoading: false })
-        }
-
-        const activeJobData = JSON.parse(localStorage.getItem("activeJobData"))
-        if (activeJobData) {
-          const { vehicleType, make, model, rating } = activeJobData
-          this.setState({ vehicleType, make, model, rating }) 
-        }
+    const activeJobData = JSON.parse(localStorage.getItem("activeJobData"))
+    if (activeJobData) {
+      const { vehicleType, make, model, rating } = activeJobData
+      this.setState({ vehicleType, make, model, rating }) 
     }
+  }
 
     nextStep = async(data) => {
       const { activeJob } = this.state

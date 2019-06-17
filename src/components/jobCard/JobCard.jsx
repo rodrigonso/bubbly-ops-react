@@ -107,7 +107,7 @@ getCurrentLabel = () => {
 }
 
   render() {
-    const { job, isMobile, i, progress, handleBegin } = this.props;
+    const { job, isMobile, i, progress, handleBegin, isLoading } = this.props;
 
     if (isMobile) {
       return (
@@ -122,7 +122,7 @@ getCurrentLabel = () => {
                 <br />
                 <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text>
               </div>
-              {job.isCompleted || i !== 0 ? null : <Button onClick={() => handleBegin(job)} style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button>}
+              {job.isCompleted || i !== 0 ? null : <Button loading={isLoading} onClick={() => handleBegin(job)} style={{ marginTop: 10, width: "100%" }} type="primary" >Begin</Button>}
             </div>
           </Card>
         </React.Fragment>

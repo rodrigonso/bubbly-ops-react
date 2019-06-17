@@ -11,7 +11,8 @@ const { Option } = Select;
 export class UncompletedJobs extends Component {
   state = {
       services: [],
-      uncompletedJobs: []
+      uncompletedJobs: [],
+      isLoading: false
   }
 
   async componentDidMount() {
@@ -34,12 +35,20 @@ export class UncompletedJobs extends Component {
       jobData: job.jobData
     }
 
-    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
-    this.props.history.push(`/jobs/${job.jobData.id}`)
-  }
+    try {
+      this.setState({ isLoading: true })
+      const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
+      this.props.history.push(`/jobs/${job.jobData.id}`)
+    } catch (ex) {
+      console.log(ex)
+    } finally {
+      this.setState({ isLoading: false })
+    }
+  } 
 
   render() {
     const { uncompletedJobs } = this.props
+    const { isLoading } = this.state
     return (
     <div style={{ marginTop: 20, minWidth: 320 }} >
       <div style={{ display: "grid", gridTemplateColumns: "90% 10%", padding: 15, backgroundColor: "#fff", borderRadius: 5 }} >
@@ -51,7 +60,7 @@ export class UncompletedJobs extends Component {
       <div style={{ marginTop: 2 }} >
           {uncompletedJobs.length > 0 ? uncompletedJobs.map((job, i) => {
             return (
-              <JobCard key={i} i={i} job={job} handleRefresh={this.props.handleRefresh} isMobile={true} handleBegin={this.handleBegin} />
+              <JobCard key={i} i={i} job={job} isLoading={isLoading}  handleRefresh={this.props.handleRefresh} isMobile={true} handleBegin={this.handleBegin} />
             )}
           ) : <div style={{ padding: 15, backgroundColor: "#fff", marginTop: 2, minHeight: 200 }} >
                 <Button type="primary" onClick={this.props.handleRefresh} style={{ marginLeft: 100, marginTop: 50 }}><Icon type="reload" />Refresh</Button>
