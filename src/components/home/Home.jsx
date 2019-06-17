@@ -21,7 +21,9 @@ export class Home extends Component {
               <TabPane tab="Login" key="1">
                 <p>Please login with your credentials below</p>
                 <Login />
-                <p>Don't have an account? <a href="/" >Register now!</a></p>
+              </TabPane>
+              <TabPane tab="Register" key="2">
+                <Register />
               </TabPane>
             </Tabs>
             <Divider type="vertical" style={{ height: "80%", marginTop: 25, marginLeft: 20 }}  />
