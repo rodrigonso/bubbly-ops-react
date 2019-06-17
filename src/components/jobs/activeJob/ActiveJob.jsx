@@ -168,7 +168,9 @@ export class ActiveJob extends Component {
   render() {
     const { make, model, rating, currentStep, activeJob, isLoading } = this.state
     if (isLoading) return <Spin style={{ marginTop: "40vh" }} indicator={<Icon type="loading"/> } />
-    if (!activeJob.jobData) return null
+    if (!activeJob.jobData) {
+      return null
+    } 
     else return (
         <div style={{ width: "100%" }}  >
             <PageHeader onBack={this.handleBack} title="Active Job" backIcon={<Icon type="close"/>} style={{ borderRadius: 5 }} extra={currentStep === 0 ? <Icon onClick={this.nextStep} type="arrow-right">Skip</Icon> : null }  />
