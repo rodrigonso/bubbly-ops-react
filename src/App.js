@@ -123,7 +123,6 @@ handleRefresh = () => {
 }
 
 handleJobCompletion = async(job) => {
-  const { user } = this.state
   const uncompletedJobs = this.state.uncompletedJobs.filter(item => item.jobData.id !== job.id )
   const completedJobs = [...this.state.completedJobs]
   completedJobs.push(job)

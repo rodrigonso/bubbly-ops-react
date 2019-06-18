@@ -14,7 +14,8 @@ export class EditJob extends Component {
     origins: '',
     destinations: '',
     duration: '',
-    distance: ''
+    distance: '',
+    employeeId: ''
   }
 
   componentDidUpdate(prevProps) {
@@ -22,6 +23,7 @@ export class EditJob extends Component {
       const { job } = this.props
       this.setState({ job })
       this.setState({ 
+        employeeId: job.employeeId,
         summary: job.summary,
         date: job.date,
         start: job.jobData.start.dateTime,
@@ -60,6 +62,10 @@ export class EditJob extends Component {
     this.setState({ serviceType: value })
   }
 
+  handleEmployeeSelection = (value) => {
+    this.setState({ employeeId: value })
+  }
+
   handleAddress = (e, type) => {
     this.setState({ [type]: e.target.value })
   }
@@ -70,14 +76,14 @@ export class EditJob extends Component {
 
   handleSave = () => {
     const { job } = this.props
-    const { distance, duration, summary, start, date, origins, destinations, make, model, vehicleType } = this.state
+    const { distance, duration, summary, start, date, origins, destinations, make, model, vehicleType, employeeId } = this.state
 
     const serviceType = this.props.services.filter(item => item._id === this.state.serviceType)
     console.log(serviceType)
 
     const obj = {
       _id: job._id,
-      employeeId: job.employeeId,
+      employeeId,
       jobData: job.jobData,
       location: origins,
       upgrades: job.upgrades,
@@ -110,8 +116,8 @@ export class EditJob extends Component {
   }
 
   render() {
-    const { isVisible, services, job } = this.props
-    const { origins, destinations, vehicleType, summary, make, model, start, date, serviceType, distance, duration } = this.state
+    const { isVisible, services, job, employees } = this.props
+    const { origins, destinations, vehicleType, summary, make, model, start, date, serviceType, distance, duration, employeeId } = this.state
 
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -133,6 +139,11 @@ export class EditJob extends Component {
                   <DatePicker allowClear={false} value={moment(date ? date : job.jobData.start.dateTime)} onChange={(value) => this.handleDate(value, "date")} style={{ marginRight: "1.2rem" }} />  
                   <TimePicker allowClear={false} value={moment(start ? start : job.jobData.start.dateTime)} minuteStep={30} onChange={(value) => this.handleDate(value, "start")} style={{ width: "10rem" }} use12Hours format="hh:mm A" />
                 </Form.Item>
+                <Form.Item label="Employee">
+                  <Select onChange={this.handleEmployeeSelection} defaultValue={employeeId} style={{ width: "50%" }} >
+                    {employees.map(item => <Select.Option  key={item._id} value={item._id}>{item.name}</Select.Option> )}  
+                  </Select> 
+                </Form.Item> 
                 <Divider />
                 <Form.Item label="Vehicle"  >
                   <Input value={make ? make : job.vehicleType.make}  onChange={(e) => this.handleTextInput(e, "make")} placeholder="Ford" style={{ width: "50%", marginRight: "5%" }}  />

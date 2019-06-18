@@ -247,6 +247,7 @@ render() {
           job={editingJob}
           isVisible={isEditJobOpen}
           services={services}
+          employees={employees}
           handleEdit={this.handleEdit}
           handleSave={this.handleSave}
           handleClose={this.handleClose}
