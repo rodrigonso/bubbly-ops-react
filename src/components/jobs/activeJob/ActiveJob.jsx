@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PageHeader, Steps, Button, Icon, notification, Spin } from 'antd';
+import { PageHeader, Steps, Icon, Spin } from 'antd';
 import JobData from './jobSteps/JobData';
 import TextMessage from './jobSteps/TextMessage';
 import CompleteJob from './jobSteps/EndJob';
@@ -114,7 +114,8 @@ export class ActiveJob extends Component {
           }
           if (vehicleType === service.vehicleType && serviceName === service.slug ) {
             return service
-          } 
+          }
+          else return 
         })
         const res = service.filter(item => item != null)
 

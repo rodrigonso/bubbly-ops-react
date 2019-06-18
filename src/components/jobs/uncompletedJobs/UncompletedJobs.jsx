@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Collapse, Steps, Typography, Input, Button, Icon, Empty, Spin, Form, Select, Rate, message, Skeleton } from 'antd';
+import { Button, Icon } from 'antd';
 import JobCard from '../../jobCard/JobCard';
 import axios from 'axios'
 
-const { Step } = Steps;
-const { Text } = Typography;
-const { Option } = Select;
 
 export class UncompletedJobs extends Component {
   state = {

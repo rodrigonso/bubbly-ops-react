@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Row, Typography, Badge, Button, Input, message, Icon, List, Spin, Tag, Modal, TimePicker, Divider, Form, Radio, InputNumber } from 'antd';
+import { Button, message, Icon, Divider, Radio } from 'antd';
 import moment from 'moment'
 import axios from 'axios';
-
-const { Text } = Typography;
-const { CheckableTag } = Tag
-const { Search } = Input
 
 export class TextMessage extends Component {
   state = {

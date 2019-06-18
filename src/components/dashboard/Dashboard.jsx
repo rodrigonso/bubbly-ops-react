@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import JobCard from '../jobCard/JobCard';
-import { Spin, Icon, Button, Tabs, notification } from 'antd';
+import { Button, Tabs, notification } from 'antd';
 import moment from 'moment'
 import axios from 'axios'
 import FilterBar from '../common/FilterBar';
@@ -10,6 +9,7 @@ import Metrics from './Metrics';
 import EditJob from './EditJob';
 import RecentJobs from './RecentJobs';
 import InProgress from './InProgress';
+import Spinner from '../common/Spinner';
 
 const { TabPane } = Tabs
 
@@ -109,7 +109,7 @@ getJobsByDay = (jobs) => {
 
   if (jobs.length > 0) {
     const jobsByDay =  days.map(day => {
-      return { name: day, value: jobs.filter(job => moment(job.date).format("ddd") == day).length }
+      return { name: day, value: jobs.filter(job => moment(job.date).format("ddd") === day).length }
     }) 
     return jobsByDay
   }
@@ -144,9 +144,14 @@ handlePayroll = async(data) => {
     totalJobs
   }
 
-  const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
-  const email = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sendGrid/payrollDone`, msg)
-  console.log(email)
+  axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err))
+  
+  axios.post(`${process.env.REACT_APP_BACKEND_API}/sendGrid/payrollDone`, msg)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err))
+
   this.setState({ isModalOpen: false })
 }
 
@@ -171,7 +176,9 @@ handleDelete = async(job) => {
   const jobs = [...this.state.jobs]
   try {
     this.setState({ isDeleting: true })
-    const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
+    
+    await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
+
     const newJobs = jobs.filter(item => item._id !== job._id)
     this.setState({ jobs: newJobs })
   } catch (ex) {
@@ -196,7 +203,7 @@ handleSave = async(job) => {
   const { editingJobindex } = this.state
   const jobs = [...this.state.jobs]
   try {
-    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
+    await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
     jobs[editingJobindex] = job
     this.setState({ jobs })
     this.setState({ isEditJobOpen: false })
@@ -231,12 +238,7 @@ render() {
   const totalDriving = this.getTotalMiles(jobsByDate)
   console.log(totalDriving)
 
-    if (jobs.length === 0) return (
-      <div style={{ textAlign: "center", marginTop: "50%" }}>
-        <Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } />
-      </div>
-    ) 
-
+    if (jobs.length === 0) return <Spinner />
     return (
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1200 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>

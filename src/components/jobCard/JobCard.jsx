@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
-import { Card, Row, Popconfirm, Typography, Icon, Button, Input, Badge, Divider, List, Drawer, Tag, Timeline, Steps } from 'antd';
-import dateFormat from 'dateformat';
+import { Card,Popconfirm, Typography, Icon, Button, Steps } from 'antd';
 import moment from 'moment'
-import axios from 'axios'
 
 const { Text } = Typography;
-const { CheckableTag } = Tag
-const { TextArea } = Input
 const { Step } = Steps
 
 export class JobCard extends Component {
@@ -206,13 +201,6 @@ getCurrentLabel = () => {
          </React.Fragment>
       )
   }
-}
-
-
-
-const badgeStyle = {
-  fontSize: 12,
-  padding: 5
 }
 
 const cardStyle = {

@@ -18,7 +18,7 @@ import Dashboard from './components/dashboard/Dashboard';
 
 
 
-const { Content, Header } = Layout;
+const { Content } = Layout;
 
 const apiKey =  process.env.REACT_APP_GOOGLE_APIKEY
 const clientId = process.env.REACT_APP_GOOGLE_CLIENTID

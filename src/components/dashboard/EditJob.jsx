@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, TimePicker, DatePicker, Divider, Select, InputNumber, Button, notification, message, Badge } from 'antd';
+import { Modal, Form, Input, TimePicker, DatePicker, Divider, Select, InputNumber, Button } from 'antd';
 import moment from 'moment'
 import Joi from 'joi'
 
@@ -164,29 +164,6 @@ export class EditJob extends Component {
       </div>
     )
   }
-}
-
-const validationSchema = {
-  _id: Joi.string().required(),
-  employeeId: Joi.string().required(),
-  jobData: Joi.object().required(),
-  summary: Joi.string().required(),
-  start: Joi.string().required(),
-  date: Joi.string().required(),
-  location: Joi.string().required(),
-  vehicleType: Joi.object().keys({
-    make: Joi.string().required(),
-    model: Joi.string().required(),
-    vehicleType: Joi.string().required(),
-    rating: Joi.number()
-  }),
-  serviceType: Joi.object().required(),
-  upgrades: Joi.array(),
-  distances: Joi.object().keys({
-    destination_addresses: Joi.array().min(1).required(),
-    origin_addresses: Joi.array().min(1).required(),
-    rows: Joi.array().min(1).required()
-  }),
 }
 
 export default EditJob

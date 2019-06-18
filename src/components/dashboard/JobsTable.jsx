@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Typography, Icon, Button, Table, Timeline, Tag, Popconfirm } from 'antd';
+import { Divider, Typography, Button, Table, Timeline, Tag, Popconfirm } from 'antd';
 import { css } from 'emotion'
 
 const { Text } = Typography

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Divider, Button, Descriptions, Typography, Icon, Spin, Empty } from 'antd';
-import { Chart, Tooltip, Axis, Bar, Pie, Coord, Legend } from 'viser-react'
-import DataSet from '@antv/data-set'
+import { Divider, Descriptions, Typography, Icon, Spin, Empty } from 'antd';
+import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 import axios from 'axios'
 import moment from 'moment'
 

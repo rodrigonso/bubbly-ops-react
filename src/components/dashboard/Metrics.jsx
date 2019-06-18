@@ -8,7 +8,7 @@ const { Text } = Typography
 
 export class Metrics extends Component {
 	render() {
-		const { jobs, jobsBySearch, totalRevenue, totalDriving, jobsByDay, serviceTypes } = this.props
+		const { jobsBySearch, totalRevenue, totalDriving, jobsByDay, serviceTypes } = this.props
 		return (
 			<Collapse style={{ marginBottom: 30 }} bordered={false} expandIcon={({ isActive }) => <Icon style={{ marginLeft: "6.2rem", marginTop: isActive ? "26rem" : "0.7rem" }} type="caret-down" rotate={isActive ? 180 : 0} />}>
 				<div style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} >

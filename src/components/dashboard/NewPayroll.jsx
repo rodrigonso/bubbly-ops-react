@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Button, Modal, InputNumber, Typography, Icon, Tag, Popconfirm } from 'antd';
+import { Divider, Button, Modal, InputNumber, Typography, Icon, Tag } from 'antd';
 import moment from 'moment'
 
 const { Text } = Typography

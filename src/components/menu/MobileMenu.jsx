@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
-import { Drawer, Divider, Avatar, List, Button, Menu } from 'antd'
+import { NavLink } from 'react-router-dom'
+import { Drawer, Button, Menu } from 'antd'
 
 export class MobileMenu extends Component {
 	state = {

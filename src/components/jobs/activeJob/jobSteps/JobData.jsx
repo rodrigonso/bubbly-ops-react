@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Radio, Typography, Input, Button, Icon, Empty, Card, Form, Select, Rate, Divider, Alert, message } from 'antd';
+import { Radio, Input, Button, Form, Rate, Divider, message } from 'antd';
 import Joi from 'joi'
 
-const { Option } = Select
-const { RadioGroup } = Radio
 
 export class JobData extends Component {
 	state = {

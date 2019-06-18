@@ -1,22 +1,45 @@
 import React, { Component } from 'react'
 import JobCard from '../jobCard/JobCard';
 import axios from 'axios'
-import { Empty } from 'antd';
+import { Empty, Typography } from 'antd';
+import moment from 'moment'
+
+const { Text } = Typography
 
 export class InProgress extends Component {
   state = {
-    jobsInProgress: []
+    jobsInProgress: [],
+    isLoading: false,
+    lastUpdated: new Date()
   }
 
   async componentDidMount() {
+    this.getJobsInProgress()
+  }
+
+  getJobsInProgress = async() => {
     const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
     const jobsInProgress = data.map(item => item.jobInProgress).filter(item => item != null)
-  
+    console.log(jobsInProgress)
     this.setState({ jobsInProgress })
+    this.autoUpdate()
+  }
+
+  autoUpdate = () => {
+    setInterval(async() => {
+      try {
+        const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
+        const jobsInProgress = data.map(item => item.jobInProgress).filter(item => item != null)
+        this.setState({ jobsInProgress, lastUpdated: new Date() })
+      } catch (ex) {
+        console.log(ex)
+      } finally {
+      }
+    }, 60000)
   }
 
   render() {
-    const { jobsInProgress } = this.state
+    const { jobsInProgress, lastUpdated } = this.state
     const { services } = this.props
 
     if (jobsInProgress.length === 0) {
@@ -38,6 +61,7 @@ export class InProgress extends Component {
             )
           } else {
             return (
+              <div>
                 <JobCard 
                   progress
                   i={i}
@@ -45,6 +69,8 @@ export class InProgress extends Component {
                   isMobile={false}
                   services={services}
                 />
+                <Text style={{ marginLeft: "40%", fontSize: 12 }} type="secondary">Last updated {moment(lastUpdated).format("LT")}</Text>
+              </div>
             )
           }
         })}
