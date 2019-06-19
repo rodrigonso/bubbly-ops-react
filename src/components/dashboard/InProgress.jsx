@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import JobCard from '../jobCard/JobCard';
+import JobCard from '../common/JobCard';
 import axios from 'axios'
 import { Empty, Typography } from 'antd';
 import moment from 'moment'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Typography, Button, Table, Timeline, Tag, Popconfirm } from 'antd';
+import { Divider, Typography, Button, Table, Timeline, Tag, Popconfirm, Rate } from 'antd';
 import { css } from 'emotion'
 
 const { Text } = Typography
@@ -46,6 +46,19 @@ export class JobsTable extends Component {
 							{record.upgrades.map(item => <Tag style={{ marginBottom: 5 }}  color="blue">{item.name}</Tag> )}
 						</div>
 					</div> : null}
+				</div>
+				<Divider />
+				<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }} >
+					<div>
+						<Text type="secondary" style={{ fontSize: 12 }}  >Vehicle Rating </Text>
+						<br/>
+						<Rate style={{ fontSize: 20 }}  count={5} disabled value={record.vehicleType.rating} />  
+					</div>
+					<div>
+						<Text type="secondary" style={{ fontSize: 12 }}  >Service Rating </Text>
+						<br/>
+						<Rate style={{ fontSize: 20 }}  count={5} disabled value={record.rating} />  
+					</div>
 				</div>
 			</React.Fragment>
 		)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Icon } from 'antd';
-import JobCard from '../../jobCard/JobCard';
+import JobCard from '../../common/JobCard';
 import axios from 'axios'
 
 

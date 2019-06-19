@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card,Popconfirm, Typography, Icon, Button, Steps } from 'antd';
+import { Card,Popconfirm, Typography, Icon, Button, Steps, Tag } from 'antd';
 import moment from 'moment'
 
 const { Text } = Typography;
@@ -101,6 +101,12 @@ getCurrentLabel = () => {
   }
 }
 
+getCurrentEmployee = () => {
+  const { job, employees } = this.props
+  const employee = employees.filter(item => item._id === job.employeeId)
+  return employee[0]
+}
+ 
   render() {
     const { job, isMobile, i, progress, handleBegin, isLoading } = this.props;
 
@@ -185,6 +191,8 @@ getCurrentLabel = () => {
                   <Icon type="calendar" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{moment(job.jobData.start.dateTime).format('L')}</Text> 
                   <br />
                   <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.vehicleType.make} {job.vehicleType.model}</Text> 
+                  <br />
+                  <Tag style={{ marginTop: 10 }} >{this.getCurrentEmployee().username}</Tag>
                 </div>
                 <div style={{ justifyContent: "center", alignItems: "center", display: "flex" }} >
                   <p type="secondary" style={{ fontSize: 24, marginTop: "16%" }} >{this.formatPrice()}</p>

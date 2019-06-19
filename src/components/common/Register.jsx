@@ -8,7 +8,9 @@ state = {
     fields: [
         { name: "Name", value: '', validateStatus: "", schema: nameSchema },
         { name: "Email", value: '', validateStatus: "", schema: emailSchema },
+        { name: "Phone Number", value: '', validateStatus: "", schema: phoneSchema },
         { name: "Username", value: '', validateStatus: "", schema: usernameSchema },
+        { name: "Employee Id", value: '', validateStatus: "", schema: employeeIdSchema },
         { name: "Password", value: '', validateStatus: "", schema: passwordSchema }
     ]
 }
@@ -69,6 +71,14 @@ handleSubmit = async() => {
 
 const usernameSchema = {
     field: Joi.string().alphanum().min(5).max(30).required(),
+}
+
+const phoneSchema = {
+    field: Joi.string().alphanum().min(10).max(10).required()
+}
+
+const employeeIdSchema = {
+    field: Joi.string().required()
 }
 
 const emailSchema = {

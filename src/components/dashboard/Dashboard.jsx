@@ -302,6 +302,7 @@ render() {
                   <RecentJobs
                     jobs={jobsBySearch} 
                     services={services}
+                    employees={employees} 
                     handleDelete={this.handleDelete} 
                     handleEdit={this.handleEdit}
                     isLoading={this.isDeleting} 

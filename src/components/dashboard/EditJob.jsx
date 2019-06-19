@@ -101,7 +101,8 @@ export class EditJob extends Component {
         origin_addresses: [origins],
         destination_addresses: [destinations],
         rows: [
-          { elements : [
+          { 
+            elements : [
               {
                 distance: { text: `${distance} mi` },
                 duration: { text: `${duration} min` }

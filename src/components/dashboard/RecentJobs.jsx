@@ -1,5 +1,5 @@
 import React from 'react'
-import JobCard from '../jobCard/JobCard'
+import JobCard from '../common/JobCard'
 
 function RecentJobs(props) {
   return (
@@ -13,6 +13,7 @@ function RecentJobs(props) {
           isMobile={false}
           type="recent" 
           services={props.services}
+          employees={props.employees}
           handleDelete={props.handleDelete} 
           handleEdit={props.handleEdit}
           isLoading={props.isDeleting} 
