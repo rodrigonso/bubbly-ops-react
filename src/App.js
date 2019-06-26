@@ -51,6 +51,7 @@ async componentDidMount() {
   const completedJobs = JSON.parse(localStorage.getItem("completedJobs"))
 
   if (moment(startOfDay).format("L") !== completedJobsDate) {
+    localStorage.setItem("isCompleted", false)
     this.setState({ completedJobs: [] })
   } else if (completedJobs) {
     this.setState({ completedJobs }) 
