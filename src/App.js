@@ -139,7 +139,7 @@ render() {
         <Layout>
           {isMobile ? <MobileMenu user={user} /> : <SiderMenu user={user} isMobile={isMobile}/>}
           <Layout style={isMobile ? layoutStyleMobile : layoutStyleDesktop}>
-            <Content style={{ margin: 'auto', maxWidth: 1400, background: "#f7f7f7", marginTop: 80 }} >
+            <Content style={{ margin: 'auto', maxWidth: 2000, background: "#f7f7f7", marginTop: 80 }} >
               <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>
                 <Route  exact path="/appointments" render={(props) => {
                   if (!user.username) return <Redirect to="/" />
@@ -196,7 +196,7 @@ const layoutStyleMobile = {
 
 const layoutStyleDesktop = {
   background: "#f7f7f7",
-  minHeight: "100%"
+  minHeight: "100vh"
 }
 
 export default App;

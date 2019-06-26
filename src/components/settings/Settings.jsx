@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
-import { Card, List, Button, Icon, Avatar, Typography, Tag, Divider, Rate } from 'antd'
+import { NavLink } from 'react-router-dom'
+import { Card, List, Icon, Avatar, Typography, Button, Divider, Rate, Menu, Tabs } from 'antd'
 import Spinner from '../common/Spinner'
 import axios from 'axios';
 import EmployeeCard from '../common/EmployeeCard';
+import ServicesCard from '../common/ServicesCard';
 
+const { TabPane } = Tabs
 const { Text } = Typography
 
 export class Settings extends Component {
   state = {
     employees: [],
-    services: []
+    services: [],
+    currentPage: 0
   }
 
   async componentDidMount() {
@@ -19,29 +23,26 @@ export class Settings extends Component {
   }
 
   render() {
-    const { employees } = this.state
+    const { employees, services } = this.state
     if (employees.length === 0) return <Spinner />
-    return (
-      <React.Fragment>
-        <EmployeeCard employees={employees} />
+    return ( 
+      <div style={{ backgroundColor: '#fff', borderRadius: 5, padding: '20px 0px 20px 0px' }} >
+        <Tabs tabPosition="left" defaultActiveKey="1" tabBarStyle={{ width: '12.5%' }}  >
+          <TabPane key="1" tab="Employees" >
+            <div style={{ marginLeft: 40, marginTop: 5, marginBottom: 20, marginRight: 40 }} >
+              <h2 style={{ fontWeight: 700 }} >Employees</h2>
+              <EmployeeCard employees={employees} />
+          </div>
+          </TabPane>
+          <TabPane key="2" tab="Services" >
+            <div style={{ marginLeft: 40, marginTop: 5, marginBottom: 20, marginRight: 40 }} >
+             <h2 style={{ fontWeight: 700 }} >Services</h2>
+             <ServicesCard services={services} />
+            </div>
+          </TabPane>
+        </Tabs>
 
-        <div style={{ padding: 24, margin: "auto", backgroundColor: "#fff", borderRadius: 5 }} >
-          <Card bordered={false} title="Services" extra={<Icon style={fontSize} type="plus" /> } >
-            <List itemLayout="horizontal" dataSource={this.state.services} renderItem={item => (
-              <List.Item actions={[<Icon style={fontSize} type="edit" />, <Icon style={fontSize} type="delete" />]}>
-                <List.Item.Meta title={item.name} description={(
-                <div>
-                <Icon type="dollar" /> {item.price}
-                <Icon type="hourglass" style={{ marginLeft: 10 }} /> {item.duration} hours
-                <Icon type="car" style={{ marginLeft: 10 }} /> {item.vehicleType}
-              </div>
-                )} /> 
-              </List.Item> 
-            )}
-          />
-          </Card>
-        </div>
-      </React.Fragment>
+      </div>
     )
   }
 }

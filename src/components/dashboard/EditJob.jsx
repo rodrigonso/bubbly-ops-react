@@ -141,7 +141,7 @@ export class EditJob extends Component {
                   <TimePicker allowClear={false} value={moment(start ? start : job.jobData.start.dateTime)} minuteStep={30} onChange={(value) => this.handleDate(value, "start")} style={{ width: "10rem" }} use12Hours format="hh:mm A" />
                 </Form.Item>
                 <Form.Item label="Employee">
-                  <Select onChange={this.handleEmployeeSelection} defaultValue={employeeId} style={{ width: "50%" }} >
+                  <Select onChange={this.handleEmployeeSelection} defaultValue={employeeId} defaultActiveFirstOption={false} style={{ width: "50%" }} >
                     {employees.map(item => <Select.Option  key={item._id} value={item._id}>{item.name}</Select.Option> )}  
                   </Select> 
                 </Form.Item> 
