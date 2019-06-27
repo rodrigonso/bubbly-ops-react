@@ -39,7 +39,8 @@ async componentDidMount() {
 
   try {
     const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
-    this.setState({ jobs: jobs.data })
+    const sortedJobs = jobs.data.sort((a, b) => new Date(b.date) - new Date(a.date))
+    this.setState({ jobs: sortedJobs })
   } catch (ex) {
     console.log(ex)
   } finally {
