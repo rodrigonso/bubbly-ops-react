@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Card,Popconfirm, Typography, Icon, Button, Steps, Tag } from 'antd';
+import { Card,Popconfirm, Typography, Icon, Button, Steps, Tag, notification } from 'antd';
+import EditJob from '../dashboard/EditJob'
 import moment from 'moment'
+import axios from 'axios'
 
 const { Text } = Typography;
 const { Step } = Steps
@@ -8,9 +10,9 @@ const { Step } = Steps
 export class JobCard extends Component {
   state = {
     isVisible: false,
-    visible: false,
     isCompleted: false,
     input: '',
+    isEditing: false
   }
 
 componentDidUpdate(prevProps) {
@@ -106,9 +108,30 @@ getCurrentEmployee = () => {
   const employee = employees.filter(item => item._id === job.employeeId)
   return employee[0]
 }
+
+handleModal = () => {
+  this.setState({ isVisible: !this.state.isVisible })
+}
+
+handleSave = async(job) => {
+  try {
+    this.setState({ isEditing: true })
+    await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
+    this.handleModal()
+    this.props.handleSave(job)
+  }
+  catch (ex) {
+    console.log(ex)
+    notification.error("Internal Server Error.")
+  }
+  finally {
+    this.setState({ isEditing: false })
+  }
+}
  
   render() {
-    const { job, isMobile, i, progress, handleBegin, isLoading } = this.props;
+    const { isVisible, isEditing } = this.state
+    const { job, isMobile, i, progress, handleBegin, isLoading, services, employees, handleSave } = this.props;
 
     if (isMobile) {
       return (
@@ -177,6 +200,15 @@ getCurrentEmployee = () => {
     }
     else return (
         <React.Fragment>
+            <EditJob 
+              job={job}
+              isEditing={isEditing}
+              isVisible={isVisible}
+              services={services}
+              employees={employees}
+              handleModal={this.handleModal}
+              handleSave={this.handleSave}
+            />
             <Card size="small" type="plus-circle" theme="outlined" style={cardStyle} >
               <div style={{ padding: 10 }}>
                <div style={{ display: "grid", gridTemplateColumns: "50% 30% 20%" }} >
@@ -198,7 +230,7 @@ getCurrentEmployee = () => {
                   <p type="secondary" style={{ fontSize: 24, marginTop: "16%" }} >{this.formatPrice()}</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }} >
-                  <Button shape="round" onClick={() => this.props.handleEdit(job, i)} style={{ marginRight: 4 }}>Edit</Button>
+                  <Button shape="round" onClick={this.handleModal} style={{ marginRight: 4 }}>Edit</Button>
                   <Popconfirm title="Are you sure?" onConfirm={() => this.props.handleDelete(job)} onCancel={null}>
 								    <Button shape="circle" icon="delete" />
 	              	</Popconfirm>

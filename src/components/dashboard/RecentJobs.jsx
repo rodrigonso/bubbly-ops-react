@@ -7,7 +7,6 @@ function RecentJobs(props) {
       {props.jobs.slice(0,5).map((job, i) => {
       return (
         <JobCard 
-          i={i}
           key={job._id} 
           job={job} 
           isMobile={false}
@@ -15,7 +14,7 @@ function RecentJobs(props) {
           services={props.services}
           employees={props.employees}
           handleDelete={props.handleDelete} 
-          handleEdit={props.handleEdit}
+          handleSave={props.handleSave}
           isLoading={props.isDeleting} 
         />
         ) 

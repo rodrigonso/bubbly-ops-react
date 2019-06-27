@@ -21,13 +21,8 @@ state = {
   selectedEmployee: "",
   search: "",
   range: [],
-  editingJob: {},
-  editingJobindex: null,
-  isDeleting: false,
   isLoading: false,
-  viewAll: false,
   isPayrollOpen: false,
-  isEditJobOpen: false,
 }
 
 async componentDidMount() {
@@ -190,28 +185,14 @@ handleDelete = async(job) => {
   }
 }
 
-handleEdit = (job, index) => {
-  console.log(job)
-  this.setState({ isEditJobOpen: !this.state.isEditJobOpen })
-  this.setState({ editingJob: job, editingJobindex: index })
-}
-
-handleClose = () => {
-  this.setState({ isEditJobOpen: false })
-}
-
 handleSave = async(job) => {
-  const { editingJobindex } = this.state
-  const jobs = [...this.state.jobs]
-  try {
-    await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
-    jobs[editingJobindex] = job
-    this.setState({ jobs })
-    this.setState({ isEditJobOpen: false })
-  }
-  catch (ex) {
-    console.log(ex)
-  }
+  const { jobs } = this.state
+  const filter = jobs.filter(item => item._id === job._id).flat()
+  const index = jobs.indexOf(filter[0])
+
+  jobs[index] = job
+  console.log(job)
+  this.setState({ jobs })
 }
 
 handleModal = () => {
@@ -244,15 +225,6 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1200 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
-        <EditJob 
-          job={editingJob}
-          isVisible={isEditJobOpen}
-          services={services}
-          employees={employees}
-          handleEdit={this.handleEdit}
-          handleSave={this.handleSave}
-          handleClose={this.handleClose}
-        />
         <NewPayroll 
           selectedEmployee={selectedEmployee} 
           jobs={jobsBySearch} 
@@ -305,8 +277,7 @@ render() {
                     services={services}
                     employees={employees} 
                     handleDelete={this.handleDelete} 
-                    handleEdit={this.handleEdit}
-                    isLoading={this.isDeleting} 
+                    handleSave={this.handleSave}
                   />
                 </TabPane>
                 <TabPane key="2" tab="All Jobs" >

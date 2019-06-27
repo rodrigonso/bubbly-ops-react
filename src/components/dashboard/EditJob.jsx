@@ -6,38 +6,19 @@ import Joi from 'joi'
 export class EditJob extends Component {
   state = {
     job: this.props.job,
-    summary: '',
-    date: '',
-    start: '',
-    vehicleType: '',
-    serviceType: '',
-    origins: '',
-    destinations: '',
-    duration: '',
-    distance: '',
-    employeeId: ''
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.job !== this.props.job) {
-      const { job } = this.props
-      this.setState({ job })
-      this.setState({ 
-        employeeId: job.employeeId,
-        summary: job.summary,
-        date: job.date,
-        start: job.jobData.start.dateTime,
-        vehicleType: job.vehicleType.vehicleType,
-        make: job.vehicleType.make,
-        model: job.vehicleType.model,
-        serviceType: job.serviceType._id,
-        location: job.location,
-        origins: this.checkIfDistances() ? job.distances.origin_addresses : '',
-        destinations: this.checkIfDistances() ? job.distances.destination_addresses : '',
-        duration: this.checkIfDistances() ? parseInt(job.distances.rows[0].elements[0].duration.text) : 0,
-        distance: this.checkIfDistances() ? parseInt(job.distances.rows[0].elements[0].distance.text) : 0,
-       })
-    }
+    employeeId: this.props.job.employeeId,
+    summary: this.props.job.summary,
+    date: this.props.job.date,
+    start: this.props.job.jobData.start.dateTime,
+    vehicleType: this.props.job.vehicleType.vehicleType,
+    make: this.props.job.vehicleType.make,
+    model: this.props.job.vehicleType.model,
+    serviceType: this.props.job.serviceType._id,
+    location: this.props.job.location,
+    origins: this.props.job.distances.origin_addresses ? this.props.job.distances.origin_addresses : '',
+    destinations: this.props.job.distances.rows.length > 0 ? this.props.job.distances.destination_addresses : '',
+    duration: this.props.job.distances.rows.length > 0 ? parseInt(this.props.job.distances.rows[0].elements[0].duration.text) : 0,
+    distance: this.props.job.distances.rows.length > 0 ? parseInt(this.props.job.distances.rows[0].elements[0].distance.text) : 0,
   }
 
   checkIfDistances = () => {
@@ -117,7 +98,7 @@ export class EditJob extends Component {
   }
 
   render() {
-    const { isVisible, services, job, employees } = this.props
+    const { isVisible, services, job, employees, isEditing } = this.props
     const { origins, destinations, vehicleType, summary, make, model, start, date, serviceType, distance, duration, employeeId } = this.state
 
     const formItemLayout = {
@@ -130,7 +111,7 @@ export class EditJob extends Component {
     if (!job.summary) return null
     return (
       <div>
-        <Modal onCancel={this.props.handleClose} visible={isVisible} title="Edit Job" footer={<Button onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
+        <Modal onCancel={this.props.handleModal} visible={isVisible} title="Edit Job" footer={<Button loading={isEditing} onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
           <div style={{ marginTop: 20 }} >
             <Form {...formItemLayout} labelAlign="left" >
               <Form.Item label="Summary">
