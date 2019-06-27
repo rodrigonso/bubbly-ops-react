@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, message, Icon, Divider, Radio } from 'antd';
+import { Button, message, Icon, Divider, Radio, notification } from 'antd';
 import moment from 'moment'
 import axios from 'axios';
 
@@ -33,17 +33,11 @@ handleTextSend = async() => {
     to: phone.length === 10 ? `1${phone}` : phone,
     text: `Hey, it's Bubbly Here!\n\nYour detailer is on the way to your location.\n\nCurrent ETA: ${input}\n\nThanks!`
   }
-  
-  try {
-    this.setState({ isLoading: true })
-    const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
-    this.setState({ isSent: true })
-  } catch(ex) {
-    console.log(ex);
-    message.error("Something went wrong!")
-  } finally {
-    this.setState({ isLoading: false })
-  }
+
+  this.setState({ isLoading: true })
+  const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
+  if (data.error) return notification.error(data.error.message)
+  else this.setState({ isSent: true })
 }
 
 getTimes = () => {
