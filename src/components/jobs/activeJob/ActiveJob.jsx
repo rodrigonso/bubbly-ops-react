@@ -65,6 +65,12 @@ export class ActiveJob extends Component {
     }
   }
 
+    getCustomersEmail = (job) => {
+        const arr = job.jobData.description.split(' ')
+        const email = arr[arr.length - 1]
+        return email
+    }
+
     nextStep = async(data) => {
       const { activeJob } = this.state
       const { user } = this.props
@@ -153,7 +159,13 @@ export class ActiveJob extends Component {
         end: new Date(),
         jobData: job
       }
-      const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
+
+      const email = this.getCustomersEmail(job)
+      console.log(email)
+
+      await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/survey`, { email: email.slice(0, -1) })
+      console.log(data)
     }
 
     formatSummary = () => {
@@ -168,6 +180,7 @@ export class ActiveJob extends Component {
 
   render() {
     const { make, model, rating, currentStep, activeJob, isLoading } = this.state
+
     if (isLoading) return <Spin style={{ marginTop: "40vh" }} indicator={<Icon type="loading"/> } />
     if (!activeJob.jobData) {
       return null

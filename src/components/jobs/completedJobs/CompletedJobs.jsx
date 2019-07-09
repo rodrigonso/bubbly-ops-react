@@ -63,9 +63,7 @@ export class CompletedJobs extends Component {
 				const final = await Promise.all(res)
 				this.setState({ isCompleted: true })
 				localStorage.setItem("isCompleted", true)
-				const result = await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, {})
-				console.log(result)
-				console.log(final)
+				await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, {})
 				message.success("Your jobs have been saved to the database!")
 		} catch (ex) {
 				console.log(ex)

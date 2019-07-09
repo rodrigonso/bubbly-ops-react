@@ -5,7 +5,10 @@ import { css } from 'emotion'
 const { Text } = Typography
 
 export class JobsTable extends Component {
-
+	state = {
+		isVisible: false
+	}
+	
 	expandedRowRender = (record) => {
 		if (record.distances.rows.length === 0) return null
 		return (
@@ -74,52 +77,54 @@ export class JobsTable extends Component {
 		})
 
 		return (
-			<Table 
-				className={body} 
-				rowKey={(record) => record._id} 
-				expandedRowRender={(record) => this.expandedRowRender(record)} 
-				dataSource={jobs} 
-				style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} 
-				pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }}
-			>
-				<Table.Column key="date"
-					dataIndex="date" 
-					style={{ borderRadius: 5}} 
-					title={ <div style={{ fontWeight: 700 }}>Date</div> }
-				/>
-				<Table.Column 
-					key="time" 
-					dataIndex="start" 
-					style={{ borderRadius: 5}}  
-					title={ <div style={{ fontWeight: 700 }}>Time</div> }
-				/>
-				<Table.Column 
-					key="name" 
-					dataIndex="summary" 
-					style={{ borderRadius: 5}}  
-					title={ <div style={{ fontWeight: 700 }}>Name</div> }
-				/>
-				<Table.Column 
-					key="amount" 
-					render={(text, record, index) => <div>${record.serviceType.price}</div>} 
-					style={{ borderRadius: 5}}  
-					title={ <div style={{ fontWeight: 700 }}>Amount</div> }
-				/>
-				<Table.Column 
-					key="actions" 
-					dataIndex="id" 
-					style={{ borderRadius: 5}} 
-					render={(text, record) => (
-						<div>
-							<Button onClick={() => handleEdit(record)} shape="round" icon="edit" style={{ marginRight: 5 }} />
-							<Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record)} onCancel={null}>
-								<Button shape="circle" icon="delete" />
-							</Popconfirm>
-						</div>
-					)} 
-					title={ <div style={{ fontWeight: 700 }}></div> }
-				/>
-			</Table>
+			<React.Fragment>
+				<Table 
+					className={body} 
+					rowKey={(record) => record._id} 
+					expandedRowRender={(record) => this.expandedRowRender(record)} 
+					dataSource={jobs} 
+					style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} 
+					pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }}
+				>
+					<Table.Column key="date"
+						dataIndex="date" 
+						style={{ borderRadius: 5}} 
+						title={ <div style={{ fontWeight: 700 }}>Date</div> }
+					/>
+					<Table.Column 
+						key="time" 
+						dataIndex="start" 
+						style={{ borderRadius: 5}}  
+						title={ <div style={{ fontWeight: 700 }}>Time</div> }
+					/>
+					<Table.Column 
+						key="name" 
+						dataIndex="summary" 
+						style={{ borderRadius: 5}}  
+						title={ <div style={{ fontWeight: 700 }}>Name</div> }
+					/>
+					<Table.Column 
+						key="amount" 
+						render={(text, record, index) => <div>${record.serviceType.price}</div>} 
+						style={{ borderRadius: 5}}  
+						title={ <div style={{ fontWeight: 700 }}>Amount</div> }
+					/>
+					<Table.Column 
+						key="actions" 
+						dataIndex="id" 
+						style={{ borderRadius: 5}} 
+						render={(text, record) => (
+							<div>
+								<Button onClick={() => handleEdit(record)} shape="round" size="small" type="link" style={{ marginRight: 5 }}>Edit</Button>
+								<Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record)} onCancel={null}>
+									<Button size="small" type="link">Delete</Button>
+								</Popconfirm>
+							</div>
+						)} 
+						title={ <div style={{ fontWeight: 700 }}></div> }
+					/>
+				</Table>
+			</React.Fragment>
 		)
 	}
 }

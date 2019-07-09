@@ -255,7 +255,7 @@ render() {
           </div>
           <div style={{ marginLeft: 20 }} className="dashboard-right-panel" >
             <Tabs  
-              style={{ maxWidth: 700 }} 
+              style={{ maxWidth: 750 }} 
               tabBarExtraContent={
                 (
                   <div>
@@ -283,8 +283,9 @@ render() {
                 <TabPane key="2" tab="All Jobs" >
                   <JobsTable 
                     jobs={jobsBySearch} 
+                    employees={employees} 
                     handleDelete={this.handleDelete} 
-                    handleEdit={this.handleEdit} 
+                    handleSave={this.handleSave}
                   />
                 </TabPane>
             </Tabs>
