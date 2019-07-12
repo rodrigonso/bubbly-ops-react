@@ -269,6 +269,7 @@ render() {
                 <TabPane key="0" tab="In Progress">
                   <InProgress 
                     jobs={jobsBySearch}
+                    employees={employees}
                   />
                 </TabPane> 
                 <TabPane key="1" tab="Recent Jobs" >

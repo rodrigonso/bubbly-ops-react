@@ -40,7 +40,7 @@ export class InProgress extends Component {
 
   render() {
     const { jobsInProgress, lastUpdated } = this.state
-    const { services } = this.props
+    const { services, employees } = this.props
 
     if (jobsInProgress.length === 0) {
       return (
@@ -68,12 +68,13 @@ export class InProgress extends Component {
                   job={job}
                   isMobile={false}
                   services={services}
+                  employees={employees}
                 />
-                <Text style={{ marginLeft: "40%", fontSize: 12 }} type="secondary">Last updated {moment(lastUpdated).format("LT")}</Text>
               </div>
             )
           }
         })}
+        <Text style={{ marginLeft: "40%", fontSize: 12 }} type="secondary">Last updated {moment(lastUpdated).format("LT")}</Text>
       </div>
     )
   }

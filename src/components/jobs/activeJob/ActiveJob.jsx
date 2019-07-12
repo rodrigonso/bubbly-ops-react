@@ -66,9 +66,10 @@ export class ActiveJob extends Component {
   }
 
     getCustomersEmail = (job) => {
-        const arr = job.jobData.description.split(' ')
-        const email = arr[arr.length - 1]
-        return email
+        const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
+        const email = job.jobData.description.match(regex)
+        console.log(email)
+        return email[0]
     }
 
     nextStep = async(data) => {

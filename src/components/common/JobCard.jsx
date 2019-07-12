@@ -165,6 +165,7 @@ handleSave = async(job) => {
                 <Icon type="calendar" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{moment(job.jobData.start.dateTime).format('L')}</Text> 
                 <br />
                 <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{this.formatVehicleInfo()}</Text> 
+                <br />
                 <div>
                 <div style={{ marginTop: 20 }} >
                   {this.getCurrentLabel()}
