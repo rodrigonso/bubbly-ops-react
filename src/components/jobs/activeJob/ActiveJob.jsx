@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { PageHeader, Steps, Icon, Spin } from 'antd';
+import { PageHeader, Steps, Icon, Spin, Button } from 'antd';
 import JobData from './jobSteps/JobData';
 import TextMessage from './jobSteps/TextMessage';
 import CompleteJob from './jobSteps/EndJob';
@@ -66,10 +66,10 @@ export class ActiveJob extends Component {
   }
 
     getCustomersEmail = (job) => {
-        const regex = /\S+[a-z0-9]@[a-z0-9\.]+/img
-        const email = job.jobData.description.match(regex)
-        console.log(email)
-        return email[0]
+      console.log(job.jobData)
+      const regex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+      const email = job.jobData.description.match(regex)
+      return email[0]
     }
 
     nextStep = async(data) => {
@@ -110,7 +110,6 @@ export class ActiveJob extends Component {
     calculateJobPrice = () => {
         const { make, model, rating, vehicleType, services, upgrades, activeJob } = this.state
         const { user } = this.props
-        console.log(user.employeeId, "LOOK")
 
         const summary = activeJob.jobData.summary.split(" ")
         const serviceName = summary.slice(0,2).toString().replace(/,/g, "")
