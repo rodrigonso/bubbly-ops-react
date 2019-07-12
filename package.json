@@ -5,6 +5,7 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "@emotion/core": "^10.0.10",
+    "@sentry/browser": "^5.5.0",
     "antd": "^3.19.2",
     "auth0-js": "^9.10.2",
     "axios": "^0.18.0",

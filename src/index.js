@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom';
+import * as Sentry from '@sentry/browser';
 import './index.css';
 import App from './App';
 import 'antd/dist/antd.css';
 
-
+Sentry.init({ dsn: process.env.REACT_APP_SENTRY_DSN })
 
 ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));
 

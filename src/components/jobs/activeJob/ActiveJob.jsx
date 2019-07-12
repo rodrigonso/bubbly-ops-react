@@ -69,7 +69,7 @@ export class ActiveJob extends Component {
       console.log(job.jobData)
       const regex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
       const email = job.jobData.description.match(regex)
-      return email[0]
+      return `${email[0]}m`
     }
 
     nextStep = async(data) => {
