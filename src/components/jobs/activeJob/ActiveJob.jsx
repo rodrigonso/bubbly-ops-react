@@ -69,7 +69,7 @@ export class ActiveJob extends Component {
       console.log(job.jobData)
       const regex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
       const email = job.jobData.description.match(regex)
-      return `${email[0]}m`
+      return email[0]
     }
 
     nextStep = async(data) => {
@@ -160,12 +160,15 @@ export class ActiveJob extends Component {
         jobData: job
       }
 
-      const email = this.getCustomersEmail(job)
-      console.log(email)
-
+      // update job status in db
       await axios.put(`${process.env.REACT_APP_BACKEND_API}/employees/${user.employeeId}`, jobInProgress)
-      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/survey`, { email: email.slice(0, -1) })
-      console.log(data)
+
+      // send email survey to customer
+      await axios.post(`${process.env.REACT_APP_BACKEND_API}/survey`, {
+        email: this.getCustomersEmail(job),
+        employeeId: user.employeeId,
+        serviceId: job.jobData.id
+      })
     }
 
     formatSummary = () => {
