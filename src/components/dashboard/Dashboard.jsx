@@ -23,6 +23,7 @@ state = {
   range: [],
   isLoading: false,
   isPayrollOpen: false,
+  isPayrollLoading: false
 }
 
 async componentDidMount() {
@@ -140,15 +141,23 @@ handlePayroll = async(data) => {
     totalJobs
   }
 
-  axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err))
-  
-  axios.post(`${process.env.REACT_APP_BACKEND_API}/sendGrid/payrollDone`, msg)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err))
+  try {
+    this.setState({ isPayrollLoading: false })
 
-  this.setState({ isModalOpen: false })
+    axios.post(`${process.env.REACT_APP_BACKEND_API}/payrolls`, payroll)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+    
+    axios.post(`${process.env.REACT_APP_BACKEND_API}/sendGrid/payrollDone`, msg)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+  
+    this.setState({ isModalOpen: false })
+  } catch (ex) {
+    console.log(ex)
+  } finally {
+    this.setState({ isPayrollLoading: false })
+  }
 }
 
 handleEmployeeSelection = (e) => {
@@ -205,7 +214,8 @@ handleModal = () => {
 }
 
 render() {
-  const { employees, services, isDeleting, isEditJobOpen, jobs, range, selectedEmployee, isPayrollOpen, editingJob, search } = this.state
+  const { employees, services, isDeleting, isPayrollLoading, jobs, range, selectedEmployee, isPayrollOpen, editingJob, search } = this.state
+
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === selectedEmployee._id) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const jobsBySearch = search ? jobsByDate.filter(job => {
@@ -232,7 +242,8 @@ render() {
           range={range} 
           isPayrollOpen={isPayrollOpen} 
           handleModal={this.handleModal} 
-          handlePayroll={this.handlePayroll} 
+          handlePayroll={this.handlePayroll}
+          loading={isPayrollLoading} 
         />
         <div className="dashboard-main" style={{ display: "grid", gridTemplateColumns: "21% 79%" }} >
           <div className="dashboard-left-panel" style={{ width: "18em", marginTop: "4.35em" }} >

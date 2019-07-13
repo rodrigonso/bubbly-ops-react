@@ -45,12 +45,13 @@ export class NewPayroll extends Component {
 
 	getSubmitButton = () => {
 		return (
-			<Button onClick={this.handleSubmit}  type="primary" shape="round">Submit</Button>  
+			<Button onClick={this.handleSubmit} loading={this.props.loading}  type="primary" shape="round">Submit</Button>  
 		)
 	}
 
 	render() {
 		const { isPayrollOpen, totalHours, handleModal, jobs, range, selectedEmployee } = this.props
+
 		const { hours, tips, wage } = this.state
 		if (!selectedEmployee) return null
 		
