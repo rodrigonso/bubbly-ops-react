@@ -22,7 +22,7 @@ export default function EmployeeCard(props) {
                   <br/>
                   <Text type="secondary" >Rating </Text>
                   <br/>
-                  <Rate count={5} disabled value={item.rating} style={{ color: '#1890ff' }}  /> 
+                  <Rate count={5} allowHalf disabled value={item.rating} style={{ color: '#1890ff' }}  /> 
                 </React.Fragment>
               } 
             />
