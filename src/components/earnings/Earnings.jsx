@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Divider, Descriptions, Typography, Icon, Spin, Empty } from 'antd';
+import { Divider, Descriptions, Typography, Icon, Spin, Empty, Rate } from 'antd';
 import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 import axios from 'axios'
 import moment from 'moment'
@@ -9,7 +9,7 @@ const { Text } = Typography
 class Earnings extends Component {
 
 	state = {
-		user: {},
+		employee: {},
 		jobs: [],
 		payrolls: [],
 		jobsByDay: [],
@@ -18,13 +18,24 @@ class Earnings extends Component {
 	}
 
 	async componentDidMount() {
-		const { data: allJobs } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
-		const jobs = allJobs.filter(item => item.employeeId === this.props.user.employeeId)
-		this.setState({ jobs })
+		try {
+			this.setState({ isLoading: true })
+			
+			const { data: allJobs } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
+			const jobs = allJobs.filter(item => item.employeeId === this.props.user.employeeId)
+			this.setState({ jobs })
 
-		const { data: allPayrolls } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/payrolls`)
-		const payrolls = allPayrolls.filter(item => item.employee._id === this.props.user.employeeId)
-		this.setState({ payrolls })
+			const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${this.props.user.employeeId}`)
+			this.setState({ employee })
+
+			const { data: allPayrolls } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/payrolls`)
+			const payrolls = allPayrolls.filter(item => item.employee._id === this.props.user.employeeId)
+			this.setState({ payrolls })
+		} catch (ex) {
+			console.log(ex)
+		} finally {
+			this.setState({ isLoading: false })
+		}
 	}
 
 	getJobsByDay = () => {
@@ -55,8 +66,10 @@ class Earnings extends Component {
 		else return <Empty />
 	}
   render() {
-		const { isLoading, payrolls } = this.state
-		if (isLoading) return <div style={{ overflowX: "hidden", overflowY: "auto", textAlign: "center", marginTop: "25%" }}><Spin size="large" style={{ margin: "auto" }} indicator={<Icon type="loading" /> } /></div>
+		const { isLoading, employee } = this.state
+
+		if (isLoading) return <Spin size="large" style={{ height: '50vh', width: '50vw' }} indicator={<Icon type="loading" /> } />
+
     return (
 			<div className="home-body" style={{ overflowX: "hidden", overflowY: "auto" }} >
 			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
@@ -71,6 +84,12 @@ class Earnings extends Component {
 						<Bar position="name*value" />
 					</Chart>
 				</div>
+			</div>
+			<div style={{ backgroundColor: '#fff', padding: 15, borderRadius: 5, marginTop: 10 }}>
+				<Text type="secondary" >Your Rating </Text>
+				<br />
+				<Text style={{ fontSize: 60, fontWeight: 700, marginLeft: '35%' }}>{employee.rating}</Text>
+				<Text type="secondary" style={{ fontSize: 30 }}> / 5</Text>  
 			</div>
 			<div style={{ backgroundColor: "#fff", padding: 15, borderRadius: 5, marginTop: 10 }}>
 				<Text type="secondary">Latest Payroll</Text>
