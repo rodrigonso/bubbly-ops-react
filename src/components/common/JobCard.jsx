@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card,Popconfirm, Typography, Icon, Button, Steps, Tag, notification } from 'antd';
+import { Card,Popconfirm, Typography, Icon, Button, Steps, Tag, notification, Tooltip } from 'antd';
 import EditJob from '../dashboard/EditJob'
 import moment from 'moment'
 import axios from 'axios'
@@ -225,7 +225,9 @@ handleSave = async(job) => {
                   <br />
                   <Icon type="car" style={{ marginRight: 5 }} /><Text type="secondary" style={{ fontSize: 12 }} >{job.vehicleType.make} {job.vehicleType.model}</Text> 
                   <br />
-                  <Tag style={{ marginTop: 10 }} >{this.getCurrentEmployee().username}</Tag>
+                  <Tooltip title={`Rating: ${this.getCurrentEmployee().rating}`} >
+                    <Tag style={{ marginTop: 10 }} >{this.getCurrentEmployee().username}</Tag>
+                  </Tooltip>
                 </div>
                 <div style={{ justifyContent: "center", alignItems: "center", display: "flex" }} >
                   <p type="secondary" style={{ fontSize: 24, marginTop: "16%" }} >{this.formatPrice()}</p>

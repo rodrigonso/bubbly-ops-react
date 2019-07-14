@@ -26,6 +26,7 @@ state = {
   isPayrollLoading: false
 }
 
+// lifecycle hooks
 async componentDidMount() {
   const employees = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees`)
   const services = await axios.get(`${process.env.REACT_APP_BACKEND_API}/services`)
@@ -45,7 +46,7 @@ async componentDidMount() {
 }
 
 
-//------ Getter methods --------//
+// getters
 getTotalHours = (jobs) => {
   if (jobs.length === 0) return 0;
 
@@ -113,7 +114,7 @@ getJobsByDay = (jobs) => {
   else return []
 }
 
-//------ handler methods --------//
+// event handlers
 handlePayroll = async(data) => {
   const { selectedEmployee, range } = this.state
   const { totalWage, totalHours, totalTips, totalJobs } = data
