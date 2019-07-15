@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Table, Divider, Icon, Spin, Button } from 'antd'
+import { Table, Divider, Icon, Spin, Button, Tag, Tooltip } from 'antd'
 import { css } from 'emotion' 
+import moment from 'moment'
 import axios from 'axios';
 
 export class Payrolls extends Component {
@@ -40,12 +41,12 @@ export class Payrolls extends Component {
         <p>View and manage all payrolls submited.</p>
 				<Divider />
 				<Table className={body} dataSource={payrolls} style={{ backgroundColor: "#fff", borderRadius: 5, padding: 15 }} pagination={{ defaultPageSize: 10, size: "small", hideOnSinglePage: true }} >
-					<Table.Column key="1" title={ <div style={{ fontWeight: 700 }}>Range</div> } dataIndex="range" render={(text, record, index) => <div>{record.range[0]} - {record.range[1]}</div>}  />
-					<Table.Column key="2" title={ <div style={{ fontWeight: 700 }}>Employee</div> } dataIndex="employee.name" />
+					<Table.Column key="1" title={ <div style={{ fontWeight: 700 }}>Range</div> } dataIndex="range" render={(text, record, index) => <div>{moment(record.range[0]).format("LL")} - {moment(record.range[1]).format("LL")}</div>}  />
+					<Table.Column key="2" title={ <div style={{ fontWeight: 700 }}>Employee</div> } dataIndex="employee.name" render={(text, record, index) => <Tag>{record.employee.username}</Tag>} />
 					<Table.Column key="3" title={ <div style={{ fontWeight: 700 }}>Hours</div> } dataIndex="totalHours" />
 					<Table.Column key="4" title={ <div style={{ fontWeight: 700 }}>Tips</div> } render={(text, record, index) => <div>${record.totalTips}</div>} dataIndex="totalTips" />
 					<Table.Column key="5" title={ <div style={{ fontWeight: 700 }}>Total</div> } render={(text, record, index) => <div>${record.totalWage}</div>} dataIndex="totalWage" />
-					<Table.Column key="6" render={(text, record) => <Button shape="circle" onClick={() => this.handleDelete(record)} ><Icon type="delete" /></Button> } />
+					<Table.Column key="6" render={(text, record) => <Button type="link" onClick={() => this.handleDelete(record)} >Delete</Button> } />
 				</Table>
       </div>
     )

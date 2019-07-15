@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { getEventsById } from './services/eventsService'
-import SiderMenu from './components/menu/SiderMenu';
+import DesktopMenu from './components/menu/SiderMenu';
 import Home from './components/home/Home';
 import Settings from './components/settings/Settings'
 import ActiveJob from './components/jobs/activeJob/ActiveJob'
@@ -138,7 +138,7 @@ render() {
   if (isGapiReady) console.log("Gapi Initialized")
     return (
         <Layout>
-          {isMobile ? <MobileMenu user={user} /> : <SiderMenu user={user} isMobile={isMobile}/>}
+          {isMobile ? <MobileMenu user={user} /> : <DesktopMenu user={user} isMobile={isMobile}/>}
           <Layout style={isMobile ? layoutStyleMobile : layoutStyleDesktop}>
             <Content style={{ margin: 'auto', maxWidth: 2000, background: "#f7f7f7", marginTop: 80 }} >
               <div className="app" style={isMobile ? appStyleMobile : appStyleDesktop}>

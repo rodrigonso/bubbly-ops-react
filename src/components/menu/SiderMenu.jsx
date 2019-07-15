@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, Avatar, Button } from 'antd'
+import { Menu, Avatar, Button, Icon } from 'antd'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
-export class SiderMenu extends Component {
+export class DesktopMenu extends Component {
 state = {
   currentKey: 'home'
 }
@@ -50,30 +50,38 @@ handleLogout = () => {
       )
     }
     return (
-      <div style={menuDesktop} >
-        <NavLink to="/" >
-          <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, top: -20, position: "relative", left: 15, cursor: 'pointer' }}  key="home" onClick={() => this.handleMenuChange({ key: "home" })} />
-        </NavLink>
-        <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16 }} onClick={this.handleMenuChange} selectedKeys={[currentKey]}  >
-          <Menu.Item key="home" ><NavLink to="/">Home</NavLink></Menu.Item>
-          <Menu.Item key="dashboard" ><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
-          <Menu.Item key="payrolls" ><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
-          <Menu.Item key="settings" ><NavLink to="/settings">Settings</NavLink></Menu.Item>
-        </Menu>
-        <Button onClick={this.handleLogout} style={{ width: 80, marginTop: 10, marginLeft: "20%" }} type="ghost" shape="round" >Logout</Button>
+      <div style={menuDesktop}>
+        <div style={{ float: 'left'}} >
+          <NavLink to="/" >
+            <img src={require('./Bubbly-Logo2.png')} style={{ height: 90, marginTop: '-20px', cursor: 'pointer' }}  key="home" onClick={() => this.handleMenuChange({ key: "home" })} />
+          </NavLink>
+        </div>
+        <div style={{ float: 'right' }} >
+          <Menu mode="horizontal" style={{ marginTop: 7, fontSize: 16, border: 0 }} onClick={this.handleMenuChange} selectedKeys={[currentKey]}  >
+            <Menu.Item key="home" ><NavLink to="/">Home</NavLink></Menu.Item>
+            <Menu.Item key="dashboard" ><NavLink to="/appointments">Dashboard</NavLink></Menu.Item>
+            <Menu.Item key="payrolls" ><NavLink to="/payrolls">Payrolls</NavLink></Menu.Item>
+            <Menu.Item key="settings" ><NavLink to="/settings">Settings</NavLink></Menu.Item>
+            <Menu.SubMenu key="user" title={<span><Avatar shape="circle" size="small" /> {user.username} <Icon type="caret-down"/></span>} >
+              <Menu.Item><Icon type="setting" /> Account Settings</Menu.Item>
+              <Menu.Item><Icon type="question-circle" /> Support</Menu.Item>
+              <Menu.Divider />
+              <Menu.Item onClick={this.handleLogout} ><Icon type="logout" /> Logout</Menu.Item>
+            </Menu.SubMenu>
+          </Menu>
+        </div>
       </div>
     )
   }
 }
 
 const menuDesktop = {
-  display: "grid",
-  gridTemplateColumns: "10% 80% 10%",
   backgroundColor: "#fff",
   height: 55,
   fontWeight: 700,
   fontFamily: "Nunito Sans",
-  boxShadow: "0 4px 8px 0 rgba(0,0,0,0.12),0 2px 4px 0 rgba(0,0,0,0.08)"
+  boxShadow: "0 4px 8px 0 rgba(0,0,0,0.12),0 2px 4px 0 rgba(0,0,0,0.08)",
+  
   
 }
 const styleMobile = {
@@ -83,7 +91,7 @@ const styleMobile = {
   left: 0
 }
 
-export default SiderMenu
+export default DesktopMenu
 
 /*
         <Sider trigger={null} style={this.props.isMobile ? styleMobile : styleDesktop}>
