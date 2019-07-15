@@ -1,4 +1,6 @@
-Dashboard web application created to optimize the management workflow, as well as provide users with important decision-making data. For non-admin users, the application becomes a full fledge job managemnent system. Employees can track their progress, see their earnings and complete jobs all via the application. 
+Dashboard web application created to optimize the management workflow, as well as provide users with important decision-making data. 
+
+For non-admin users, the application becomes a full fledge job management system. Employees can track their progress, see their earnings and complete jobs all via the application. 
 
 This application includes:
 
