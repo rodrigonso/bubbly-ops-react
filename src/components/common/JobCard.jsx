@@ -118,7 +118,6 @@ handleDelete = async(job) => {
   try {
     this.setState({ isDeleting: true })
     const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
-    console.log(res)
     this.props.handleDelete(job)
   } catch (ex) {
     notification.error("Internal Server Error")
@@ -131,7 +130,7 @@ handleDelete = async(job) => {
 handleSave = async(job) => {
   try {
     this.setState({ isEditing: true })
-    await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
+    const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
     this.handleModal()
     this.props.handleJobEdit(job)
   }
@@ -249,7 +248,7 @@ handleSave = async(job) => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center" }} >
                   <Button shape="round" onClick={this.handleModal} style={{ marginRight: 4 }}>Edit</Button>
-                  <Popconfirm title="Are you sure?" onConfirm={() => this.props.handleDelete(job)} onCancel={null}>
+                  <Popconfirm title="Are you sure?" onConfirm={() => this.handleDelete(job)} onCancel={null}>
 								    <Button loading={isDeleting} shape="circle" icon="delete" />
 	              	</Popconfirm>
                 </div>

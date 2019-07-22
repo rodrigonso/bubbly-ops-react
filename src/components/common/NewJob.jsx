@@ -95,7 +95,7 @@ export class NewJob extends Component {
       }
 		}
 		try {
-			const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs`, job)
+			const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/jobs`, obj)
 			console.log(res)
 			this.props.handleNewJob(obj)
 		} catch (ex) {
