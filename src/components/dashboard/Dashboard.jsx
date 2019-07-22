@@ -224,7 +224,7 @@ render() {
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
   const jobsBySearch = search ? jobsByDate.filter(job => {
     const lowerCase = job.summary.toLowerCase()
-    return lowerCase.indexOf(search) !== -1  
+    return lowerCase.indexOf(search.toLowerCase()) !== -1  
   }) : jobsByDate 
   
   const totalHours = this.getTotalHours(jobsByDate)
