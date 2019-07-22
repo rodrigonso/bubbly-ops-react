@@ -32,7 +32,7 @@ export class EditJob extends Component {
   }
 
   handleDate = (value, type) => {
-    this.setState({ [type]: value })
+    this.setState({ [type]: moment(value).format("L") })
   }
 
   handleVehicleType = (value) => {
