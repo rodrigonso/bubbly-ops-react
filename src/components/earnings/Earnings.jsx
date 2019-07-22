@@ -94,7 +94,7 @@ class Earnings extends Component {
 		if (isLoading) return <Spin size="large" style={{ height: '50vh', width: '50vw' }} indicator={<Icon type="loading" /> } />
 
     return (
-			<div className="home-body" style={{ overflowX: "hidden", maxWidth: "87vw", overflowY: "auto" }} >
+			<div className="home-body" style={{ overflowX: "hidden", maxWidth: "87vw", overflowY: 'hidden' }} >
 			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
 			<p>Here you can find a full report of all of your earnings.</p>
 			<Divider />
