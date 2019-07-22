@@ -69,7 +69,7 @@ class Earnings extends Component {
 	getAveragePayroll = () => {
 		const { payrolls } = this.state
 
-		if (payrolls.length === 0) return <Empty />
+		if (payrolls.length === 0) return 0
 		const totals = payrolls.map(i => {
 			return i.totalWage
 		})
@@ -80,7 +80,7 @@ class Earnings extends Component {
 	getAverageTips = () => {
 		const { payrolls } = this.state
 
-		if (payrolls.length === 0) return <Empty />
+		if (payrolls.length === 0) return 0
 		const tips = payrolls.map(i => i.totalTips)
 		const jobs = payrolls.map(i => i.totalJobs)
 		const totalTips = tips.reduce((a, b) => a + b)
