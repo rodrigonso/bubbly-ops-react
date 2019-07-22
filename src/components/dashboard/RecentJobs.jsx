@@ -14,8 +14,7 @@ function RecentJobs(props) {
           services={props.services}
           employees={props.employees}
           handleDelete={props.handleDelete} 
-          handleSave={props.handleSave}
-          isLoading={props.isDeleting} 
+          handleJobEdit={props.handleJobEdit}
         />
         ) 
       })}

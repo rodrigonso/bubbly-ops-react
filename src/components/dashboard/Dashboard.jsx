@@ -10,6 +10,7 @@ import EditJob from './EditJob';
 import RecentJobs from './RecentJobs';
 import InProgress from './InProgress';
 import Spinner from '../common/Spinner';
+import NewJob from '../common/NewJob';
 
 const { TabPane } = Tabs
 
@@ -21,9 +22,11 @@ state = {
   selectedEmployee: "",
   search: "",
   range: [],
+  isDeleting: false,
   isLoading: false,
   isPayrollOpen: false,
-  isPayrollLoading: false
+  isPayrollLoading: false,
+  isNewJobOpen: true
 }
 
 // lifecycle hooks
@@ -35,9 +38,8 @@ async componentDidMount() {
   this.setState({ isLoading: true })
 
   try {
-    const jobs = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
-    const sortedJobs = jobs.data.sort((a, b) => new Date(b.date) - new Date(a.date))
-    this.setState({ jobs: sortedJobs })
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/jobs`)
+    this.setState({ jobs: data })
   } catch (ex) {
     console.log(ex)
   } finally {
@@ -178,30 +180,27 @@ handleSearch = (e) => {
   this.setState({ search: e.target.value })
 }
 
-handleDelete = async(job) => {
+handleDelete = (job) => {
+  console.log("Deleting...")
   const jobs = [...this.state.jobs]
-  try {
-    this.setState({ isDeleting: true })
-    
-    await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
-
-    const newJobs = jobs.filter(item => item._id !== job._id)
-    this.setState({ jobs: newJobs })
-  } catch (ex) {
-    console.log(ex)
-    this.setState({ jobs })
-  } finally {
-    this.setState({ isDeleting: false })
-  }
+  const newJobs = jobs.filter(item => item._id !== job._id)
+  this.setState({ jobs: newJobs })
 }
 
-handleSave = async(job) => {
+handleJobEdit = async(job) => {
   const { jobs } = this.state
   const filter = jobs.filter(item => item._id === job._id).flat()
   const index = jobs.indexOf(filter[0])
 
   jobs[index] = job
   console.log(job)
+  this.setState({ jobs })
+}
+
+handleNewJob = (job) => {
+  const { jobs } = this.state
+  jobs.unshift(job)
+  this.setState({ isNewJobOpen: false })
   this.setState({ jobs })
 }
 
@@ -215,7 +214,7 @@ handleModal = () => {
 }
 
 render() {
-  const { employees, services, isDeleting, isPayrollLoading, jobs, range, selectedEmployee, isPayrollOpen, editingJob, search } = this.state
+  const { employees, services, isNewJobOpen, isPayrollLoading, jobs, range, selectedEmployee, isPayrollOpen, isDeleting, search } = this.state
 
   const jobsByEmployee = selectedEmployee ? jobs.filter(job => job.employeeId === selectedEmployee._id) : jobs
   const jobsByDate = range.length > 0 ? jobsByEmployee.filter(job => range[1] >= job.jobData.start.dateTime && range[0] <= job.jobData.start.dateTime) : jobsByEmployee
@@ -236,6 +235,12 @@ render() {
       <div style={{ height: "auto", marginBottom: 80, minWidth: 1200 }}>
         <h1 style={{ fontSize: 32, fontWeight: 700 }}>Dashboard</h1>
         <p>View and manage all detailers and respective appointments here.</p>
+        <NewJob
+          isVisible={isNewJobOpen}
+          services={services}
+          employees={employees}
+          handleNewJob={this.handleNewJob}
+        />
         <NewPayroll 
           selectedEmployee={selectedEmployee} 
           jobs={jobsBySearch} 
@@ -290,7 +295,7 @@ render() {
                     services={services}
                     employees={employees} 
                     handleDelete={this.handleDelete} 
-                    handleSave={this.handleSave}
+                    handleJobEdit={this.handleJobEdit}
                   />
                 </TabPane>
                 <TabPane key="2" tab="All Jobs" >
@@ -298,7 +303,7 @@ render() {
                     jobs={jobsBySearch} 
                     employees={employees} 
                     handleDelete={this.handleDelete} 
-                    handleSave={this.handleSave}
+                    handleJobEdit={this.handleJobEdit}
                   />
                 </TabPane>
             </Tabs>

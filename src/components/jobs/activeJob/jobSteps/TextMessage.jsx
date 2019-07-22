@@ -37,7 +37,8 @@ handleTextSend = async() => {
   this.setState({ isLoading: true })
   const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/sms`, obj)
   if (data.error) return notification.error(data.error.message)
-  else this.setState({ isSent: true })
+  this.setState({ isSent: true })
+  this.props.nextStep()
 }
 
 getTimes = () => {

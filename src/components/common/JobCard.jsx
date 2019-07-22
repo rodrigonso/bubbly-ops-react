@@ -12,7 +12,8 @@ export class JobCard extends Component {
     isVisible: false,
     isCompleted: false,
     input: '',
-    isEditing: false
+    isEditing: false,
+    isDeleting: false
   }
 
 componentDidUpdate(prevProps) {
@@ -113,12 +114,26 @@ handleModal = () => {
   this.setState({ isVisible: !this.state.isVisible })
 }
 
+handleDelete = async(job) => {
+  try {
+    this.setState({ isDeleting: true })
+    const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`)
+    console.log(res)
+    this.props.handleDelete(job)
+  } catch (ex) {
+    notification.error("Internal Server Error")
+  } finally {
+    this.setState({ isDeleting: false })
+  }
+
+}
+
 handleSave = async(job) => {
   try {
     this.setState({ isEditing: true })
     await axios.put(`${process.env.REACT_APP_BACKEND_API}/jobs/${job._id}`, job)
     this.handleModal()
-    this.props.handleSave(job)
+    this.props.handleJobEdit(job)
   }
   catch (ex) {
     console.log(ex)
@@ -130,7 +145,7 @@ handleSave = async(job) => {
 }
  
   render() {
-    const { isVisible, isEditing } = this.state
+    const { isVisible, isEditing, isDeleting } = this.state
     const { job, isMobile, i, progress, handleBegin, isLoading, services, employees, handleSave } = this.props;
 
     if (isMobile) {
@@ -235,7 +250,7 @@ handleSave = async(job) => {
                 <div style={{ display: "flex", alignItems: "center" }} >
                   <Button shape="round" onClick={this.handleModal} style={{ marginRight: 4 }}>Edit</Button>
                   <Popconfirm title="Are you sure?" onConfirm={() => this.props.handleDelete(job)} onCancel={null}>
-								    <Button shape="circle" icon="delete" />
+								    <Button loading={isDeleting} shape="circle" icon="delete" />
 	              	</Popconfirm>
                 </div>
                 </div>
