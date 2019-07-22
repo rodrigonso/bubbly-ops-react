@@ -116,7 +116,7 @@ export class NewJob extends Component {
 
     return (
       <div>
-        <Modal onCancel={this.props.handleModal} visible={isVisible} title="New Job" footer={<Button loading={isEditing} onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
+        <Modal onCancel={this.props.handleModal2} visible={isVisible} title="New Job" footer={<Button loading={isEditing} onClick={this.handleSave} type="primary" shape="round">Save</Button>  } >
           <div style={{ marginTop: 20 }} >
             <Form {...formItemLayout} labelAlign="left" >
               <Form.Item label="Summary">

@@ -26,7 +26,7 @@ state = {
   isLoading: false,
   isPayrollOpen: false,
   isPayrollLoading: false,
-  isNewJobOpen: true
+  isNewJobOpen: false
 }
 
 // lifecycle hooks
@@ -213,6 +213,10 @@ handleModal = () => {
   else notification.error({ message: "Error", description: "Select the desired employee and period in order to run a new payroll." })
 }
 
+handleModal2 = () => {
+  this.setState({ isNewJobOpen: !this.state.isNewJobOpen })
+}
+
 render() {
   const { employees, services, isNewJobOpen, isPayrollLoading, jobs, range, selectedEmployee, isPayrollOpen, isDeleting, search } = this.state
 
@@ -240,6 +244,7 @@ render() {
           services={services}
           employees={employees}
           handleNewJob={this.handleNewJob}
+          handleModal2={this.handleModal2}
         />
         <NewPayroll 
           selectedEmployee={selectedEmployee} 
@@ -276,7 +281,7 @@ render() {
               tabBarExtraContent={
                 (
                   <div>
-                    <Button shape="round" type="ghost" >+ Job</Button>
+                    <Button onClick={this.handleModal2} shape="round" type="ghost" >+ Job</Button>
                     <Button onClick={this.handleModal} style={{ marginLeft: 10 }} type="primary" shape="round">+ Payroll</Button>
                   </div> 
                 )
