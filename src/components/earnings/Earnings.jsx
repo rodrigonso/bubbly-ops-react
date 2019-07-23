@@ -98,37 +98,30 @@ class Earnings extends Component {
 			<h1 style={{ fontSize: 32, fontWeight: 700 }}>Earnings</h1>
 			<p>Here you can find a full report of all of your earnings.</p>
 			<Divider />
-			<div style={{ backgroundColor: '#fff', padding: 15, borderRadius: 5 }} >
-				<Text type="secondary">Stats</Text>
-				<Carousel swipeToSlide draggable centerPadding={75} centerMode dots={false} >
+			<div>
+				<Carousel swipeToSlide centerPadding={95} centerMode dots={false} >
 					<div>
-						<Card style={{ marginRight: 10, marginTop: 10 }} >
-							<div style={{ margin: 'auto' }}>
-								<Text style={{ fontSize: 12 }} type="secondary">Avg Rating</Text>
-								<br/>
-								<Text style={{ fontSize: 26 }} >{employee.rating}</Text>
-								<Text type="secondary"> / 5</Text>
-							</div> 
-						</Card>
+						<div style={{ backgroundColor: '#fff', padding: 15, borderRadius: 5, marginRight: 5, height: 120 }} >
+							<Text style={{ fontSize: 12 }} type="secondary">Avg Rating</Text>
+							<br/>
+							<Text style={{ fontSize: 26 }} >{employee.rating}</Text>
+							<Text type="secondary"> / 5</Text>
+						</div> 
 					</div>
 					<div>
-						<Card style={{ marginRight: 10, marginTop: 10 }} >
-							<div style={{ margin: 'auto' }}>
-								<Text style={{ fontSize: 12 }} type="secondary">Avg Payroll</Text>
-								<br/>
-								<Text style={{ fontSize: 26 }} >${this.getAveragePayroll()}</Text>
-							</div> 
-						</Card>
+						<div style={{ backgroundColor: '#fff', padding: 15, borderRadius: 5, marginRight: 5, height: 120 }} >
+							<Text style={{ fontSize: 12 }} type="secondary">Avg Payroll</Text>
+							<br/>
+							<Text style={{ fontSize: 26 }} >${this.getAveragePayroll()}</Text>
+						</div> 
 					</div>
 					<div>
-						<Card style={{ marginRight: 10, marginTop: 10 }} >
-							<div style={{ margin: 'auto' }}>
-								<Text style={{ fontSize: 12 }} type="secondary">Avg Tips</Text>
-								<br/>
-								<Text style={{ fontSize: 26 }} >${this.getAverageTips()}</Text>
-								<Text type="secondary"> per car</Text> 
-							</div> 
-						</Card>
+						<div style={{ backgroundColor: '#fff', padding: 15, borderRadius: 5, marginRight: 5, height: 120 }} >
+							<Text style={{ fontSize: 12 }} type="secondary">Avg Tips</Text>
+							<br/>
+							<Text style={{ fontSize: 26 }} >${this.getAverageTips()}</Text>
+							<Text type="secondary"> per car</Text> 
+						</div> 
 					</div>
 				</Carousel>
 			</div>
