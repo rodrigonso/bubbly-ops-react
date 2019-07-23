@@ -25,12 +25,13 @@ class Earnings extends Component {
 			const jobs = allJobs.filter(item => item.employeeId === this.props.user.employeeId)
 			this.setState({ jobs })
 
-			const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/employees/${this.props.user.employeeId}`)
+			const { data: employee } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/survey/rating/${this.props.user.employeeId}`)
 			this.setState({ employee })
 
 			const { data: allPayrolls } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/payrolls`)
 			const payrolls = allPayrolls.filter(item => item.employee._id === this.props.user.employeeId)
 			this.setState({ payrolls })
+
 		} catch (ex) {
 			console.log(ex)
 		} finally {
